@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const APP_DIR = path.resolve(__dirname, "./src");
 
 module.exports = {
-    mode: "development",
-    devtool: "inline-source-map",
+    mode: "production",
     entry: {
         app: path.join(__dirname, "src", "index.tsx"),
     },
@@ -54,16 +53,4 @@ module.exports = {
             template: path.join(__dirname, "src", "index.html"),
         }),
     ],
-    devServer: {
-        historyApiFallback: true,
-        client: {
-            overlay: false,
-        },
-        static: {
-            directory: path.join(__dirname, "public"),
-        },
-        compress: true,
-        port: 9000,
-        hot: true,
-    },
 };
