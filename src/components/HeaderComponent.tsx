@@ -19,7 +19,10 @@ const CustomHeader: React.FC = () => {
         <Menu.Item key="3">
           <Link to="/vote-list">All votes</Link>
         </Menu.Item>
-        <Menu.Item key="4" style={{ float: 'right' }}>
+        <Menu.Item key="4">
+          <Link to="/login">Login page</Link>
+        </Menu.Item>
+        <Menu.Item key="5" style={{ float: 'right' }}>
           <Link to="/profile">
             <Avatar icon={<UserOutlined />} />
           </Link>
