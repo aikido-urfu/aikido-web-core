@@ -11,18 +11,15 @@ const CustomHeader: React.FC = () => {
       <div className="logo" />
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
         <Menu.Item key="1">
-          <Link to="/">Home</Link>
+          <Link to="/">Aikido</Link>
         </Menu.Item>
         <Menu.Item key="2">
-          <Link to="/vote">Vote</Link>
+          <Link to="/vote">Страница голосования</Link>
         </Menu.Item>
         <Menu.Item key="3">
-          <Link to="/vote-list">All votes</Link>
+          <Link to="/vote-list">Почта</Link>
         </Menu.Item>
-        <Menu.Item key="4">
-          <Link to="/login">Login page</Link>
-        </Menu.Item>
-        <Menu.Item key="5" style={{ float: 'right' }}>
+        <Menu.Item key="4" style={{ float: 'right' }}>
           <Link to="/profile">
             <Avatar icon={<UserOutlined />} />
           </Link>

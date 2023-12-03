@@ -1,0 +1,9 @@
+.listVote:hover {
+    cursor: pointer;
+    background-color: #a2d2ff;
+    transition: 0.2;
+}
+
+.listVote {
+    background-color: black;
+}

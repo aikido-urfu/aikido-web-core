@@ -7,4 +7,5 @@ exec(`scp -r -O dist ${process.env.SERVER_USER}@${process.env.SERVER_IP}:${proce
         if (error !== null) {
              console.log('exec error: ' + error);
         }
-    });
+    }
+);

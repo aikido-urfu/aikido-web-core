@@ -6,7 +6,7 @@ import MainContainer from './components/MainContainer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
-import VotePage from './pages/Vote';
+import VotePage from './pages/Vote/Vote';
 import VotesPage from './pages/VotesList';
 
 const { Content } = Layout;
