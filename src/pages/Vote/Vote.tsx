@@ -12,6 +12,7 @@ import {
 import { UserOutlined } from '@ant-design/icons';
 import { ListUser } from './ListUser';
 import { ListVote } from './ListVote';
+import { useNavigate } from 'react-router-dom';
 
 interface Voter {
   name: string;
@@ -20,7 +21,7 @@ interface Voter {
 
 const DESP_MOCK = `Какое-то описание, хз что тут писать, напишу о рыбном тексте. Современные технологии достигли такого уровня, что синтетическое тестирование играет важную роль в формировании экспериментов, поражающих по своей масштабности и грандиозности. Значимость этих проблем настолько очевидна, что базовый вектор развития позволяет оценить значение дальнейших направлений развития. Принимая во внимание показатели успешности, выбранный нами инновационный путь требует от нас анализа системы массового участия.`;
 
-const USERS_MOCK = [
+export const USERS_MOCK = [
   {
     name: 'Сергеев Владислав Аркадьевич',
     mail: 'v.sergeev@mail.ru',
@@ -111,6 +112,7 @@ const VOTES_MOCK = [
 const VotePage: React.FC = () => {
 
   const [selectedVoteId, setselectedVoteId] = useState(1)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -140,6 +142,9 @@ const VotePage: React.FC = () => {
             color: '#FFF',
             width: 177,
             height: 32,
+          }}
+          onClick={() => {
+            navigate("/vote-create")
           }}
         >
           Добавить голосование
@@ -269,9 +274,6 @@ const VotePage: React.FC = () => {
               <div
                 className="usersContainer"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
                   backgroundColor: '#FFF',
                 }}
               >

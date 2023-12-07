@@ -14,7 +14,10 @@ const MainContainer: React.FC<MainContainerProps> = ({ children}) => {
   return (
     <Layout >
       <HeaderComponent />
-      <Content>
+      <Content style={{
+        minHeight: 'calc(100vh - 134px)',
+        backgroundColor: '#f5f5f5'
+      }}>
         {children}
       </Content>
       <FooterComponent />

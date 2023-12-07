@@ -14,7 +14,7 @@ export const ListUser: React.FC<ListUserType> = ({name, mail}) => {
               flexDirection: 'row',
               padding: '20px',
               borderBottom: '1px solid #DADADA',
-              width: '702px',
+              width: 'auto',
             }}
           >
             <div

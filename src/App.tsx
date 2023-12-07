@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import VotePage from './pages/Vote/Vote';
 import VotesPage from './pages/VotesList';
+import { VoteCreate } from './pages/VoteCreate/VoteCreate';
 
 const { Content } = Layout;
 
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route path="/profile" element={<MainContainer ><Profile isOwner={true} /></MainContainer>} />
             <Route path="/vote" element={<MainContainer ><VotePage /></MainContainer>} />
             <Route path="/vote-list" element={<MainContainer ><VotesPage /></MainContainer>} />
+            <Route path="/vote-create" element={<MainContainer ><VoteCreate /></MainContainer>} />
             {/* Add more routes for your other components */}
             {/* <Route path="/about" element={<AboutComponent />} /> */}
             {/* <Route path="/contact" element={<ContactComponent />} /> */}
