@@ -1,6 +1,5 @@
 import React from "react"
 import './index.css'
-
 type ListVoteType = {
     id: number,
     name: string,
@@ -12,6 +11,7 @@ type ListVoteType = {
 export const ListVote: React.FC<ListVoteType> = ({id, name, date, description, isSelected}) => {
     return (
         <div
+          className="vote-list-vote"
           style={{
             height: '100px',
             width: '400px',
@@ -20,9 +20,7 @@ export const ListVote: React.FC<ListVoteType> = ({id, name, date, description, i
             ...(isSelected ? {
               backgroundColor: '#1890FF',
               color: '#FFF'
-            } : {
-              backgroundColor: '#FFF',
-            }),
+            } : {}),
           }}
         >
           <div

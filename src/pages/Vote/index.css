@@ -1,9 +1,5 @@
-.listVote:hover {
+.vote-list-vote:hover {
     cursor: pointer;
-    background-color: #a2d2ff;
-    transition: 0.2;
-}
-
-.listVote {
-    background-color: black;
+    background-color: #dadada;
+    transition: 0.1s;
 }

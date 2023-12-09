@@ -6,7 +6,7 @@ const { Footer } = Layout;
 const FooterComponent: React.FC = () => {
   return (
     <Footer style={{ textAlign: 'center', width: '100vw' }}>
-      Ant Design ©{new Date().getFullYear()} Created by Your Name
+      Ant Design ©{new Date().getFullYear()} Created by Your VenchasS
     </Footer>
   );
 };

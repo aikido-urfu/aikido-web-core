@@ -144,7 +144,7 @@ const VotePage: React.FC = () => {
             height: 32,
           }}
           onClick={() => {
-            navigate("/vote-create")
+            navigate("/voteCreate")
           }}
         >
           Добавить голосование
@@ -293,7 +293,7 @@ const VotePage: React.FC = () => {
                 flexDirection: 'column',
               }}>
                 <Button
-                
+                onClick={() => navigate('/vote-progress')}
                 style={{
                   margin: '20px 40px',
                   backgroundColor: '#1890FF',

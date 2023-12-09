@@ -1,13 +1,21 @@
-import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import { Button, Input, Steps } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { Switch } from 'antd';
 import { ListUser } from '../Vote/ListUser';
 import { USERS_MOCK } from '../Vote/Vote';
 import { FirstStep } from './FirstStep';
 import { SecondStep } from './SecondStep';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { rootStore } from '../../models/voteCreate';
 const { TextArea } = Input;
-export const VoteCreate = () => {
-  const [step, setstep] = useState(1);
+import { observer } from "mobx-react-lite"
+
+
+const Step = Steps.Step;
+const VoteCreate: React.FC = () => {
+  const [step, setstep] = useState(0);
+  const navigate = useNavigate()
+  const voteCreateModel = rootStore.VoteCreate
   return (
     <>
       <div
@@ -22,7 +30,7 @@ export const VoteCreate = () => {
         }}
       >
         <h3>Создание голосования</h3>
-        <Button>Отмена</Button>
+        <Button onClick={() => navigate('/vote')}>Отмена</Button>
       </div>
 
       <div
@@ -54,12 +62,22 @@ export const VoteCreate = () => {
               alignItems: 'center',
             }}
           >
-            <div>Основная информация и участники</div>
-            <div>Вопросы к голосованию</div>
+            <Steps current={step} >
+              <div>
+                <Step title="Finished" description="This is a description." />
+                Основная информация и участники</div>
+              <div style={{
+                ...(step === 0 ? {
+                  color: 'rgba(0, 0, 0, 0.45)'
+                } : {})
+              }}>Вопросы к голосованию</div>
+              </Steps>
           </div>
         </div>
-        {step === 0 ? <FirstStep onStepChange={(x) => {setstep(x)}} /> : step === 1 ? <SecondStep /> : null}
+        {step === 0 ? <FirstStep onStepChange={(x) => {setstep(x)}} /> : step === 1 ? <SecondStep onStepChange={(x) => setstep(x)} /> : null}
       </div>
     </>
   );
 };
+
+export default observer(VoteCreate)

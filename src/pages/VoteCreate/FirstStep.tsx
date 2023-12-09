@@ -3,13 +3,16 @@ import TextArea from "antd/es/input/TextArea";
 import React from "react";
 import { USERS_MOCK } from "../Vote/Vote";
 import { ListUser } from "../Vote/ListUser";
+import { rootStore } from "../../models/voteCreate";
+import { observer } from "mobx-react-lite";
 
 type FirstStepType = {
     onStepChange: (step: number) => void
 }
 
-export const FirstStep: React.FC<FirstStepType> = ({onStepChange}) => {
-    return <>
+export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
+  const voteCreate = rootStore.VoteCreate
+  return <>
     <div
           style={{
             minHeight: 332,
@@ -31,13 +34,13 @@ export const FirstStep: React.FC<FirstStepType> = ({onStepChange}) => {
                 margin: '0 0 20px 0',
               }}
             >
-              <Input></Input>
+              <Input onChange={e => voteCreate.setName(e.target.value)} value={voteCreate.name}></Input>
               <p>Анонимное</p>
-              <Switch></Switch>
+              <Switch checked={voteCreate.isAnonim} onChange={e => voteCreate.setAnonim(e)} ></Switch>
             </div>
             <div>
               <p>Описание</p>
-              <TextArea rows={6}></TextArea>
+              <TextArea rows={6} onChange={e => voteCreate.setDescription(e.target.value)} value={voteCreate.description}></TextArea>
               <div
                 style={{
                   margin: '30px 0 20px 0',
@@ -79,7 +82,7 @@ export const FirstStep: React.FC<FirstStepType> = ({onStepChange}) => {
             }}
           >
             {...USERS_MOCK.map((x) => {
-              return <ListUser name={x.name} mail={x.mail} />;
+              return <ListUser name={x.name} mail={x.mail} isCanBeDeleted onDeleteClick={() => {}}/>;
             })}
           </div>
         </div>
@@ -94,4 +97,4 @@ export const FirstStep: React.FC<FirstStepType> = ({onStepChange}) => {
           Перейти далее
         </Button>
     </>
-}
+})

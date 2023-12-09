@@ -28,20 +28,9 @@ module.exports = {
                 exclude: "/node_modules/",
             },
             {
-                test: /\.css$/,
                 include: APP_DIR,
-                use: [
-                    {
-                        loader: "style-loader",
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            importLoaders: 1,
-                            modules: true
-                        },
-                    },
-                ],
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
             },
         ],
     },
