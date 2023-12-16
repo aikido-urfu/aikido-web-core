@@ -17,7 +17,7 @@ const CustomHeader: React.FC = () => {
           <Link to="/vote">Страница голосования</Link>
         </Menu.Item>
         <Menu.Item key="3">
-          <Link to="/vote-list">Почта</Link>
+          <Link to="/mail">Почта</Link>
         </Menu.Item>
         <Menu.Item key="4" style={{ float: 'right' }}>
           <Link to="/profile">

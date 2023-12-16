@@ -9,6 +9,8 @@ import {
   DeleteOutlined,
   FileJpgOutlined,
 } from '@ant-design/icons';
+import { PostVote } from '../../types/api';
+import { rootStore } from '../../models/voteCreate';
 
 type QuestionType = {
   id: number;
@@ -178,13 +180,33 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowM
 }
 type SecondStepType = {
   onStepChange?: (step: number) => void
+  onFInallizeVote: (data: PostVote) => void
 }
 
-export const SecondStep: React.FC<SecondStepType> = ({onStepChange}) => {
+export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeVote}) => {
   const [isShowModal, setshowModal] = useState(false);
+  const voteCreateModel = rootStore.VoteCreate
+
   const showModal = () => {
     setshowModal(true);
   };
+
+  const handleSendClick = () => {
+    const res: PostVote = {
+      title: voteCreateModel.title,
+      description: voteCreateModel.description,
+      dateOfStart: '2023-12-31',
+      dateOfEnd: '2023-12-31',
+      isAnonymous: voteCreateModel.isAnonim,
+      isActive: true,
+      isHidenCounter: false,
+      privateUsers: [],
+      files: [],
+      photos: [],
+      questions: []
+    } 
+    onFInallizeVote(res)
+  }
 
   return (
     <div
@@ -218,6 +240,7 @@ export const SecondStep: React.FC<SecondStepType> = ({onStepChange}) => {
         }}
       >
         <Button
+        onClick={handleSendClick}
           style={{
             margin: '20px 10px 20px 20px',
             backgroundColor: '#1890FF',

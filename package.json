@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Build UI that scales",
   "scripts": {
-    "dev": "webpack serve --config webpack.config.dev.js --open",
+    "dev": "webpack serve --config webpack.config.dev.js --open --port 9000",
     "build": "NODE_ENV=production webpack --config ./webpack.config.prod.js",
     "deploy": "npm run build && node ./src/scripts/deploy.js"
   },
@@ -20,6 +20,7 @@
     "@types/react-jss": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "antd": "^5.11.2",
+    "axios": "^1.6.2",
     "babel-standalone": "^6.26.0",
     "child_process": "^1.0.2",
     "css-loader": "^6.8.1",

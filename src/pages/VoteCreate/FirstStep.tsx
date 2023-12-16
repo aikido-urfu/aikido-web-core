@@ -34,7 +34,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
                 margin: '0 0 20px 0',
               }}
             >
-              <Input onChange={e => voteCreate.setName(e.target.value)} value={voteCreate.name}></Input>
+              <Input onChange={e => voteCreate.setName(e.target.value)} value={voteCreate.title}></Input>
               <p>Анонимное</p>
               <Switch checked={voteCreate.isAnonim} onChange={e => voteCreate.setAnonim(e)} ></Switch>
             </div>

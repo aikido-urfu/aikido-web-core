@@ -1,4 +1,5 @@
 import { types } from "mobx-state-tree";
+import { PostVote } from "../types/api";
 
 const UserModel = types.model({
     id: types.number,
@@ -21,7 +22,7 @@ const QuestionModel = types.model({
 })
 
 const VoteCreateModel = types.model({
-    name: types.maybeNull(types.string),
+    title: types.maybeNull(types.string),
     description: types.maybeNull(types.string),
     isAnonim: types.maybeNull(types.boolean),
     users: types.maybeNull(types.array(UserModel)),
@@ -29,13 +30,16 @@ const VoteCreateModel = types.model({
 }).actions((self) => {
     return {
         setName(value: string){
-            self.name = value
+            self.title = value
         },
         setDescription(value: string) {
             self.description = value
         },
         setAnonim(value: boolean) {
             self.isAnonim = value
+        },
+        seneCreateVote(data: PostVote) {
+            
         }
     }
 })

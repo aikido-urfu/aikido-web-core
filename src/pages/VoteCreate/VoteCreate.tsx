@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { rootStore } from '../../models/voteCreate';
 const { TextArea } = Input;
 import { observer } from "mobx-react-lite"
+import { useEnv } from '../../App';
+import { PostVote } from '../../types/api';
 
 
 const Step = Steps.Step;
@@ -16,6 +18,18 @@ const VoteCreate: React.FC = () => {
   const [step, setstep] = useState(0);
   const navigate = useNavigate()
   const voteCreateModel = rootStore.VoteCreate
+  const {API, logger} = useEnv()
+
+  const onFInallizeVote = (data: PostVote) => {
+    API.sendCreateVote(data)
+    .then(res => {
+      logger.info(res)
+    })
+    .catch(err => {
+      logger.error(err)
+    })
+  }
+
   return (
     <>
       <div
@@ -74,7 +88,7 @@ const VoteCreate: React.FC = () => {
               </Steps>
           </div>
         </div>
-        {step === 0 ? <FirstStep onStepChange={(x) => {setstep(x)}} /> : step === 1 ? <SecondStep onStepChange={(x) => setstep(x)} /> : null}
+        {step === 0 ? <FirstStep onStepChange={(x) => {setstep(x)}} /> : step === 1 ? <SecondStep onFInallizeVote={onFInallizeVote} onStepChange={(x) => setstep(x)} /> : null}
       </div>
     </>
   );
