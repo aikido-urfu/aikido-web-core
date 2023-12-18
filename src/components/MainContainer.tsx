@@ -15,12 +15,11 @@ const MainContainer: React.FC<MainContainerProps> = ({ children}) => {
     <Layout >
       <HeaderComponent />
       <Content style={{
-        minHeight: 'calc(100vh - 134px)',
+        minHeight: 'calc(100vh - 64px)',
         backgroundColor: '#f5f5f5'
       }}>
         {children}
       </Content>
-      <FooterComponent />
     </Layout>
   );
 };

@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Form,
-  Radio,
   Button,
-  message,
-  Modal,
-  Avatar,
   Input,
-  Divider,
 } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { CheckSquareOutlined, EditOutlined, FieldTimeOutlined, MenuFoldOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { ListUser } from './ListUser';
 import { ListVote } from './ListVote';
 import { useNavigate } from 'react-router-dom';
+import { useEnv } from '../../App';
+import { GetVote, GetVoteById, PostVote } from '../../types/api';
 
 interface Voter {
   name: string;
@@ -34,25 +30,9 @@ export const USERS_MOCK = [
     name: 'Шолов Евгений Дмитреевич',
     mail: 'v.sergeev@mail.ru',
   },
-  {
-    name: 'Шолов Евгений Дмитреевич',
-    mail: 'v.sergeev@mail.ru',
-  },
-  {
-    name: 'Шолов Евгений Дмитреевич',
-    mail: 'v.sergeev@mail.ru',
-  },
-  {
-    name: 'Шолов Евгений Дмитреевич',
-    mail: 'v.sergeev@mail.ru',
-  },
-  {
-    name: 'Шолов Евгений Дмитреевич',
-    mail: 'v.sergeev@mail.ru',
-  },
 ]
 
-const VOTES_MOCK = [
+const VOTES_MOCK = [ 
   {
     name: "dgsgsd",
     date: '24.11 19:00 - 25.11 19:00',
@@ -110,9 +90,33 @@ const VOTES_MOCK = [
 ]
 
 const VotePage: React.FC = () => {
-
+  const [votes, setvotes] = useState<GetVote[]>([])
+  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
   const [selectedVoteId, setselectedVoteId] = useState(1)
   const navigate = useNavigate()
+  const env = useEnv()
+
+  const handleSelectedVote = (value: number, index: number) => {
+    setselectedVoteId(index)
+    env.API.getVote(value)
+    .then(res => {
+      setselectedVote(res.data)
+    })
+    .catch(err => {
+      env.logger.error(err);
+      (err)
+    })
+  }
+
+  useEffect(() => {
+    env.API.getVotes()
+    .then(res => {
+      setvotes(res.data.votes)
+    })
+    .catch(err => {
+      env.logger.error(err)
+    })
+  }, [])
 
   return (
     <>
@@ -124,7 +128,7 @@ const VotePage: React.FC = () => {
           padding: '5px 10px',
           gap: '15px',
           alignItems: 'center',
-          borderBottom: '0.5px solid #FFF',
+          borderBottom: '0.5px solid #DADADA',
           background: '#FFF',
         }}
       >
@@ -160,9 +164,8 @@ const VotePage: React.FC = () => {
         <div
           style={{
             background: '#FFF',
-            boxShadow: '0px 6px 25px 5px rgba(0, 0, 0, 0.10)',
-            maxHeight: '80vh',
-            overflowY: 'scroll',
+            //boxShadow: '0px 6px 25px 5px rgba(0, 0, 0, 0.10)',
+            maxHeight: 'calc(100vh - 124px)',
           }}
         >
           <Input.Search
@@ -174,17 +177,24 @@ const VotePage: React.FC = () => {
               borderBottom: '1px solid #DADADA',
             }}
           />
-          {VOTES_MOCK.map((x) => {
-            return (
-              <div onClick={() => {setselectedVoteId(x.id)}}>
-                <ListVote isSelected={x.id === selectedVoteId} name={x.name} id={x.id} date={x.date} description={x.description} />
-              </div>)
-          })}
+          <div style={{
+            overflowY: 'scroll',
+            maxHeight: 'calc(100vh - 124px - 73px)',
+          }}>
+            {votes.map((x, index) => {
+              return (
+                <div onClick={() => {handleSelectedVote(x.id, index)}}>
+                  <ListVote key={x.id} isSelected={index === selectedVoteId} name={x.title} id={x.id} date={`${x.dateOfStart}-${x.dateOfEnd}`} description={x.description} />
+                </div>)
+            })}
+          </div>
         </div>
+
+        {selectedVote ? 
         <div
           style={{
             padding: '15px',
-            width: '1010px',
+            width: '100%',
             height: '800px',
             filter: 'drop-shadow(0px 3px 25px rgba(0, 0, 0, 0.10))',
           }}
@@ -199,23 +209,27 @@ const VotePage: React.FC = () => {
               padding: '15px',
             }}
           >
-            <h3>Голосование № 3</h3>
-            <Button>Редактировать</Button>
+            <h3>Голосование № {selectedVote.id}</h3>
+            <Button>
+              <EditOutlined />
+              Редактировать</Button>
           </div>
 
           <div
             className="container"
             style={{
               display: 'flex',
+              width: '100%',
               flexDirection: 'row',
+              backgroundColor: '#FFF'
             }}
           >
             <div //1column
               style={{
-                width: 702,
                 minHeight: 620,
                 maxHeight: 700,
                 backgroundColor: '#FFF',
+                flexBasis: '66%'
               }}
             >
               <div
@@ -228,21 +242,33 @@ const VotePage: React.FC = () => {
                 <div
                   style={{
                     padding: '30px 20px',
-                    width: 323,
                     borderRight: '1px solid #DADADA',
+                    flexBasis: '50%'
                   }}
                 >
-                  <h4>Организатор</h4>
-                  <p>Маликова Анастасия</p>
+                  <div style={{
+                    display: 'flex'
+                  }}>
+                    <div>
+                      <h4>Организатор</h4>
+                      <p>Маликова Анастасия</p>
+                    </div>
+                    <UserOutlined style={{marginLeft: 'auto', fontSize:'150%'}} />
+                  </div>
                 </div>
                 <div
                   style={{
                     padding: '30px 20px',
-                    width: 323,
+                    flexBasis: '50%'
                   }}
                 >
-                  <h4>Время проведения</h4>
-                  <p>24.11.2023 19:00 - 25.11.2023 19:00</p>
+                  <div style={{display: 'flex'}}>
+                    <div>
+                      <h4>Сроки проведения</h4>
+                      <p>{`${selectedVote.dateOfStart}-${selectedVote.dateOfEnd}`}</p>
+                    </div>
+                    <FieldTimeOutlined style={{marginLeft: 'auto', fontSize: '150%'}} />
+                  </div>
                 </div>
               </div>
 
@@ -268,7 +294,7 @@ const VotePage: React.FC = () => {
                   }}
                 >
                   <h3>Участники</h3>
-                  <p>22</p>
+                  <p>{selectedVote.votedUsers?.length ?? 0}</p>
                 </div>
               </div>
               <div
@@ -283,32 +309,16 @@ const VotePage: React.FC = () => {
                     height: 450,
                   }}
                 >
-                  {USERS_MOCK.map((x) => {
-                    return <ListUser mail={x.mail} name={x.name} />
+                  {USERS_MOCK.map((x, index) => {
+                    return <ListUser key={index} mail={x.mail} name={x.name} onDeleteClick={() => {}} />
                   })}
                 </div>
-              </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                <Button
-                onClick={() => navigate('/vote-progress')}
-                style={{
-                  margin: '20px 40px',
-                  backgroundColor: '#1890FF',
-                  color: '#FFF',
-                  height: 32,
-                  width: 200,
-                  position: 'relative',
-                  bottom: 0,
-                }}>Перейти к голосованию</Button>
               </div>
             </div>
 
             <div //2column
               style={{
-                width: 278,
+                flexBasis: '34%',
                 minHeight: 620,
                 maxHeight: 700,
                 backgroundColor: '#FFF',
@@ -323,36 +333,61 @@ const VotePage: React.FC = () => {
                   backgroundColor: '#F3F6F9',
                 }}
               >
-                <h4>Кол-во вопросов</h4>
-                <p>90</p>
+                <div style={{display: 'flex'}}>
+                  <div>
+                    <h4>Кол-во вопросов</h4>
+                    <p>{selectedVote.questions.length}</p>
+                  </div>
+                  <CheckSquareOutlined style={{marginLeft: 'auto', fontSize: '150%', marginRight: 20}}  />
+                </div>
               </div>
               <div
                 style={{
-                  padding: '0 20px 0 0',
                   backgroundColor: '#fff',
                 }}
               >
                 <div
                   style={{
-                    width: 278,
+                    width: '100%',
                     height: 60,
                     padding: '20px',
                     borderBottom: '1px solid #DADADA',
+                    display: 'flex'
                   }}
                 >
                   <h3>Описание</h3>
+                  <MenuFoldOutlined style={{marginLeft: 'auto', fontSize: '150%'}}  />
                 </div>
                 <div
                   style={{
                     padding: 20,
                   }}
                 >
-                  {DESP_MOCK}
+                  {selectedVote.description}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                backgroundColor: '#FFF',
+                borderTop: '0.5px solid #DADADA',
+        }}>
+                <Button
+                onClick={() => navigate('/vote-progress')}
+                style={{
+                  margin: '20px 40px 20px 20px',
+                  backgroundColor: '#1890FF',
+                  color: '#FFF',
+                  height: 32,
+                  width: 200,
+                  position: 'relative',
+                  bottom: 0,
+                }}>Перейти к голосованию</Button>
+              </div>
+        </div> : null }
       </div>
     </>
   );

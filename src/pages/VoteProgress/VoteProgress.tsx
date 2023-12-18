@@ -68,6 +68,7 @@ const BottomControl: React.FC<BottomControlType> = ({
         padding: '0 20px',
         display: 'flex',
         alignItems: 'center',
+        gap: 20
       }}
     >
       {isShowBack && <Button onClick={onBackClick}>{backText}</Button>}
@@ -75,7 +76,6 @@ const BottomControl: React.FC<BottomControlType> = ({
         <Button
           style={{
             backgroundColor: '#1890FF',
-            margin: '10px 20px',
             color: '#FFF',
           }}
           onClick={onNextClick}

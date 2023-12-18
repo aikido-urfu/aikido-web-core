@@ -1,5 +1,5 @@
-import { types } from "mobx-state-tree";
-import { PostVote } from "../types/api";
+import { SnapshotOut, types } from "mobx-state-tree";
+import { PostVote, Question } from "../types/api";
 
 const UserModel = types.model({
     id: types.number,
@@ -14,11 +14,14 @@ const AnswerModel = types.model({
 })
 
 const QuestionModel = types.model({
-    name: types.string,
+    title: types.string,
     description: types.string,
-    multySelect: types.boolean,
-    answer: types.array(AnswerModel),
-    files: types.array(types.string)
+    isMultiply: types.boolean,
+    isAnonimic: types.boolean,
+    answers: types.array(types.string),
+    files: types.array(types.string),
+    photos: types.array(types.string),
+    isHidenCounter: types.boolean,
 })
 
 const VoteCreateModel = types.model({
@@ -26,7 +29,7 @@ const VoteCreateModel = types.model({
     description: types.maybeNull(types.string),
     isAnonim: types.maybeNull(types.boolean),
     users: types.maybeNull(types.array(UserModel)),
-    question: types.maybeNull(types.array(QuestionModel)),
+    questions: types.maybeNull(types.array(QuestionModel)),
 }).actions((self) => {
     return {
         setName(value: string){
@@ -40,6 +43,18 @@ const VoteCreateModel = types.model({
         },
         seneCreateVote(data: PostVote) {
             
+        },
+        addQuestion(question: Question) {
+            self.questions.push(QuestionModel.create({
+                title: question.title,
+                description: question.description,
+                answers: question.answers,
+                files: question.files,
+                photos: question.photos,
+                isMultiply: question.isMultiply,
+                isAnonimic: false,
+                isHidenCounter: false
+            }))
         }
     }
 })
@@ -48,5 +63,10 @@ const rootStoreModel = types.model({
 })
 
 export const rootStore = rootStoreModel.create({
-    VoteCreate: VoteCreateModel.create()
+    VoteCreate: VoteCreateModel.create({
+        questions: [],
+        isAnonim: false,
+        title: '',
+        description: '',
+    })
 })

@@ -39,7 +39,7 @@ export const ListUser: React.FC<ListUserType> = ({name, mail, isCanBeDeleted, on
                 <p style={{ color: 'gray' }}>{mail}</p>
               </div>
             </div>
-            {isCanBeDeleted && <DeleteOutlined onClick={onDeleteClick} />}
+            {isCanBeDeleted && <DeleteOutlined onClick={onDeleteClick} style={{fontSize: '150%'}} />}
           </div>
         </>
       );

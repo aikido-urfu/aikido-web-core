@@ -1,19 +1,21 @@
-import { Button, Input, Switch } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import React from "react";
-import { USERS_MOCK } from "../Vote/Vote";
-import { ListUser } from "../Vote/ListUser";
-import { rootStore } from "../../models/voteCreate";
-import { observer } from "mobx-react-lite";
+import { Button, DatePicker, Input, Switch } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import React from 'react';
+import { USERS_MOCK } from '../Vote/Vote';
+import { ListUser } from '../Vote/ListUser';
+import { rootStore } from '../../models/voteCreate';
+import { observer } from 'mobx-react-lite';
 
 type FirstStepType = {
-    onStepChange: (step: number) => void
-}
+  onStepChange: (step: number) => void;
+};
 
-export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
-  const voteCreate = rootStore.VoteCreate
-  return <>
-    <div
+export const FirstStep: React.FC<FirstStepType> = observer(
+  ({ onStepChange }) => {
+    const voteCreate = rootStore.VoteCreate;
+    return (
+      <>
+        <div
           style={{
             minHeight: 332,
             borderBottom: '1px solid #DADADA',
@@ -24,23 +26,47 @@ export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
               padding: '20px 20px 0 20px',
             }}
           >
-            <p>Название голосования</p>
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'row',
-                gap: 15,
-                alignItems: 'center',
-                margin: '0 0 20px 0',
+                alignItems: 'end',
+                gap: 20,
+                marginBottom: 20
               }}
             >
-              <Input onChange={e => voteCreate.setName(e.target.value)} value={voteCreate.title}></Input>
+              <div
+                style={{
+                  flexBasis: 700,
+                }}
+              >
+                <p>Название голосования</p>
+                <Input
+                  onChange={(e) => voteCreate.setName(e.target.value)}
+                  value={voteCreate.title}
+                ></Input>
+              </div>
+              <div
+                style={{
+                  flexBasis: 500,
+                  marginLeft: 'auto',
+                }}
+              >
+                <p>Дата проведения мероприятия</p>
+                <DatePicker.RangePicker />
+              </div>
               <p>Анонимное</p>
-              <Switch checked={voteCreate.isAnonim} onChange={e => voteCreate.setAnonim(e)} ></Switch>
+              <Switch
+                checked={voteCreate.isAnonim}
+                onChange={(e) => voteCreate.setAnonim(e)}
+              ></Switch>
             </div>
             <div>
               <p>Описание</p>
-              <TextArea rows={6} onChange={e => voteCreate.setDescription(e.target.value)} value={voteCreate.description}></TextArea>
+              <TextArea
+                rows={6}
+                onChange={(e) => voteCreate.setDescription(e.target.value)}
+                value={voteCreate.description}
+              ></TextArea>
               <div
                 style={{
                   margin: '30px 0 20px 0',
@@ -62,6 +88,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
             </div>
           </div>
           <div
+            className="pointer"
             style={{
               height: 60,
               display: 'flex',
@@ -82,7 +109,14 @@ export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
             }}
           >
             {...USERS_MOCK.map((x) => {
-              return <ListUser name={x.name} mail={x.mail} isCanBeDeleted onDeleteClick={() => {}}/>;
+              return (
+                <ListUser
+                  name={x.name}
+                  mail={x.mail}
+                  isCanBeDeleted
+                  onDeleteClick={() => {}}
+                />
+              );
             })}
           </div>
         </div>
@@ -92,9 +126,13 @@ export const FirstStep: React.FC<FirstStepType> = observer(({onStepChange}) => {
             margin: '10px 20px',
             color: '#FFF',
           }}
-          onClick={() => {onStepChange(1)}}
+          onClick={() => {
+            onStepChange(1);
+          }}
         >
           Перейти далее
         </Button>
-    </>
-})
+      </>
+    );
+  }
+);

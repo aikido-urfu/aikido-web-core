@@ -8,15 +8,17 @@ import {
   ArrowUpOutlined,
   DeleteOutlined,
   FileJpgOutlined,
+  UploadOutlined,
 } from '@ant-design/icons';
-import { PostVote } from '../../types/api';
+import { PostVote, Question } from '../../types/api';
 import { rootStore } from '../../models/voteCreate';
 
 type QuestionType = {
+  data: Question;
   id: number;
 };
 
-const Question: React.FC<QuestionType> = ({ id }) => {
+const QuestionBlock: React.FC<QuestionType> = ({ data, id }) => {
   return (
     <div
       style={{
@@ -38,40 +40,73 @@ const Question: React.FC<QuestionType> = ({ id }) => {
           alignItems: 'center',
         }}
       >
-        <ArrowUpOutlined />
-        <ArrowDownOutlined />
+        {id > 0 && <ArrowUpOutlined style={{ fontSize: '150%' }} />}
+        <ArrowDownOutlined style={{ fontSize: '150%' }} />
         {id}
         <div>
-          <h4>Вопрос</h4>
-          <p>описание</p>
+          <h4>{data.title}</h4>
+          <p>{data.description}</p>
         </div>
       </div>
-      <DeleteOutlined />
+      <DeleteOutlined style={{ fontSize: '150%' }} />
     </div>
   );
 };
 
 type ModalAddQuestionType = {
-  isShowModal: boolean
-  setshowModal: (val: boolean) => void
-}
+  isShowModal: boolean;
+  setshowModal: (val: boolean) => void;
+  onAddClick: (q: Question) => void;
+};
 
-const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowModal}) => {
-  return <Modal
-        title=""
-        width={1200}
-        cancelText="Отмена"
-        open={isShowModal}
-        onOk={() => {}}
-        onCancel={() => {
-          setshowModal(false);
-        }}
-      >
+const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
+  isShowModal,
+  setshowModal,
+  onAddClick,
+}) => {
+  const [name, setname] = useState('');
+  const [description, setdescription] = useState('');
+  const [questions, setquestions] = useState<string[]>(['', '']);
+
+  const handleAddClick = () => {
+    onAddClick({
+      title: name,
+      description,
+      files: [],
+      photos: [],
+      isMultiply: true,
+      answers: questions,
+    });
+    setshowModal(false);
+  };
+
+  const handleDeleteAnswer = (index: number) => {
+    const copy = [...questions];
+    copy.splice(index, 1);
+    setquestions([...copy]);
+  };
+
+  return (
+    <Modal
+      footer={[]}
+      title=""
+      width={1200}
+      cancelText="Отмена"
+      open={isShowModal}
+      onOk={() => {
+        handleAddClick();
+      }}
+      onCancel={() => {
+        setshowModal(false);
+      }}
+    >
+      <div>
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignContent: 'space-between',
+            minHeight: 800
           }}
         >
           <div
@@ -96,16 +131,20 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowM
                 gap: 15,
               }}
             >
-              <Input />
+              <Input onChange={(e) => setname(e.target.value)} />
               <p>Мультивыбор</p>
               <Switch />
             </div>
             <p>Описание</p>
-            <TextArea rows={12} />
+            <TextArea
+              rows={12}
+              onChange={(e) => setdescription(e.target.value)}
+            />
 
-            {...[1, 2, 3].map((x) => {
+            {...questions.map((x, index) => {
               return (
                 <div
+                  key={index}
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -113,14 +152,32 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowM
                     margin: '15px 0',
                   }}
                 >
-                  <p>{x}</p>
-                  <Input placeholder="вариант ответа" />
+                  <p>{index}</p>
+                  <Input
+                    placeholder="вариант ответа"
+                    value={x}
+                    onChange={(e) => {
+                      questions[index] = e.target.value;
+                      setquestions([...questions]);
+                    }}
+                  />
+                  {index > 1 && (
+                    <DeleteOutlined
+                      onClick={() => handleDeleteAnswer(index)}
+                      style={{ margin: '0 10px', fontSize: '125%' }}
+                    />
+                  )}
                 </div>
               );
             })}
             <div
+              className="pointer"
               style={{
                 color: '#1890FF',
+              }}
+              onClick={() => {
+                questions.push('');
+                setquestions([...questions]);
               }}
             >
               <h4>Добавить вопрос +</h4>
@@ -144,7 +201,9 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowM
               }}
             >
               <h3>Документы</h3>
-              <Button>Загрузить</Button>
+              <Button>
+              <UploadOutlined />
+              Загрузить</Button>
             </div>
             {...[1, 2].map((x) => {
               return (
@@ -170,25 +229,46 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({isShowModal, setshowM
                     <FileJpgOutlined />
                     <h4>SomeRandomPic.jpg</h4>
                   </div>
-                  <DeleteOutlined />
+                  <DeleteOutlined style={{fontSize: '150%'}} />
                 </div>
               );
             })}
           </div>
         </div>
-      </Modal>
-}
+        <div
+          style={{
+            display: 'flex',
+            gap: 15,
+            borderTop: '1px solid #DADADA',
+            paddingTop: 20,
+            margin: '20px 0 0 0'
+          }}
+        >
+          <Button onClick={handleAddClick} type="primary">Сохранить</Button>
+          <Button onClick={() => setshowModal(false)}>Отмена</Button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
 type SecondStepType = {
-  onStepChange?: (step: number) => void
-  onFInallizeVote: (data: PostVote) => void
-}
+  onStepChange?: (step: number) => void;
+  onFInallizeVote: (data: PostVote) => void;
+};
 
-export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeVote}) => {
+export const SecondStep: React.FC<SecondStepType> = ({
+  onStepChange,
+  onFInallizeVote,
+}) => {
   const [isShowModal, setshowModal] = useState(false);
-  const voteCreateModel = rootStore.VoteCreate
+  const voteCreateModel = rootStore.VoteCreate;
 
   const showModal = () => {
     setshowModal(true);
+  };
+
+  const onQuestionAdd = (data: Question) => {
+    voteCreateModel.addQuestion(data);
   };
 
   const handleSendClick = () => {
@@ -197,16 +277,16 @@ export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeV
       description: voteCreateModel.description,
       dateOfStart: '2023-12-31',
       dateOfEnd: '2023-12-31',
-      isAnonymous: voteCreateModel.isAnonim,
+      isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
       privateUsers: [],
       files: [],
       photos: [],
-      questions: []
-    } 
-    onFInallizeVote(res)
-  }
+      questions: voteCreateModel.questions,
+    };
+    onFInallizeVote(res);
+  };
 
   return (
     <div
@@ -225,12 +305,12 @@ export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeV
           padding: '0 20px',
         }}
       >
-        <div onClick={showModal}>
-          <h3>Добавить вопрос +</h3>
+        <div className="pointer" onClick={showModal}>
+          <p>Добавить вопрос +</p>
         </div>
       </div>
-      {...[1, 2, 3].map((x) => {
-        return <Question id={x} />;
+      {...voteCreateModel.questions.map((x, index) => {
+        return <QuestionBlock id={index} data={x} />;
       })}
 
       <div
@@ -240,7 +320,7 @@ export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeV
         }}
       >
         <Button
-        onClick={handleSendClick}
+          onClick={handleSendClick}
           style={{
             margin: '20px 10px 20px 20px',
             backgroundColor: '#1890FF',
@@ -258,7 +338,11 @@ export const SecondStep: React.FC<SecondStepType> = ({onStepChange, onFInallizeV
           Назад
         </Button>
       </div>
-      <ModalAddQuestion isShowModal={isShowModal} setshowModal={setshowModal} />
+      <ModalAddQuestion
+        onAddClick={onQuestionAdd}
+        isShowModal={isShowModal}
+        setshowModal={setshowModal}
+      />
     </div>
   );
 };

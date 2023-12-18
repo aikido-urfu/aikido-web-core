@@ -13,11 +13,13 @@ import { VoteProgress } from './pages/VoteProgress/VoteProgress';
 import { API } from './api/axios';
 import { logger } from './api/tools';
 import { Mail } from './pages/Mail/Mail';
+import { rootStore } from './models/voteCreate';
 
 const { Content } = Layout;
 const ENV = {
   API: API,
-  logger: logger
+  logger: logger,
+  storeManager: rootStore
 }
 const EnvProvider = React.createContext(ENV);
 
@@ -25,7 +27,8 @@ export const useEnv = () => {
   const env = useContext(EnvProvider)
   return env
 }
-
+//@ts-ignore
+window.env = ENV
 const App: React.FC = () => {
   return (
     <EnvProvider.Provider value={ENV}>

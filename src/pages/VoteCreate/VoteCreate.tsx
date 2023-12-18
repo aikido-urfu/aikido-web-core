@@ -51,7 +51,7 @@ const VoteCreate: React.FC = () => {
         //container
         style={{
           width: 'auto',
-          height: '100%',
+          minHeight: '100%',
           margin: 30,
           backgroundColor: '#FFF',
         }}
@@ -70,22 +70,22 @@ const VoteCreate: React.FC = () => {
           <h3>Основная информация и участники</h3>
           <div
             style={{
+              flexBasis: '40%',
               display: 'flex',
               flexDirection: 'row',
               gap: 15,
               alignItems: 'center',
             }}
           >
-            <Steps current={step} >
-              <div>
-                <Step title="Finished" description="This is a description." />
-                Основная информация и участники</div>
-              <div style={{
-                ...(step === 0 ? {
-                  color: 'rgba(0, 0, 0, 0.45)'
-                } : {})
-              }}>Вопросы к голосованию</div>
-              </Steps>
+            <Steps size='small' current={step} items={[
+              {
+                title: 'Основная информация и участники'
+              },
+              {
+                title: 'Вопросы к голосованию'
+              }
+            ]} >
+            </Steps>
           </div>
         </div>
         {step === 0 ? <FirstStep onStepChange={(x) => {setstep(x)}} /> : step === 1 ? <SecondStep onFInallizeVote={onFInallizeVote} onStepChange={(x) => setstep(x)} /> : null}
