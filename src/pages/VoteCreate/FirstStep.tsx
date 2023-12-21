@@ -1,6 +1,6 @@
 import { Button, DatePicker, Input, Switch } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React from 'react';
+import React, { useState } from 'react';
 import { USERS_MOCK } from '../Vote/Vote';
 import { ListUser } from '../Vote/ListUser';
 import { rootStore } from '../../models/voteCreate';
@@ -13,6 +13,7 @@ type FirstStepType = {
 export const FirstStep: React.FC<FirstStepType> = observer(
   ({ onStepChange }) => {
     const voteCreate = rootStore.VoteCreate;
+
     return (
       <>
         <div
@@ -52,7 +53,12 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                 }}
               >
                 <p>Дата проведения мероприятия</p>
-                <DatePicker.RangePicker />
+                <DatePicker.RangePicker onChange={val => {
+                  if(val.length != 2) return
+                  const d1  = val[0]
+                  const d2  = val[1]
+                  voteCreate.setDate(d1.toISOString(), d2.toISOString())
+                }} format={'YYYY-MM-DD'} />
               </div>
               <p>Анонимное</p>
               <Switch

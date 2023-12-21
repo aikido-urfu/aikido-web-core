@@ -376,7 +376,7 @@ const VotePage: React.FC = () => {
                 borderTop: '0.5px solid #DADADA',
         }}>
                 <Button
-                onClick={() => navigate('/vote-progress')}
+                onClick={() => navigate(`/vote-progress/${selectedVote.id}`)}
                 style={{
                   margin: '20px 40px 20px 20px',
                   backgroundColor: '#1890FF',

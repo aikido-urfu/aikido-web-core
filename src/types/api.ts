@@ -49,6 +49,7 @@ export type GetVoteById = {
   questions: {
     id: number;
     title: string;
+    description: string;
     answers: {
       id: number;
       text: string;

@@ -30,6 +30,8 @@ const VoteCreateModel = types.model({
     isAnonim: types.maybeNull(types.boolean),
     users: types.maybeNull(types.array(UserModel)),
     questions: types.maybeNull(types.array(QuestionModel)),
+    dateOfStart: types.maybeNull(types.string),
+    dateOfEnd: types.maybeNull(types.string),
 }).actions((self) => {
     return {
         setName(value: string){
@@ -55,6 +57,10 @@ const VoteCreateModel = types.model({
                 isAnonimic: false,
                 isHidenCounter: false
             }))
+        },
+        setDate(d1: string, d2: string) {
+            self.dateOfStart = d1
+            self.dateOfEnd = d2
         }
     }
 })

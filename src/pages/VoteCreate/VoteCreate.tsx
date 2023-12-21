@@ -24,6 +24,7 @@ const VoteCreate: React.FC = () => {
     API.sendCreateVote(data)
     .then(res => {
       logger.info(res)
+      navigate('/vote')
     })
     .catch(err => {
       logger.error(err)

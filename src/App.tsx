@@ -44,7 +44,7 @@ const App: React.FC = () => {
               <Route path="/vote-list" element={<MainContainer ><VotesPage /></MainContainer>} />
               <Route path="/mail" element={<MainContainer ><Mail /></MainContainer>} />
               <Route path="/voteCreate" element={<MainContainer ><VoteCreate /></MainContainer>} />
-              <Route path="/vote-progress" element={<MainContainer ><VoteProgress /></MainContainer>} />
+              <Route path="/vote-progress/:id" element={<MainContainer ><VoteProgress /></MainContainer>} />
               {/* Add more routes for your other components */}
               {/* <Route path="/about" element={<AboutComponent />} /> */}
               {/* <Route path="/contact" element={<ContactComponent />} /> */}

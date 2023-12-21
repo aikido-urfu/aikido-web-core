@@ -67,14 +67,14 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   const [name, setname] = useState('');
   const [description, setdescription] = useState('');
   const [questions, setquestions] = useState<string[]>(['', '']);
-
+  const [isMultiply, setisMultiply] = useState(false)
   const handleAddClick = () => {
     onAddClick({
       title: name,
       description,
       files: [],
       photos: [],
-      isMultiply: true,
+      isMultiply,
       answers: questions,
     });
     setshowModal(false);
@@ -133,7 +133,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             >
               <Input onChange={(e) => setname(e.target.value)} />
               <p>Мультивыбор</p>
-              <Switch />
+              <Switch checked={isMultiply} onChange={val => setisMultiply(val)} />
             </div>
             <p>Описание</p>
             <TextArea
@@ -275,8 +275,8 @@ export const SecondStep: React.FC<SecondStepType> = ({
     const res: PostVote = {
       title: voteCreateModel.title,
       description: voteCreateModel.description,
-      dateOfStart: '2023-12-31',
-      dateOfEnd: '2023-12-31',
+      dateOfStart: voteCreateModel.dateOfStart,
+      dateOfEnd: voteCreateModel.dateOfEnd,
       isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
