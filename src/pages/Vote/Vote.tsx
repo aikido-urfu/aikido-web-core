@@ -9,6 +9,7 @@ import { ListVote } from './ListVote';
 import { useNavigate } from 'react-router-dom';
 import { useEnv } from '../../App';
 import { GetVote, GetVoteById, PostVote } from '../../types/api';
+import { prettyDate } from '../../api/tools';
 
 interface Voter {
   name: string;
@@ -184,7 +185,7 @@ const VotePage: React.FC = () => {
             {votes.map((x, index) => {
               return (
                 <div onClick={() => {handleSelectedVote(x.id, index)}}>
-                  <ListVote key={x.id} isSelected={index === selectedVoteId} name={x.title} id={x.id} date={`${x.dateOfStart}-${x.dateOfEnd}`} description={x.description} />
+                  <ListVote key={x.id} isSelected={index === selectedVoteId} name={x.title} id={x.id} date={`${prettyDate(x.dateOfStart)}-${prettyDate(x.dateOfEnd)}`} description={x.description} />
                 </div>)
             })}
           </div>
@@ -265,7 +266,7 @@ const VotePage: React.FC = () => {
                   <div style={{display: 'flex'}}>
                     <div>
                       <h4>Сроки проведения</h4>
-                      <p>{`${selectedVote.dateOfStart}-${selectedVote.dateOfEnd}`}</p>
+                      <p>{`${prettyDate(selectedVote.dateOfStart)}-${prettyDate(selectedVote.dateOfEnd)}`}</p>
                     </div>
                     <FieldTimeOutlined style={{marginLeft: 'auto', fontSize: '150%'}} />
                   </div>

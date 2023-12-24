@@ -6,3 +6,7 @@ export const logger = {
     console.error(message)
   }
 }
+
+export const prettyDate = (date: string) => {
+  return date.substring(0, 10);
+}

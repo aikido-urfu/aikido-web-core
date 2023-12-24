@@ -13,20 +13,27 @@ import { VoteProgress } from './pages/VoteProgress/VoteProgress';
 import { API } from './api/axios';
 import { logger } from './api/tools';
 import { Mail } from './pages/Mail/Mail';
-import { rootStore } from './models/voteCreate';
+import { CreateRootStore, StoreType } from './models/voteCreate';
+import { MainPage } from './pages/Main';
+
 
 const { Content } = Layout;
 const ENV = {
   API: API,
   logger: logger,
-  storeManager: rootStore
+  rootStore: {} as StoreType
 }
+const rootStore = CreateRootStore(ENV)
+ENV.rootStore = rootStore
 const EnvProvider = React.createContext(ENV);
 
 export const useEnv = () => {
   const env = useContext(EnvProvider)
   return env
 }
+
+ENV.rootStore.selfUser.getMySelf()
+
 //@ts-ignore
 window.env = ENV
 const App: React.FC = () => {
@@ -36,7 +43,7 @@ const App: React.FC = () => {
         <Layout>
           <Content>
             <Routes>
-              <Route path="/" element={<MainContainer > </MainContainer>} />
+              <Route path="/"  element={<MainContainer ><MainPage /></MainContainer>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<MainContainer ><Profile isOwner={true} /></MainContainer>} />
@@ -58,3 +65,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+export type IEnv = typeof ENV

@@ -11,7 +11,7 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 import { PostVote, Question } from '../../types/api';
-import { rootStore } from '../../models/voteCreate';
+import { useEnv } from '../../App';
 
 type QuestionType = {
   data: Question;
@@ -261,6 +261,7 @@ export const SecondStep: React.FC<SecondStepType> = ({
   onFInallizeVote,
 }) => {
   const [isShowModal, setshowModal] = useState(false);
+  const {rootStore} = useEnv()
   const voteCreateModel = rootStore.VoteCreate;
 
   const showModal = () => {

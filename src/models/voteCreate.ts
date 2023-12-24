@@ -1,37 +1,39 @@
-import { SnapshotOut, types } from "mobx-state-tree";
+import { Instance, SnapshotOut, types as t } from "mobx-state-tree";
 import { PostVote, Question } from "../types/api";
+import { UserProfileModel, selfUser } from "./userModel";
+import { IEnv } from "../App";
 
-const UserModel = types.model({
-    id: types.number,
-    avatar: types.string,
-    name: types.string,
-    email: types.string
+const UserModel = t.model({
+    id: t.number,
+    avatar: t.string,
+    name: t.string,
+    email: t.string
 })
 
-const AnswerModel = types.model({
-    id: types.number,
-    text: types.string,
+const AnswerModel = t.model({
+    id: t.number,
+    text: t.string,
 })
 
-const QuestionModel = types.model({
-    title: types.string,
-    description: types.string,
-    isMultiply: types.boolean,
-    isAnonimic: types.boolean,
-    answers: types.array(types.string),
-    files: types.array(types.string),
-    photos: types.array(types.string),
-    isHidenCounter: types.boolean,
+const QuestionModel = t.model({
+    title: t.string,
+    description: t.string,
+    isMultiply: t.boolean,
+    isAnonimic: t.boolean,
+    answers: t.array(t.string),
+    files: t.array(t.string),
+    photos: t.array(t.string),
+    isHidenCounter: t.boolean,
 })
 
-const VoteCreateModel = types.model({
-    title: types.maybeNull(types.string),
-    description: types.maybeNull(types.string),
-    isAnonim: types.maybeNull(types.boolean),
-    users: types.maybeNull(types.array(UserModel)),
-    questions: types.maybeNull(types.array(QuestionModel)),
-    dateOfStart: types.maybeNull(types.string),
-    dateOfEnd: types.maybeNull(types.string),
+const VoteCreateModel = t.model({
+    title: t.maybeNull(t.string),
+    description: t.maybeNull(t.string),
+    isAnonim: t.maybeNull(t.boolean),
+    users: t.maybeNull(t.array(UserModel)),
+    questions: t.maybeNull(t.array(QuestionModel)),
+    dateOfStart: t.maybeNull(t.string),
+    dateOfEnd: t.maybeNull(t.string),
 }).actions((self) => {
     return {
         setName(value: string){
@@ -64,15 +66,24 @@ const VoteCreateModel = types.model({
         }
     }
 })
-const rootStoreModel = types.model({
-    VoteCreate: VoteCreateModel
+
+const VoteCreate = VoteCreateModel.create({
+    questions: [],
+    isAnonim: false,
+    title: '',
+    description: '',
 })
 
-export const rootStore = rootStoreModel.create({
-    VoteCreate: VoteCreateModel.create({
-        questions: [],
-        isAnonim: false,
-        title: '',
-        description: '',
-    })
+const rootStoreModel = t.model({
+    VoteCreate: VoteCreateModel,
+    selfUser: UserProfileModel
 })
+
+export type StoreType = Instance<typeof rootStoreModel>
+
+export const CreateRootStore = (env: IEnv) => {
+    return rootStoreModel.create({
+        VoteCreate,
+        selfUser
+    }, env)
+}

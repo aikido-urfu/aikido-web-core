@@ -31,7 +31,7 @@ export const ListVote: React.FC<ListVoteType> = ({id, name, date, description, i
               justifyContent: 'space-between',
             }}
           >
-            <h3>Голосование № {id}</h3>
+            <h3>Голосование №{id}</h3>
             <p>{date}</p>
           </div>
           <div>{description}</div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import { Button, Checkbox, Divider, Progress, Radio, Space } from 'antd';
+import { Button, Checkbox, Divider, Progress, Radio, Space, message } from 'antd';
 import {
   createSearchParams,
   useNavigate,
@@ -98,6 +98,7 @@ BottomControl.defaultProps = {
 };
 
 export const VoteProgress: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [sendPage, setsendPage] = useState(false);
   const env = useEnv();
   const navigate = useNavigate();
@@ -109,7 +110,8 @@ export const VoteProgress: React.FC = () => {
   const [selectedAnswers, setselectedAnswers] = useState([])
   const selectedQuestion = selectedVote?.questions[selectedPage];
   const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index);
-  
+  const [answers, setanswers] = useState<{[K: number]: Array<number>}>({})
+
   const handleSetSelectedPage = (selectedPage: number) => {
     setselectedQuest(selectedPage);
     navigate({
@@ -129,6 +131,60 @@ export const VoteProgress: React.FC = () => {
         env.logger.error(err);
       });
   }, [id, selectedPage]);
+
+  const handleAnswerSet = (value: number) => {
+    if(selectedQuestion) {
+      const isMulty = selectedQuestion.isMultiply
+      const questId = selectedQuestion.id
+      if(!isMulty) {
+        const newObj = {...answers, [questId]: [value]}
+        setanswers(newObj);
+      } else {
+        const newObj = {...answers}
+        if(!newObj[questId]) newObj[questId] = []
+        const arr = newObj[questId]
+        const index = arr.indexOf(value)
+        if(index !== -1) {
+          arr.splice(index, 1)
+        } else {
+          arr.push(value)
+        }
+        setanswers(newObj)
+      }
+    }
+    console.log(answers)
+  }
+
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Нужно ответить на все вопросы',
+    });
+  };
+
+  const isSelected = (id: number) => {
+    if(selectedQuestion) {
+      const questId = selectedQuestion.id
+      return answers[questId] != undefined && answers[questId].indexOf(id) !== -1
+    } 
+    return false
+  }
+
+  const canSendAnswers = () => {
+    return selectedVote && selectedVote.questions.length === Object.values(answers).filter(x => x.length !== 0).length
+  }
+
+  const handleSendAnswers = () => {
+    if(selectedQuestion) {
+      env.API.sendAnswers(answers, selectedVote.id)
+      .then(res => {
+        env.logger.info(res)
+        navigate('/')
+      })
+      .catch(err => env.logger.error(err))
+    }
+  }
+  
   if (!selectedQuestion) return <>'undefined question 404'</>;
   return (
     <div
@@ -158,7 +214,7 @@ export const VoteProgress: React.FC = () => {
               }}
             >
               <h3>Результат голосования</h3>
-              <p>Пройдено 1/{selectedVote.questions.length}</p>
+              <p>Пройдено {Object.values(answers).filter(x => x.length != 0).length}/{selectedVote.questions.length}</p>
             </div>
             <div style={{}}>
               {...selectedVote.questions.map((x, index) => {
@@ -167,7 +223,7 @@ export const VoteProgress: React.FC = () => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 10,
+                      gap: 20,
                       height: 90,
                       padding: '0 14px',
                       borderBottom: '1px solid #DADADA',
@@ -176,14 +232,17 @@ export const VoteProgress: React.FC = () => {
                     <h4>{index + 1}</h4>
                     <div>
                       <h4>{x.title}</h4>
-                      <p>
+                      <p style={{color: 'gray'}}>
                         Ваш ответ:{' '}
-                        {x.answers.length
-                          ? x.answers
-                              .filter((x) => x)
-                              .map((x) => x.text)
-                              .join(',')
-                          : 'Отсутствует'}
+                        <span style={{color: '#1890FF'}}>
+                          {answers[x.id]?.length
+                            ? x.answers.filter(ans => answers[x.id].indexOf(ans.id) != -1).map(x => x.text).join(',')
+                            : 
+                            <span style={{color: 'red'}}>
+                              Отсутствует
+                            </span>
+                            }
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -195,6 +254,14 @@ export const VoteProgress: React.FC = () => {
             onBackClick={() => setsendPage(false)}
             backText="Вернуться к голосованию"
             nextText="Закончить голосование"
+            onNextClick={() => {
+              if(canSendAnswers()) {
+                //do stuf
+                handleSendAnswers()
+              }else {
+                error()
+              }
+            }}
           />
         </div>
       ) : (
@@ -232,12 +299,12 @@ export const VoteProgress: React.FC = () => {
                     'url(https://bloximages.newyork1.vip.townnews.com/oanow.com/content/tncms/assets/v3/editorial/c/35/c35153f0-456f-11e6-b443-536a5188bfe3/57804b6433fec.image.jpg?resize=1200%2C800)',
                 }}
               ></div>
-              {selectedQuestion.isMultiply ? (
+              {!selectedQuestion.isMultiply ? (
                 <>
-                  <Radio.Group onChange={(e) => { selectedAnswers[0] = e.target.value; setselectedAnswers([...selectedAnswers]) }} value={selectedAnswers[0]}>
+                  <Radio.Group onChange={(e) => {setselectedAnswers([e.target.value])}} value={selectedAnswers[0]}>
                     <Space direction="vertical">
                       {selectedQuestion.answers.map((x) => (
-                        <Radio value={x.text}>{x.text}</Radio>
+                        <Radio checked={isSelected(x.id)} onChange={e => handleAnswerSet(x.id)} value={x.text}>{x.text}</Radio>
                       ))}
                     </Space>
                   </Radio.Group>
@@ -247,7 +314,7 @@ export const VoteProgress: React.FC = () => {
                 <>
                   <Space direction="vertical">
                     {selectedQuestion.answers.map((x) => (
-                      <Checkbox onChange={() => {}}>{x.text}</Checkbox>
+                      <Checkbox checked={isSelected(x.id)} onChange={() => {handleAnswerSet(x.id)}}>{x.text}</Checkbox>
                     ))}
                   </Space>
                 </>
@@ -322,6 +389,7 @@ export const VoteProgress: React.FC = () => {
           </div>
         </>
       )}
+      {contextHolder}
     </div>
   );
 };

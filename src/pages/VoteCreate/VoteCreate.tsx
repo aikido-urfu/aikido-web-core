@@ -6,18 +6,14 @@ import { USERS_MOCK } from '../Vote/Vote';
 import { FirstStep } from './FirstStep';
 import { SecondStep } from './SecondStep';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { rootStore } from '../../models/voteCreate';
-const { TextArea } = Input;
 import { observer } from "mobx-react-lite"
 import { useEnv } from '../../App';
 import { PostVote } from '../../types/api';
 
 
-const Step = Steps.Step;
 const VoteCreate: React.FC = () => {
   const [step, setstep] = useState(0);
   const navigate = useNavigate()
-  const voteCreateModel = rootStore.VoteCreate
   const {API, logger} = useEnv()
 
   const onFInallizeVote = (data: PostVote) => {

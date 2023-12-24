@@ -3,8 +3,8 @@ import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react';
 import { USERS_MOCK } from '../Vote/Vote';
 import { ListUser } from '../Vote/ListUser';
-import { rootStore } from '../../models/voteCreate';
 import { observer } from 'mobx-react-lite';
+import { useEnv } from '../../App';
 
 type FirstStepType = {
   onStepChange: (step: number) => void;
@@ -12,6 +12,7 @@ type FirstStepType = {
 
 export const FirstStep: React.FC<FirstStepType> = observer(
   ({ onStepChange }) => {
+    const {rootStore} = useEnv()
     const voteCreate = rootStore.VoteCreate;
 
     return (
