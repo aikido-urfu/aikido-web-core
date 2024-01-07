@@ -152,7 +152,6 @@ export const VoteProgress: React.FC = () => {
         setanswers(newObj)
       }
     }
-    console.log(answers)
   }
 
   const error = () => {
@@ -179,7 +178,11 @@ export const VoteProgress: React.FC = () => {
       env.API.sendAnswers(answers, selectedVote.id)
       .then(res => {
         env.logger.info(res)
-        navigate('/')
+        navigate('/completed', {
+          state: {
+            text: 'Поздравляем! Ответы отправлены'
+          }
+        })
       })
       .catch(err => env.logger.error(err))
     }
@@ -301,14 +304,11 @@ export const VoteProgress: React.FC = () => {
               ></div>
               {!selectedQuestion.isMultiply ? (
                 <>
-                  <Radio.Group onChange={(e) => {setselectedAnswers([e.target.value])}} value={selectedAnswers[0]}>
                     <Space direction="vertical">
                       {selectedQuestion.answers.map((x) => (
-                        <Radio checked={isSelected(x.id)} onChange={e => handleAnswerSet(x.id)} value={x.text}>{x.text}</Radio>
+                        <Radio checked={isSelected(x.id)}  onChange={e => handleAnswerSet(x.id)} value={x.text}>{x.text}</Radio>
                       ))}
                     </Space>
-                  </Radio.Group>
-                  <Radio.Group />
                 </>
               ) : (
                 <>
@@ -351,7 +351,7 @@ export const VoteProgress: React.FC = () => {
             >
               <Progress
                 percent={Math.floor(
-                  (selectedQuest / QUESTIONS_MOCK.length) * 100
+                  (Object.values(answers).filter(x => x.length != 0).length / QUESTIONS_MOCK.length) * 100
                 )}
               />
             </div>

@@ -4,7 +4,7 @@ import { Switch } from 'antd';
 import { ListUser } from '../Vote/ListUser';
 import { USERS_MOCK } from '../Vote/Vote';
 import { FirstStep } from './FirstStep';
-import { SecondStep } from './SecondStep';
+import SecondStep from './SecondStep';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { observer } from "mobx-react-lite"
 import { useEnv } from '../../App';
@@ -20,7 +20,11 @@ const VoteCreate: React.FC = () => {
     API.sendCreateVote(data)
     .then(res => {
       logger.info(res)
-      navigate('/vote')
+      navigate('/completed', {
+        state: {
+          text: 'Поздравляем! Голосование создано'
+        }
+      })
     })
     .catch(err => {
       logger.error(err)
@@ -64,7 +68,7 @@ const VoteCreate: React.FC = () => {
             justifyContent: 'space-between',
           }}
         >
-          <h3>Основная информация и участники</h3>
+          <h3>Вопросы к голосованию</h3>
           <div
             style={{
               flexBasis: '40%',

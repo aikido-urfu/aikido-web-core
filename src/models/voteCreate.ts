@@ -14,15 +14,19 @@ const AnswerModel = t.model({
     id: t.number,
     text: t.string,
 })
-
+const files = t.model({
+    file: t.string,
+    name: t.string,
+    type: t.string
+})
 const QuestionModel = t.model({
     title: t.string,
     description: t.string,
     isMultiply: t.boolean,
     isAnonimic: t.boolean,
     answers: t.array(t.string),
-    files: t.array(t.string),
-    photos: t.array(t.string),
+    files: t.array(files),
+    photos: t.array(files),
     isHidenCounter: t.boolean,
 })
 
@@ -63,7 +67,11 @@ const VoteCreateModel = t.model({
         setDate(d1: string, d2: string) {
             self.dateOfStart = d1
             self.dateOfEnd = d2
-        }
+        },
+        deleteQuestion(id: number) {
+            self.questions.splice(id, 1)
+        },
+        
     }
 })
 

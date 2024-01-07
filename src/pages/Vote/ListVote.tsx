@@ -8,7 +8,7 @@ type ListVoteType = {
     isSelected: boolean
 }
 
-export const ListVote: React.FC<ListVoteType> = ({id, name, date, description, isSelected}) => {
+export const ListVote: React.FC<ListVoteType> = ({id, name, description, date, isSelected}) => {
     return (
         <div
           className="vote-list-vote"
@@ -31,10 +31,10 @@ export const ListVote: React.FC<ListVoteType> = ({id, name, date, description, i
               justifyContent: 'space-between',
             }}
           >
-            <h3>Голосование №{id}</h3>
+            <h3>{name}</h3>
             <p>{date}</p>
           </div>
-          <div>{description}</div>
+          <div >{description.substring(0, 25)}</div>
         </div>
       );
 }

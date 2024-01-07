@@ -1,8 +1,6 @@
 import { Button, Input, Modal, Switch } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react';
-import { USERS_MOCK } from '../Vote/Vote';
-import { ListUser } from '../Vote/ListUser';
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -12,13 +10,16 @@ import {
 } from '@ant-design/icons';
 import { PostVote, Question } from '../../types/api';
 import { useEnv } from '../../App';
+import { observer } from 'mobx-react-lite';
+import { ModalAddQuestion } from './ModalAddQuestion';
 
 type QuestionType = {
   data: Question;
   id: number;
+  onDeleteClick: (id: number) => void
 };
 
-const QuestionBlock: React.FC<QuestionType> = ({ data, id }) => {
+const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
   return (
     <div
       style={{
@@ -45,224 +46,26 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id }) => {
         {id}
         <div>
           <h4>{data.title}</h4>
-          <p>{data.description}</p>
+          <p className='gray'>{data.description}</p>
         </div>
       </div>
-      <DeleteOutlined style={{ fontSize: '150%' }} />
+      <DeleteOutlined className='pointer' onClick={() => onDeleteClick(id)} style={{ fontSize: '150%' }} />
     </div>
   );
 };
 
-type ModalAddQuestionType = {
-  isShowModal: boolean;
-  setshowModal: (val: boolean) => void;
-  onAddClick: (q: Question) => void;
-};
-
-const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
-  isShowModal,
-  setshowModal,
-  onAddClick,
-}) => {
-  const [name, setname] = useState('');
-  const [description, setdescription] = useState('');
-  const [questions, setquestions] = useState<string[]>(['', '']);
-  const [isMultiply, setisMultiply] = useState(false)
-  const handleAddClick = () => {
-    onAddClick({
-      title: name,
-      description,
-      files: [],
-      photos: [],
-      isMultiply,
-      answers: questions,
-    });
-    setshowModal(false);
-  };
-
-  const handleDeleteAnswer = (index: number) => {
-    const copy = [...questions];
-    copy.splice(index, 1);
-    setquestions([...copy]);
-  };
-
-  return (
-    <Modal
-      footer={[]}
-      title=""
-      width={1200}
-      cancelText="Отмена"
-      open={isShowModal}
-      onOk={() => {
-        handleAddClick();
-      }}
-      onCancel={() => {
-        setshowModal(false);
-      }}
-    >
-      <div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignContent: 'space-between',
-            minHeight: 800
-          }}
-        >
-          <div
-            style={{
-              width: 800,
-            }}
-            //создание вопроса
-          >
-            <div
-              style={{
-                height: 60,
-                borderBottom: '1px solid #DADADA',
-              }}
-            >
-              <h3>Создание вопроса</h3>
-            </div>
-            <p color="gray">Название вопроса</p>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 15,
-              }}
-            >
-              <Input onChange={(e) => setname(e.target.value)} />
-              <p>Мультивыбор</p>
-              <Switch checked={isMultiply} onChange={val => setisMultiply(val)} />
-            </div>
-            <p>Описание</p>
-            <TextArea
-              rows={12}
-              onChange={(e) => setdescription(e.target.value)}
-            />
-
-            {...questions.map((x, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: 15,
-                    margin: '15px 0',
-                  }}
-                >
-                  <p>{index}</p>
-                  <Input
-                    placeholder="вариант ответа"
-                    value={x}
-                    onChange={(e) => {
-                      questions[index] = e.target.value;
-                      setquestions([...questions]);
-                    }}
-                  />
-                  {index > 1 && (
-                    <DeleteOutlined
-                      onClick={() => handleDeleteAnswer(index)}
-                      style={{ margin: '0 10px', fontSize: '125%' }}
-                    />
-                  )}
-                </div>
-              );
-            })}
-            <div
-              className="pointer"
-              style={{
-                color: '#1890FF',
-              }}
-              onClick={() => {
-                questions.push('');
-                setquestions([...questions]);
-              }}
-            >
-              <h4>Добавить вопрос +</h4>
-            </div>
-          </div>
-          <div
-            //документы
-            style={{
-              width: 400,
-              padding: '0 20px',
-            }}
-          >
-            <div
-              style={{
-                height: 60,
-                borderBottom: '1px solid #DADADA',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: '0 20px 0 0',
-              }}
-            >
-              <h3>Документы</h3>
-              <Button>
-              <UploadOutlined />
-              Загрузить</Button>
-            </div>
-            {...[1, 2].map((x) => {
-              return (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: 'auto',
-                    height: 65,
-                    borderBottom: '1px solid #DADADA',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: 10,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <FileJpgOutlined />
-                    <h4>SomeRandomPic.jpg</h4>
-                  </div>
-                  <DeleteOutlined style={{fontSize: '150%'}} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: 15,
-            borderTop: '1px solid #DADADA',
-            paddingTop: 20,
-            margin: '20px 0 0 0'
-          }}
-        >
-          <Button onClick={handleAddClick} type="primary">Сохранить</Button>
-          <Button onClick={() => setshowModal(false)}>Отмена</Button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
 type SecondStepType = {
   onStepChange?: (step: number) => void;
   onFInallizeVote: (data: PostVote) => void;
 };
-
-export const SecondStep: React.FC<SecondStepType> = ({
+const SecondStep: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
 }) => {
-  const [isShowModal, setshowModal] = useState(false);
+  const [isShowModal, setshowModal] = useState(true);
   const {rootStore} = useEnv()
-  const voteCreateModel = rootStore.VoteCreate;
+  const voteCreateModel = rootStore.VoteCreate
+  const env = useEnv()
 
   const showModal = () => {
     setshowModal(true);
@@ -286,8 +89,28 @@ export const SecondStep: React.FC<SecondStepType> = ({
       photos: [],
       questions: voteCreateModel.questions,
     };
-    onFInallizeVote(res);
+    const checkField = (obj: PostVote, field: keyof PostVote) => {
+      if(Array.isArray(obj[field])) {
+        //@ts-ignore
+        if(obj[field].length === 0) {
+          env.messageApi.error(`Поле ${field} должно иметь длину больше 0`)
+          return false
+        }
+        return true
+      }
+      //@ts-ignore
+      if(obj.hasOwnProperty(field) && obj[field] !== '') {
+        return true
+      } else {
+        env.messageApi.error(`Поле ${field} должно быть заполненно`)
+      }
+    }
+    checkField(res, 'title') && checkField(res, 'description') && checkField(res, 'dateOfEnd') && checkField(res, 'questions') && onFInallizeVote(res);
   };
+
+  const handleDeleteQuestionClick = (id: number) => {
+    voteCreateModel.deleteQuestion(id)
+  }
 
   return (
     <div
@@ -311,7 +134,7 @@ export const SecondStep: React.FC<SecondStepType> = ({
         </div>
       </div>
       {...voteCreateModel.questions.map((x, index) => {
-        return <QuestionBlock id={index} data={x} />;
+        return <QuestionBlock onDeleteClick={handleDeleteQuestionClick} id={index} data={x} />;
       })}
 
       <div
@@ -347,3 +170,5 @@ export const SecondStep: React.FC<SecondStepType> = ({
     </div>
   );
 };
+
+export default observer(SecondStep)

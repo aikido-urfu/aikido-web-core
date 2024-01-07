@@ -15,6 +15,10 @@ body {
   cursor: pointer;
 }
 
+.gray {
+  color: rgba(0, 0, 0, 0.6)
+}
+
 /* Header */
 .header {
   background-color: #f2f2f2;

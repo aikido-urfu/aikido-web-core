@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import MainContainer from './components/MainContainer';
@@ -15,16 +15,18 @@ import { logger } from './api/tools';
 import { Mail } from './pages/Mail/Mail';
 import { CreateRootStore, StoreType } from './models/voteCreate';
 import { MainPage } from './pages/Main';
+import { Completed } from './pages/Completed/Completed';
+import {MessageInstance} from 'antd/es/message/interface'
 
 
 const { Content } = Layout;
 const ENV = {
   API: API,
   logger: logger,
-  rootStore: {} as StoreType
+  rootStore: {} as StoreType,
+  messageApi: {} as MessageInstance
 }
-const rootStore = CreateRootStore(ENV)
-ENV.rootStore = rootStore
+ENV.rootStore = CreateRootStore(ENV)
 const EnvProvider = React.createContext(ENV);
 
 export const useEnv = () => {
@@ -37,8 +39,13 @@ ENV.rootStore.selfUser.getMySelf()
 //@ts-ignore
 window.env = ENV
 const App: React.FC = () => {
+  
+  const [messageApi, contextHolder] = message.useMessage();
+  ENV.messageApi = messageApi
+
   return (
     <EnvProvider.Provider value={ENV}>
+      {contextHolder}
       <Router>
         <Layout>
           <Content>
@@ -52,9 +59,7 @@ const App: React.FC = () => {
               <Route path="/mail" element={<MainContainer ><Mail /></MainContainer>} />
               <Route path="/voteCreate" element={<MainContainer ><VoteCreate /></MainContainer>} />
               <Route path="/vote-progress/:id" element={<MainContainer ><VoteProgress /></MainContainer>} />
-              {/* Add more routes for your other components */}
-              {/* <Route path="/about" element={<AboutComponent />} /> */}
-              {/* <Route path="/contact" element={<ContactComponent />} /> */}
+              <Route path="/completed" element={<MainContainer ><Completed /></MainContainer>} />
               <Route path="*" element={<div>404 Not Found</div>} />
             </Routes>
           </Content>

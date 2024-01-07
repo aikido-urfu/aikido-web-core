@@ -41,7 +41,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                   flexBasis: 700,
                 }}
               >
-                <p>Название голосования</p>
+                <p className='gray'>Название голосования</p>
                 <Input
                   onChange={(e) => voteCreate.setName(e.target.value)}
                   value={voteCreate.title}
@@ -53,7 +53,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                   marginLeft: 'auto',
                 }}
               >
-                <p>Дата проведения мероприятия</p>
+                <p className='gray'>Сроки проведения</p>
                 <DatePicker.RangePicker onChange={val => {
                   if(val.length != 2) return
                   const d1  = val[0]
@@ -68,7 +68,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
               ></Switch>
             </div>
             <div>
-              <p>Описание</p>
+              <p className='gray'>Описание</p>
               <TextArea
                 rows={6}
                 onChange={(e) => voteCreate.setDescription(e.target.value)}
@@ -85,6 +85,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
               >
                 <h3>Участники</h3>
                 <p
+                  className='gray'
                   style={{
                     color: 'gray',
                   }}
@@ -112,7 +113,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
           <div
             style={{
               overflowY: 'scroll',
-              height: '450px',
+              height: '320px',
             }}
           >
             {...USERS_MOCK.map((x) => {

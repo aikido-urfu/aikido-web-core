@@ -2,8 +2,16 @@ export type Question = {
   title: string;
   description: string;
   answers: string[];
-  files: string[];
-  photos: string[];
+  files: {
+    file: "string",
+    name: "string",
+    type: "string"
+  }[],
+  photos: {
+    file: "string",
+    name: "string",
+    type: "string"
+  }[]
   isMultiply: boolean;
 };
 
@@ -27,7 +35,16 @@ export type GetVote = PostVote & {
 
 export type GetVoteById = {
   id: number;
-  userId: number;
+  user: {
+    id: number;
+    email: string;
+    password: string;
+    fullName: string;
+    phone?: string;
+    photo?: string;
+    telegram?: string;
+    telegramUserID?: string;
+  },
   isAdmin: string;
   isVoted: boolean;
   votedUsers: {
