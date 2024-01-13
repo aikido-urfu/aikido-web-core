@@ -1,11 +1,11 @@
-import { Button, DatePicker, Input, Switch } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import React, { useState } from "react";
-import { ListUser } from "../VoteList/ListUser";
-import { observer } from "mobx-react-lite";
-import { useEnv } from "../../App";
-import { SelectUsers } from "./SelectUsers";
-import { GetUsers } from "../../types/api";
+import { Button, DatePicker, Input, Switch } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import React, { useState } from 'react';
+import { ListUser } from '../VoteList/ListUser';
+import { observer } from 'mobx-react-lite';
+import { useEnv } from '../../App';
+import { SelectUsers } from './SelectUsers';
+import { GetUsers } from '../../types/api';
 
 type FirstStepType = {
   onStepChange: (step: number) => void;
@@ -21,18 +21,18 @@ export const FirstStep: React.FC<FirstStepType> = observer(
         <div
           style={{
             minHeight: 332,
-            borderBottom: "1px solid #DADADA",
+            borderBottom: '1px solid #DADADA',
           }}
         >
           <div
             style={{
-              padding: "20px 20px 0 20px",
+              padding: '20px 20px 0 20px',
             }}
           >
             <div
               style={{
-                display: "flex",
-                alignItems: "end",
+                display: 'flex',
+                alignItems: 'end',
                 gap: 20,
                 marginBottom: 20,
               }}
@@ -45,13 +45,13 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                 <p className="gray">Название голосования</p>
                 <Input
                   onChange={(e) => voteCreate.setName(e.target.value)}
-                  value={voteCreate.title || ""}
+                  value={voteCreate.title || ''}
                 ></Input>
               </div>
               <div
                 style={{
                   flexBasis: 500,
-                  marginLeft: "auto",
+                  marginLeft: 'auto',
                 }}
               >
                 <p className="gray">Сроки проведения</p>
@@ -62,7 +62,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                     const d2 = val[1];
                     voteCreate.setDate(d1!.toISOString(), d2!.toISOString());
                   }}
-                  format={"YYYY-MM-DD"}
+                  format={'YYYY-MM-DD'}
                 />
               </div>
               <p>Анонимное</p>
@@ -76,14 +76,14 @@ export const FirstStep: React.FC<FirstStepType> = observer(
               <TextArea
                 rows={6}
                 onChange={(e) => voteCreate.setDescription(e.target.value)}
-                value={voteCreate.description || ""}
+                value={voteCreate.description || ''}
               ></TextArea>
               <div
                 style={{
-                  margin: "30px 0 20px 0",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  margin: '30px 0 20px 0',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                   gap: 10,
                 }}
               >
@@ -91,7 +91,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                 <p
                   className="gray"
                   style={{
-                    color: "gray",
+                    color: 'gray',
                   }}
                 >
                   {users.length}
@@ -103,12 +103,12 @@ export const FirstStep: React.FC<FirstStepType> = observer(
             className="pointer flex"
             style={{
               height: 60,
-              display: "flex",
-              alignItems: "center",
-              color: "#1890FF",
-              borderBottom: "1px solid #DADADA",
-              borderTop: "1px solid #DADADA",
-              padding: "0 20px",
+              display: 'flex',
+              alignItems: 'center',
+              color: '#1890FF',
+              borderBottom: '1px solid #DADADA',
+              borderTop: '1px solid #DADADA',
+              padding: '0 20px',
             }}
             onClick={() => {}}
           >
@@ -118,15 +118,15 @@ export const FirstStep: React.FC<FirstStepType> = observer(
 
           <div
             style={{
-              overflowY: "scroll",
-              height: "320px",
+              overflowY: 'scroll',
+              height: '320px',
             }}
           >
             {...users.map((x) => {
               return (
                 <ListUser
                   name={x.fullName}
-                  mail={""}
+                  mail={''}
                   isCanBeDeleted
                   onDeleteClick={() => {}}
                 />
@@ -136,9 +136,9 @@ export const FirstStep: React.FC<FirstStepType> = observer(
         </div>
         <Button
           style={{
-            backgroundColor: "#1890FF",
-            margin: "10px 20px",
-            color: "#FFF",
+            backgroundColor: '#1890FF',
+            margin: '10px 20px',
+            color: '#FFF',
           }}
           onClick={() => {
             onStepChange(1);

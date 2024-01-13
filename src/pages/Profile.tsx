@@ -1,9 +1,9 @@
-import React from "react";
-import { Result, Button, Avatar } from "antd";
-import { UserOutlined, TeamOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { useEnv } from "../App";
-import { observer } from "mobx-react-lite";
+import React from 'react';
+import { Result, Button, Avatar } from 'antd';
+import { UserOutlined, TeamOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { useEnv } from '../App';
+import { observer } from 'mobx-react-lite';
 
 interface ProfileProps {
   isOwner: boolean;
@@ -16,10 +16,10 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "80vh",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '80vh',
       }}
     >
       <Result
@@ -35,7 +35,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             )}
             <div style={{ marginTop: 16 }}>
               <TeamOutlined style={{ marginRight: 8 }} />
-              <a href={user.telegram || ""}>Telegram</a>
+              <a href={user.telegram || ''}>Telegram</a>
             </div>
           </>
         }

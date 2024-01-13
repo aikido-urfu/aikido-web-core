@@ -1,5 +1,5 @@
-import { applySnapshot, getEnv, types as t } from "mobx-state-tree";
-import { IEnv } from "../App";
+import { applySnapshot, getEnv, types as t } from 'mobx-state-tree';
+import { IEnv } from '../App';
 
 export type UserTypeGet = {
   id: number;
@@ -43,7 +43,7 @@ export const UserProfileModel = t
 
 export const selfUser = UserProfileModel.create({
   id: -1,
-  email: "",
-  fullName: "",
-  telegram: "",
+  email: '',
+  fullName: '',
+  telegram: '',
 });

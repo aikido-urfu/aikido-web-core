@@ -1,9 +1,9 @@
-import { Button, Progress } from "antd";
-import React, { useEffect } from "react";
-import { GetVoteById } from "../../types/api";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEnv } from "../../App";
+import { Button, Progress } from 'antd';
+import React, { useEffect } from 'react';
+import { GetVoteById } from '../../types/api';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEnv } from '../../App';
 
 export const Results: React.FC = () => {
   const [selectedVote, setselectedVote] = useState<GetVoteById>();
@@ -25,7 +25,7 @@ export const Results: React.FC = () => {
     <div>
       <div
         style={{
-          borderBottom: "1px solid #DADADA",
+          borderBottom: '1px solid #DADADA',
         }}
         className="h-[60px] bg-white flex gap-3 items-center pl-[30px]"
       >
@@ -44,7 +44,7 @@ export const Results: React.FC = () => {
           {selectedVote?.questions.map((x) => (
             <div
               style={{
-                borderBottom: "1px solid #DADADA",
+                borderBottom: '1px solid #DADADA',
               }}
             >
               <h3 className="px-[10px] h-[50px] flex items-center">
@@ -53,7 +53,7 @@ export const Results: React.FC = () => {
               <div
                 className="pl-[40px]"
                 style={{
-                  borderTop: "1px solid #DADADA",
+                  borderTop: '1px solid #DADADA',
                 }}
               >
                 {x.answers.map((answ, index) => (

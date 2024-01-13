@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Tabs, Input, List } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Tabs, Input, List } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 const { Search } = Input;
@@ -14,13 +14,13 @@ interface Vote {
 
 const VotesPage: React.FC = () => {
   const [votes] = useState<Vote[]>([
-    { id: 1, title: "Vote 1", description: "Description of Vote 1" },
-    { id: 2, title: "Vote 2", description: "Description of Vote 2" },
-    { id: 3, title: "Vote 3", description: "Description of Vote 3" },
-    { id: 4, title: "Vote 4", description: "Description of Vote 4" },
+    { id: 1, title: 'Vote 1', description: 'Description of Vote 1' },
+    { id: 2, title: 'Vote 2', description: 'Description of Vote 2' },
+    { id: 3, title: 'Vote 3', description: 'Description of Vote 3' },
+    { id: 4, title: 'Vote 4', description: 'Description of Vote 4' },
   ]);
-  const [activeTab, setActiveTab] = useState("all");
-  const [searchText, setSearchText] = useState("");
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchText, setSearchText] = useState('');
 
   const handleTabChange = (key: string) => {
     setActiveTab(key);
@@ -31,7 +31,7 @@ const VotesPage: React.FC = () => {
   };
 
   const filteredVotes = votes.filter((vote) => {
-    if (activeTab === "all") {
+    if (activeTab === 'all') {
       return vote.title.toLowerCase().includes(searchText.toLowerCase());
     } else {
       return (
@@ -54,7 +54,7 @@ const VotesPage: React.FC = () => {
         prefix={<SearchOutlined />}
         allowClear
         onChange={(e) => handleSearch(e.target.value)}
-        style={{ width: 200, margin: "16px 0" }}
+        style={{ width: 200, margin: '16px 0' }}
       />
 
       <List
@@ -65,8 +65,8 @@ const VotesPage: React.FC = () => {
             <Link
               to={`/vote?id=${vote.id}`}
               style={{
-                textDecoration: "none",
-                color: "red",
+                textDecoration: 'none',
+                color: 'red',
               }}
             >
               <List.Item.Meta

@@ -1,11 +1,11 @@
-import { Button, Steps } from "antd";
-import React, { useState } from "react";
-import { FirstStep } from "./FirstStep";
-import SecondStep from "./SecondStep";
-import { useNavigate } from "react-router-dom";
-import { observer } from "mobx-react-lite";
-import { useEnv } from "../../App";
-import { PostVote } from "../../types/api";
+import { Button, Steps } from 'antd';
+import React, { useState } from 'react';
+import { FirstStep } from './FirstStep';
+import SecondStep from './SecondStep';
+import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useEnv } from '../../App';
+import { PostVote } from '../../types/api';
 
 const VoteCreate: React.FC = () => {
   const [step, setstep] = useState(0);
@@ -16,9 +16,9 @@ const VoteCreate: React.FC = () => {
     API.sendCreateVote(data)
       .then((res) => {
         logger.info(res);
-        navigate("/completed", {
+        navigate('/completed', {
           state: {
-            text: "Поздравляем! Голосование создано",
+            text: 'Поздравляем! Голосование создано',
           },
         });
       })
@@ -33,45 +33,45 @@ const VoteCreate: React.FC = () => {
         //header
         style={{
           height: 60,
-          backgroundColor: "#FFF",
-          padding: "15px 20px",
-          display: "flex",
-          flexDirection: "row",
+          backgroundColor: '#FFF',
+          padding: '15px 20px',
+          display: 'flex',
+          flexDirection: 'row',
           gap: 15,
         }}
       >
         <h3>Создание голосования</h3>
-        <Button onClick={() => navigate("/vote")}>Отмена</Button>
+        <Button onClick={() => navigate('/vote')}>Отмена</Button>
       </div>
 
       <div
         //container
         style={{
-          width: "auto",
-          minHeight: "100%",
+          width: 'auto',
+          minHeight: '100%',
           margin: 30,
-          backgroundColor: "#FFF",
+          backgroundColor: '#FFF',
         }}
       >
         <div
           style={{
             height: 60,
-            borderBottom: "1px solid #DADADA",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            padding: "0 20px",
-            justifyContent: "space-between",
+            borderBottom: '1px solid #DADADA',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: '0 20px',
+            justifyContent: 'space-between',
           }}
         >
           <h3>Вопросы к голосованию</h3>
           <div
             style={{
-              flexBasis: "40%",
-              display: "flex",
-              flexDirection: "row",
+              flexBasis: '40%',
+              display: 'flex',
+              flexDirection: 'row',
               gap: 15,
-              alignItems: "center",
+              alignItems: 'center',
             }}
           >
             <Steps
@@ -79,10 +79,10 @@ const VoteCreate: React.FC = () => {
               current={step}
               items={[
                 {
-                  title: "Основная информация и участники",
+                  title: 'Основная информация и участники',
                 },
                 {
-                  title: "Вопросы к голосованию",
+                  title: 'Вопросы к голосованию',
                 },
               ]}
             ></Steps>

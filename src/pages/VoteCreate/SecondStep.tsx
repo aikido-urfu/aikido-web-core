@@ -1,14 +1,14 @@
-import { Button } from "antd";
-import React, { useState } from "react";
+import { Button } from 'antd';
+import React, { useState } from 'react';
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
-import { PostVote, Question } from "../../types/api";
-import { useEnv } from "../../App";
-import { observer } from "mobx-react-lite";
-import { ModalAddQuestion } from "./ModalAddQuestion";
+} from '@ant-design/icons';
+import { PostVote, Question } from '../../types/api';
+import { useEnv } from '../../App';
+import { observer } from 'mobx-react-lite';
+import { ModalAddQuestion } from './ModalAddQuestion';
 
 type QuestionType = {
   data: Question;
@@ -20,26 +20,26 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "row",
+        display: 'flex',
+        flexDirection: 'row',
         minHeight: 80,
-        backgroundColor: "#FFF",
-        alignItems: "center",
-        padding: "0 20px",
-        justifyContent: "space-between",
-        borderBottom: "1px solid #DADADA",
+        backgroundColor: '#FFF',
+        alignItems: 'center',
+        padding: '0 20px',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #DADADA',
       }}
     >
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
           gap: 15,
-          alignItems: "center",
+          alignItems: 'center',
         }}
       >
-        {id > 0 && <ArrowUpOutlined style={{ fontSize: "150%" }} />}
-        <ArrowDownOutlined style={{ fontSize: "150%" }} />
+        {id > 0 && <ArrowUpOutlined style={{ fontSize: '150%' }} />}
+        <ArrowDownOutlined style={{ fontSize: '150%' }} />
         {id}
         <div>
           <h4>{data.title}</h4>
@@ -49,7 +49,7 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
       <DeleteOutlined
         className="pointer"
         onClick={() => onDeleteClick(id)}
-        style={{ fontSize: "150%" }}
+        style={{ fontSize: '150%' }}
       />
     </div>
   );
@@ -78,10 +78,10 @@ const SecondStep: React.FC<SecondStepType> = ({
 
   const handleSendClick = () => {
     const res: PostVote = {
-      title: voteCreateModel.title || "",
-      description: voteCreateModel.description || "",
-      dateOfStart: voteCreateModel.dateOfStart || "",
-      dateOfEnd: voteCreateModel.dateOfEnd || "",
+      title: voteCreateModel.title || '',
+      description: voteCreateModel.description || '',
+      dateOfStart: voteCreateModel.dateOfStart || '',
+      dateOfEnd: voteCreateModel.dateOfEnd || '',
       isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
@@ -100,16 +100,16 @@ const SecondStep: React.FC<SecondStepType> = ({
         return true;
       }
       // eslint-disable-next-line no-prototype-builtins
-      if (obj.hasOwnProperty(field) && obj[field] !== "") {
+      if (obj.hasOwnProperty(field) && obj[field] !== '') {
         return true;
       } else {
         env.messageApi.error(`Поле ${field} должно быть заполненно`);
       }
     };
-    checkField(res, "title") &&
-      checkField(res, "description") &&
-      checkField(res, "dateOfEnd") &&
-      checkField(res, "questions") &&
+    checkField(res, 'title') &&
+      checkField(res, 'description') &&
+      checkField(res, 'dateOfEnd') &&
+      checkField(res, 'questions') &&
       onFInallizeVote(res);
   };
 
@@ -120,18 +120,18 @@ const SecondStep: React.FC<SecondStepType> = ({
   return (
     <div
       style={{
-        maxHeight: "800px",
+        maxHeight: '800px',
       }}
     >
       <div
         style={{
           height: 60,
-          display: "flex",
-          alignItems: "center",
-          color: "#1890FF",
-          borderBottom: "1px solid #DADADA",
-          borderTop: "1px solid #DADADA",
-          padding: "0 20px",
+          display: 'flex',
+          alignItems: 'center',
+          color: '#1890FF',
+          borderBottom: '1px solid #DADADA',
+          borderTop: '1px solid #DADADA',
+          padding: '0 20px',
         }}
       >
         <div className="pointer" onClick={showModal}>
@@ -150,23 +150,23 @@ const SecondStep: React.FC<SecondStepType> = ({
 
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
         }}
       >
         <Button
           onClick={handleSendClick}
           style={{
-            margin: "20px 10px 20px 20px",
-            backgroundColor: "#1890FF",
-            color: "#FFF",
+            margin: '20px 10px 20px 20px',
+            backgroundColor: '#1890FF',
+            color: '#FFF',
           }}
         >
           Создать
         </Button>
         <Button
           style={{
-            margin: "20px 10px 20px 20px",
+            margin: '20px 10px 20px 20px',
           }}
           onClick={() => onStepChange && onStepChange(0)}
         >

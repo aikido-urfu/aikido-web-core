@@ -1,7 +1,7 @@
-import { Instance, types as t } from "mobx-state-tree";
-import { Question } from "../types/api";
-import { UserProfileModel, selfUser } from "./userModel";
-import { IEnv } from "../App";
+import { Instance, types as t } from 'mobx-state-tree';
+import { Question } from '../types/api';
+import { UserProfileModel, selfUser } from './userModel';
+import { IEnv } from '../App';
 
 const files = t.model({
   file: t.string,
@@ -71,8 +71,8 @@ const VoteCreateModel = t
 const VoteCreate = VoteCreateModel.create({
   questions: [],
   isAnonim: false,
-  title: "",
-  description: "",
+  title: '',
+  description: '',
 });
 
 const rootStoreModel = t.model({

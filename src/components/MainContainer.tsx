@@ -1,7 +1,7 @@
-import React from "react";
-import { Layout } from "antd";
+import React from 'react';
+import { Layout } from 'antd';
 
-import HeaderComponent from "./HeaderComponent";
+import HeaderComponent from './HeaderComponent';
 
 const { Content } = Layout;
 
@@ -15,8 +15,8 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
       <HeaderComponent />
       <Content
         style={{
-          minHeight: "calc(100vh - 64px)",
-          backgroundColor: "#f5f5f5",
+          minHeight: 'calc(100vh - 64px)',
+          backgroundColor: '#f5f5f5',
         }}
       >
         {children}

@@ -1,9 +1,9 @@
-import { Button, Input, Modal, Switch } from "antd";
-import { Question } from "../../types/api";
-import React, { useState } from "react";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import TextArea from "antd/es/input/TextArea";
-import { useEnv } from "../../App";
+import { Button, Input, Modal, Switch } from 'antd';
+import { Question } from '../../types/api';
+import React, { useState } from 'react';
+import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import TextArea from 'antd/es/input/TextArea';
+import { useEnv } from '../../App';
 
 type ModalAddQuestionType = {
   isShowModal: boolean;
@@ -21,14 +21,14 @@ function convertFilesToBase64(
       (resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          if (typeof reader.result === "string") {
+          if (typeof reader.result === 'string') {
             resolve({
               file: reader.result,
               name: file.name,
-              type: file.type || "",
+              type: file.type || '',
             });
           } else {
-            reject(new Error("Failed to convert file to base64"));
+            reject(new Error('Failed to convert file to base64'));
           }
         };
         reader.onerror = reject;
@@ -47,17 +47,17 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   setshowModal,
   onAddClick,
 }) => {
-  const [name, setname] = useState("");
-  const [description, setdescription] = useState("");
-  const [questions, setquestions] = useState<string[]>(["", ""]);
+  const [name, setname] = useState('');
+  const [description, setdescription] = useState('');
+  const [questions, setquestions] = useState<string[]>(['', '']);
   const [isMultiply, setisMultiply] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const env = useEnv();
 
   const clear = () => {
-    setname("");
-    setdescription("");
-    setquestions(["", ""]);
+    setname('');
+    setdescription('');
+    setquestions(['', '']);
     setisMultiply(false);
     setFileList([]);
   };
@@ -102,9 +102,9 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
       <div>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "space-between",
+            display: 'flex',
+            flexDirection: 'row',
+            alignContent: 'space-between',
             minHeight: 800,
           }}
         >
@@ -117,7 +117,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             <div
               style={{
                 height: 60,
-                borderBottom: "1px solid #DADADA",
+                borderBottom: '1px solid #DADADA',
               }}
             >
               <h3>Создание вопроса</h3>
@@ -127,8 +127,8 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             </p>
             <div
               style={{
-                display: "flex",
-                flexDirection: "row",
+                display: 'flex',
+                flexDirection: 'row',
                 gap: 15,
               }}
             >
@@ -151,10 +151,10 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 <div
                   key={index}
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
+                    display: 'flex',
+                    flexDirection: 'row',
                     gap: 15,
-                    margin: "15px 0",
+                    margin: '15px 0',
                   }}
                 >
                   <p>{index + 1}</p>
@@ -169,7 +169,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                   {index > 1 && (
                     <DeleteOutlined
                       onClick={() => handleDeleteAnswer(index)}
-                      style={{ margin: "0 10px", fontSize: "125%" }}
+                      style={{ margin: '0 10px', fontSize: '125%' }}
                     />
                   )}
                 </div>
@@ -178,10 +178,10 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             <div
               className="pointer"
               style={{
-                color: "#1890FF",
+                color: '#1890FF',
               }}
               onClick={() => {
-                questions.push("");
+                questions.push('');
                 setquestions([...questions]);
               }}
             >
@@ -192,17 +192,17 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             //документы
             style={{
               width: 400,
-              padding: "0 20px",
+              padding: '0 20px',
             }}
           >
             <div
               style={{
                 height: 60,
-                borderBottom: "1px solid #DADADA",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                padding: "0 20px 0 0",
+                borderBottom: '1px solid #DADADA',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: '0 20px 0 0',
               }}
             >
               <h3>Документы</h3>
@@ -212,11 +212,11 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
         </div>
         <div
           style={{
-            display: "flex",
+            display: 'flex',
             gap: 15,
-            borderTop: "1px solid #DADADA",
+            borderTop: '1px solid #DADADA',
             paddingTop: 20,
-            margin: "20px 0 0 0",
+            margin: '20px 0 0 0',
           }}
         >
           <Button onClick={handleAddClick} type="primary">
@@ -229,8 +229,8 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   );
 };
 
-import { Upload } from "antd";
-import type { UploadFile, UploadProps } from "antd/es/upload/interface";
+import { Upload } from 'antd';
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 type AddFiesType = {
   fileList: UploadFile<any>[];
   setFileList: React.Dispatch<React.SetStateAction<UploadFile<any>[]>>;

@@ -1,24 +1,24 @@
-import React, { useContext } from "react";
-import { Layout, message } from "antd";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Layout, message } from 'antd';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import MainContainer from "./components/MainContainer";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import VotePage from "./pages/VoteList/Vote";
-import VotesPage from "./pages/VotesList";
-import VoteCreate from "./pages/VoteCreate/VoteCreate";
-import { VoteProgress } from "./pages/VoteProgress/VoteProgress";
-import { API } from "./api/axios";
-import { logger } from "./api/tools";
-import { Mail } from "./pages/Mail/Mail";
-import { CreateRootStore, StoreType } from "./models/voteCreate";
-import { MainPage } from "./pages/Main";
-import { Completed } from "./pages/Completed/Completed";
-import { MessageInstance } from "antd/es/message/interface";
-import "./style.css";
-import { Results } from "./pages/Result/Results";
+import MainContainer from './components/MainContainer';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
+import VotePage from './pages/VoteList/Vote';
+import VotesPage from './pages/VotesList';
+import VoteCreate from './pages/VoteCreate/VoteCreate';
+import { VoteProgress } from './pages/VoteProgress/VoteProgress';
+import { API } from './api/axios';
+import { logger } from './api/tools';
+import { Mail } from './pages/Mail/Mail';
+import { CreateRootStore, StoreType } from './models/voteCreate';
+import { MainPage } from './pages/Main';
+import { Completed } from './pages/Completed/Completed';
+import { MessageInstance } from 'antd/es/message/interface';
+import './style.css';
+import { Results } from './pages/Result/Results';
 
 const { Content } = Layout;
 const ENV = {

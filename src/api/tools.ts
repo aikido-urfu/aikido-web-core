@@ -8,5 +8,5 @@ export const logger = {
 };
 
 export const prettyDate = (date: string) => {
-  return date?.substring(0, 10) || "";
+  return date?.substring(0, 10) || '';
 };

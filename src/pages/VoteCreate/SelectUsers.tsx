@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Select, Space } from "antd";
-import type { SelectProps } from "antd";
-import { useEnv } from "../../App";
-import { GetUsers } from "../../types/api";
+import React, { useState } from 'react';
+import { Select, Space } from 'antd';
+import type { SelectProps } from 'antd';
+import { useEnv } from '../../App';
+import { GetUsers } from '../../types/api';
 
 type SelectedUsersType = {
   setSelectedUsers: (val: GetUsers) => void;
@@ -11,7 +11,7 @@ type SelectedUsersType = {
 export const SelectUsers: React.FC<SelectedUsersType> = ({
   setSelectedUsers,
 }) => {
-  const [options, setoptions] = useState<SelectProps["options"]>([]);
+  const [options, setoptions] = useState<SelectProps['options']>([]);
   const [selectedUsers, setData] = useState<GetUsers>([]);
   const env = useEnv();
 
@@ -33,12 +33,12 @@ export const SelectUsers: React.FC<SelectedUsersType> = ({
       .catch((err) => env.messageApi.error(err));
   };
   return (
-    <Space style={{ width: "100%" }} direction="vertical">
+    <Space style={{ width: '100%' }} direction="vertical">
       <Select
         onClick={loadUsers}
         mode="multiple"
         allowClear
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         placeholder="Иван Иванов..."
         defaultValue={[]}
         onChange={handleChange}

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import "./index.css";
-import { Button, Checkbox, Progress, Radio, Space } from "antd";
+import React, { useEffect, useState } from 'react';
+import './index.css';
+import { Button, Checkbox, Progress, Radio, Space } from 'antd';
 import {
   createSearchParams,
   useNavigate,
   useParams,
   useSearchParams,
-} from "react-router-dom";
-import { useEnv } from "../../App";
-import { GetVoteById } from "../../types/api";
+} from 'react-router-dom';
+import { useEnv } from '../../App';
+import { GetVoteById } from '../../types/api';
 
 type BottomControlType = {
   onBackClick?: () => void;
@@ -31,11 +31,11 @@ const BottomControl: React.FC<BottomControlType> = ({
     <div
       style={{
         height: 60,
-        backgroundColor: "#FFF",
-        borderTop: "1px solid #DADADA",
-        padding: "0 20px",
-        display: "flex",
-        alignItems: "center",
+        backgroundColor: '#FFF',
+        borderTop: '1px solid #DADADA',
+        padding: '0 20px',
+        display: 'flex',
+        alignItems: 'center',
         gap: 20,
       }}
     >
@@ -43,8 +43,8 @@ const BottomControl: React.FC<BottomControlType> = ({
       {isShowNext && (
         <Button
           style={{
-            backgroundColor: "#1890FF",
-            color: "#FFF",
+            backgroundColor: '#1890FF',
+            color: '#FFF',
           }}
           onClick={onNextClick}
         >
@@ -55,8 +55,8 @@ const BottomControl: React.FC<BottomControlType> = ({
   );
 };
 BottomControl.defaultProps = {
-  backText: "Перейти назад",
-  nextText: "Перейти далее",
+  backText: 'Перейти назад',
+  nextText: 'Перейти далее',
   isShowBack: true,
   isShowNext: true,
 };
@@ -68,7 +68,7 @@ export const VoteProgress: React.FC = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>();
-  const selectedPage = Number(searchParams.get("selectedPage")) ?? 0;
+  const selectedPage = Number(searchParams.get('selectedPage')) ?? 0;
   const [selectedQuest, setselectedQuest] = useState(selectedPage);
   const selectedQuestion = selectedVote?.questions[selectedPage];
   const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index);
@@ -77,7 +77,7 @@ export const VoteProgress: React.FC = () => {
   const handleSetSelectedPage = (selectedPage: number) => {
     setselectedQuest(selectedPage);
     navigate({
-      pathname: ``,
+      pathname: '',
       search: createSearchParams({
         selectedPage: selectedPage.toString(),
       }).toString(),
@@ -139,9 +139,9 @@ export const VoteProgress: React.FC = () => {
       env.API.sendAnswers(answers, selectedVote.id)
         .then((res) => {
           env.logger.info(res);
-          navigate("/completed", {
+          navigate('/completed', {
             state: {
-              text: "Поздравляем! Ответы отправлены",
+              text: 'Поздравляем! Ответы отправлены',
             },
           });
         })
@@ -153,8 +153,8 @@ export const VoteProgress: React.FC = () => {
   return (
     <div
       style={{
-        padding: "25px 30px",
-        display: "flex",
+        padding: '25px 30px',
+        display: 'flex',
         gap: 20,
       }}
     >
@@ -164,22 +164,22 @@ export const VoteProgress: React.FC = () => {
             style={{
               width: 1380,
               minHeight: 840,
-              backgroundColor: "#FFF",
+              backgroundColor: '#FFF',
             }}
           >
             <div
               style={{
                 height: 60,
-                display: "flex",
-                alignItems: "center",
-                padding: "0 14px",
-                borderBottom: "1px solid #DADADA",
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 14px',
+                borderBottom: '1px solid #DADADA',
                 gap: 15,
               }}
             >
               <h3>Результат голосования</h3>
               <p>
-                Пройдено{" "}
+                Пройдено{' '}
                 {Object.values(answers).filter((x) => x.length != 0).length}/
                 {selectedVote.questions.length}
               </p>
@@ -189,29 +189,29 @@ export const VoteProgress: React.FC = () => {
                 return (
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "center",
+                      display: 'flex',
+                      alignItems: 'center',
                       gap: 20,
                       height: 90,
-                      padding: "0 14px",
-                      borderBottom: "1px solid #DADADA",
+                      padding: '0 14px',
+                      borderBottom: '1px solid #DADADA',
                     }}
                   >
                     <h4>{index + 1}</h4>
                     <div>
                       <h4>{x.title}</h4>
-                      <p style={{ color: "gray" }}>
-                        Ваш ответ:{" "}
-                        <span style={{ color: "#1890FF" }}>
+                      <p style={{ color: 'gray' }}>
+                        Ваш ответ:{' '}
+                        <span style={{ color: '#1890FF' }}>
                           {answers[x.id]?.length ? (
                             x.answers
                               .filter(
                                 (ans) => answers[x.id].indexOf(ans.id) != -1,
                               )
                               .map((x) => x.text)
-                              .join(",")
+                              .join(',')
                           ) : (
-                            <span style={{ color: "red" }}>Отсутствует</span>
+                            <span style={{ color: 'red' }}>Отсутствует</span>
                           )}
                         </span>
                       </p>
@@ -230,7 +230,7 @@ export const VoteProgress: React.FC = () => {
                 //do stuf
                 handleSendAnswers();
               } else {
-                env.messageApi.error("Нужно ответить на все вопросы");
+                env.messageApi.error('Нужно ответить на все вопросы');
               }
             }}
           />
@@ -245,18 +245,18 @@ export const VoteProgress: React.FC = () => {
             <div
               style={{
                 minHeight: 840,
-                backgroundColor: "#FFF",
-                padding: "10px 20px",
+                backgroundColor: '#FFF',
+                padding: '10px 20px',
               }}
             >
               <h3>{selectedQuestion.title}</h3>
               <p
                 style={{
-                  margin: "20px 0",
-                  fontSize: "14px",
-                  fontStyle: "normal",
+                  margin: '20px 0',
+                  fontSize: '14px',
+                  fontStyle: 'normal',
                   fontWeight: 500,
-                  lineHeight: "30px",
+                  lineHeight: '30px',
                 }}
               >
                 {selectedQuestion.description}
@@ -267,7 +267,7 @@ export const VoteProgress: React.FC = () => {
                   height: 300,
                   marginBottom: 20,
                   backgroundImage:
-                    "url(https://bloximages.newyork1.vip.townnews.com/oanow.com/content/tncms/assets/v3/editorial/c/35/c35153f0-456f-11e6-b443-536a5188bfe3/57804b6433fec.image.jpg?resize=1200%2C800)",
+                    'url(https://bloximages.newyork1.vip.townnews.com/oanow.com/content/tncms/assets/v3/editorial/c/35/c35153f0-456f-11e6-b443-536a5188bfe3/57804b6433fec.image.jpg?resize=1200%2C800)',
                 }}
               ></div>
               {!selectedQuestion.isMultiply ? (
@@ -312,8 +312,8 @@ export const VoteProgress: React.FC = () => {
               onBackClick={() => handleSetSelectedPage(selectedQuest - 1)}
               nextText={
                 selectedQuest < (QUESTIONS_MOCK?.length || 0) - 1
-                  ? "Перейти далее"
-                  : "Завершить"
+                  ? 'Перейти далее'
+                  : 'Завершить'
               }
             />
           </div>
@@ -321,13 +321,13 @@ export const VoteProgress: React.FC = () => {
             style={{
               width: 320,
               minHeight: 900,
-              backgroundColor: "#FFF",
-              padding: "0 20px",
+              backgroundColor: '#FFF',
+              padding: '0 20px',
             }}
           >
             <div
               style={{
-                padding: "17px 20px",
+                padding: '17px 20px',
               }}
             >
               <Progress
@@ -340,9 +340,9 @@ export const VoteProgress: React.FC = () => {
             </div>
             <div
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                borderCollapse: "collapse",
+                display: 'flex',
+                flexWrap: 'wrap',
+                borderCollapse: 'collapse',
               }}
             >
               {QUESTIONS_MOCK?.map((x) => {
@@ -352,13 +352,13 @@ export const VoteProgress: React.FC = () => {
                     style={{
                       width: 70,
                       height: 70,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                       border:
                         selectedQuest === x
-                          ? "1px solid #1890FF"
-                          : "1px solid #DADADA",
+                          ? '1px solid #1890FF'
+                          : '1px solid #DADADA',
                     }}
                     onClick={() => {
                       handleSetSelectedPage(x);
