@@ -11,31 +11,69 @@ type ModalAddQuestionType = {
   onAddClick: (q: Question) => void;
 };
 
+function convertFilesToBase64(files: UploadFile[]): Promise<{ file: string, name: string, type: string }[]> {
+  const promises: Promise<{ file: string, name: string, type: string }>[] = [];
+
+  for (const file of files) {
+    const promise = new Promise<{ file: string, name: string, type: string }>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          resolve({
+            file: reader.result,
+            name: file.name,
+            type: file.type || ''
+          });
+        } else {
+          reject(new Error('Failed to convert file to base64'));
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file as any as Blob);
+    });
+
+    promises.push(promise);
+  }
+
+  return Promise.all(promises);
+}
+
+
 export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   isShowModal,
   setshowModal,
   onAddClick,
 }) => {
-  const [name, setname] = useState('');
-  const [description, setdescription] = useState('');
-  const [questions, setquestions] = useState<string[]>(['', '']);
+  const [name, setname] = useState('')
+  const [description, setdescription] = useState('')
+  const [questions, setquestions] = useState<string[]>(['', ''])
   const [isMultiply, setisMultiply] = useState(false)
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-
+  const [fileList, setFileList] = useState<UploadFile[]>([])
   const env = useEnv()
-  const handleAddClick = () => {
-    debugger
-    const photos = fileList.filter(el => el.type)
 
-    onAddClick({
-      title: name,
-      description,
-      files: [],
-      photos: [],
-      isMultiply,
-      answers: questions,
-    });
-    setshowModal(false);
+  const clear = () => {
+    setname('')
+    setdescription('')
+    setquestions(['',''])
+    setisMultiply(false)
+    setFileList([])
+  }
+
+  const handleAddClick = () => {
+    convertFilesToBase64(fileList)
+    .then(res => {
+      onAddClick({
+        title: name,
+        description,
+        files: [],
+        photos: res,
+        isMultiply,
+        answers: questions,
+      });
+    })
+    .catch(err => env.messageApi.error(err))
+    clear();
+    setshowModal(false)
   };
 
   const handleDeleteAnswer = (index: number) => {
@@ -89,7 +127,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 gap: 15,
               }}
             >
-              <Input onChange={(e) => setname(e.target.value)} />
+              <Input value={name} onChange={(e) => setname(e.target.value)} />
               <p>Мультивыбор</p>
               <Switch checked={isMultiply} onChange={val => setisMultiply(val)} />
             </div>
@@ -97,6 +135,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             <TextArea
               rows={12}
               onChange={(e) => setdescription(e.target.value)}
+              value={description}
             />
 
             {...questions.map((x, index) => {
@@ -210,7 +249,7 @@ const AddFiles: React.FC<AddFiesType> = ({fileList, setFileList}) => {
       <Upload 
       listType="picture"
       {...props}>
-        <Button icon={<UploadOutlined />}>Select File</Button>
+        <Button icon={<UploadOutlined />}>Загрузить Файлы</Button>
       </Upload>
     </div>
   );

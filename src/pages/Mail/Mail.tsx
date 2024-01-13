@@ -7,6 +7,9 @@ import {
 import { Button, Input, Modal, Pagination, Radio, Tag } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react';
+import { GetUsers } from '../../types/api';
+import { SelectUsers } from '../VoteCreate/SelectUsers';
+import { useEnv } from '../../App';
 
 const USER_MAIL_MOCK = [
   {
@@ -147,96 +150,120 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({isOpen, close}) => {
   );
 };
 
+type messageType = {
+  title: string,
+  description: string,
+}
+
+type SendMessageModalType = {
+  setisShowModal: (val: boolean) => void
+  isShowModal: boolean
+}
+
+const SendMessageModal: React.FC<SendMessageModalType> = ({setisShowModal, isShowModal}) => {
+  const [data, setdata] = useState<messageType>({title: '', description: ''})
+  const [users, setusers] = useState<GetUsers>([])
+
+  const env = useEnv()
+  const sendMessage = () => {
+    //TODO
+    env.API.sendMail({
+      theme: data.title,
+      recievers: users.map(x => x.id),
+      text: data.description,
+      photos: [],
+      files: []
+    })
+    setisShowModal(false);
+  };
+  return (<Modal
+    onCancel={() => setisShowModal(false)}
+    onOk={sendMessage}
+    open={isShowModal}
+    centered
+    title="Новое письмо"
+    width={'80vw'}
+    cancelText="Отмена"
+    okText="Отправить"
+    footer={[]}
+  >
+    <div
+      className="mail-modal"
+      style={{
+        backgroundColor: '#FFF',
+        height: 900,
+        borderTop: '1px solid #DADADA',
+      }}
+    >
+      <div
+        style={{
+          height: 900 - 40,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            gap: 10,
+            height: 50,
+            borderBottom: '1px solid #DADADA',
+            alignItems: 'center',
+          }}
+        >
+          <p>Тема: </p>
+          <Input value={data.title} onChange={e => setdata({...data, title: e.target.value})} bordered={false} />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            gap: 10,
+            height: 50,
+            borderBottom: '1px solid #DADADA',
+            alignItems: 'center',
+            marginBottom: 30,
+          }}
+        >
+          <p>Получатели: </p>
+          <SelectUsers setSelectedUsers={setusers} />
+        </div>
+
+        <Input.TextArea
+          style={{ resize: 'none' }}
+          placeholder="Введите текст..."
+          rows={32}
+          value={data.description}
+          onChange={e => setdata({...data, description: e.target.value})}
+        ></Input.TextArea>
+      </div>
+      <div
+        style={{
+          height: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 15,
+          paddingTop: 20,
+          borderTop: '1px solid #DADADA',
+        }}
+      >
+        <Button onClick={sendMessage} type="primary">
+          Отправить
+        </Button>
+        <PaperClipOutlined
+          className="pointer"
+          style={{ fontSize: '150%' }}
+        />
+      </div>
+    </div>
+  </Modal>)
+}
+
 export const Mail: React.FC = () => {
   const [isShowModal, setisShowModal] = useState(false);
   const [isShowMessage, setisShowMessage] = useState(false);
 
-  const [sendSelected, setsendSelected] = useState(false)
-
-  const sendMessage = () => {
-    //TODO
-    setisShowModal(false);
-  };
-
   return (
     <div>
       <ReadMessageModal close={() => setisShowMessage(false)} isOpen={isShowMessage} />
-      <Modal
-        onCancel={() => setisShowModal(false)}
-        onOk={sendMessage}
-        open={isShowModal}
-        centered
-        title="Новое письмо"
-        width={'80vw'}
-        cancelText="Отмена"
-        okText="Отправить"
-        footer={[]}
-      >
-        <div
-          className="mail-modal"
-          style={{
-            backgroundColor: '#FFF',
-            height: 900,
-            borderTop: '1px solid #DADADA',
-          }}
-        >
-          <div
-            style={{
-              height: 900 - 40,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                gap: 10,
-                height: 50,
-                borderBottom: '1px solid #DADADA',
-                alignItems: 'center',
-              }}
-            >
-              <p>Тема: </p>
-              <Input bordered={false} />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                gap: 10,
-                height: 50,
-                borderBottom: '1px solid #DADADA',
-                alignItems: 'center',
-                marginBottom: 30,
-              }}
-            >
-              <p>Получатель: </p>
-              <Input bordered={false} />
-            </div>
-
-            <Input.TextArea
-              style={{ resize: 'none' }}
-              placeholder="Введите текст..."
-              rows={32}
-            ></Input.TextArea>
-          </div>
-          <div
-            style={{
-              height: 20,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 15,
-              paddingTop: 20,
-              borderTop: '1px solid #DADADA',
-            }}
-          >
-            <Button onClick={sendMessage} type="primary">
-              Отправить
-            </Button>
-            <PaperClipOutlined
-              className="pointer"
-              style={{ fontSize: '150%' }}
-            />
-          </div>
-        </div>
-      </Modal>
+      <SendMessageModal setisShowModal={setisShowModal} isShowModal={isShowModal} />
 
       <div
         className="mail-header"
@@ -260,8 +287,7 @@ export const Mail: React.FC = () => {
         </Button>
         <Radio.Group defaultValue="Входящие">
           <Radio.Button value="Входящие">Входящие</Radio.Button>
-          <Radio.Button value="Отправленные">Отправленные          БКфвшщюИгеещт value=@Jnghfdktyyst@§Jnghfdktyyst±/Radio&Button§
-</Radio.Button>
+          <Radio.Button value="Отправленные">Отправленные</Radio.Button>
         </Radio.Group>
       </div>
       <div

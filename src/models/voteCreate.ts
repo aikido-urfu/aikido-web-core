@@ -3,12 +3,6 @@ import { PostVote, Question } from "../types/api";
 import { UserProfileModel, selfUser } from "./userModel";
 import { IEnv } from "../App";
 
-const UserModel = t.model({
-    id: t.number,
-    avatar: t.string,
-    name: t.string,
-    email: t.string
-})
 
 const AnswerModel = t.model({
     id: t.number,
@@ -34,7 +28,7 @@ const VoteCreateModel = t.model({
     title: t.maybeNull(t.string),
     description: t.maybeNull(t.string),
     isAnonim: t.maybeNull(t.boolean),
-    users: t.maybeNull(t.array(UserModel)),
+    users: t.maybeNull(t.array(t.number)),
     questions: t.maybeNull(t.array(QuestionModel)),
     dateOfStart: t.maybeNull(t.string),
     dateOfEnd: t.maybeNull(t.string),
@@ -53,7 +47,7 @@ const VoteCreateModel = t.model({
             
         },
         addQuestion(question: Question) {
-            self.questions.push(QuestionModel.create({
+            self.questions?.push(QuestionModel.create({
                 title: question.title,
                 description: question.description,
                 answers: question.answers,
@@ -69,9 +63,11 @@ const VoteCreateModel = t.model({
             self.dateOfEnd = d2
         },
         deleteQuestion(id: number) {
-            self.questions.splice(id, 1)
+            self.questions?.splice(id, 1)
         },
-        
+        setUsets(users: number[]) {
+            self.users = t.array(t.number).create(users)
+        }
     }
 })
 

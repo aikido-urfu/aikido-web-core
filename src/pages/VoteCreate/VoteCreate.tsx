@@ -1,8 +1,7 @@
 import { Button, Input, Steps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'antd';
-import { ListUser } from '../Vote/ListUser';
-import { USERS_MOCK } from '../Vote/Vote';
+import { ListUser } from '../VoteList/ListUser';
 import { FirstStep } from './FirstStep';
 import SecondStep from './SecondStep';
 import { useLocation, useNavigate } from 'react-router-dom';

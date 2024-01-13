@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Tag } from 'antd';
 import {
   CheckSquareOutlined,
   EditOutlined,
   FieldTimeOutlined,
   MenuFoldOutlined,
-  MenuOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { ListUser } from './ListUser';
@@ -16,84 +15,6 @@ import { GetVote, GetVoteById, PostVote } from '../../types/api';
 import { prettyDate } from '../../api/tools';
 import { observer } from 'mobx-react-lite';
 
-interface Voter {
-  name: string;
-  vote: string;
-}
-
-const DESP_MOCK = `Какое-то описание, хз что тут писать, напишу о рыбном тексте. Современные технологии достигли такого уровня, что синтетическое тестирование играет важную роль в формировании экспериментов, поражающих по своей масштабности и грандиозности. Значимость этих проблем настолько очевидна, что базовый вектор развития позволяет оценить значение дальнейших направлений развития. Принимая во внимание показатели успешности, выбранный нами инновационный путь требует от нас анализа системы массового участия.`;
-
-export const USERS_MOCK = [
-  {
-    name: 'Сергеев Владислав Аркадьевич',
-    mail: 'v.sergeev@mail.ru',
-  },
-  {
-    name: 'Евсеева Алиса Александровна',
-    mail: 'v.sergeev@mail.ru',
-  },
-  {
-    name: 'Шолов Евгений Дмитреевич',
-    mail: 'v.sergeev@mail.ru',
-  },
-];
-
-const VOTES_MOCK = [
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 1,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 2,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 3,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 4,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 5,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 6,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 7,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 8,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-  {
-    name: 'dgsgsd',
-    date: '24.11 19:00 - 25.11 19:00',
-    id: 9,
-    description: 'Какое-то описание,  что тут писать, напишу о то...',
-  },
-];
 const HEADER_HEIGHT = 60;
 
 const VotePage: React.FC = () => {
@@ -102,7 +23,7 @@ const VotePage: React.FC = () => {
   const [selectedVoteId, setselectedVoteId] = useState(-1);
   const navigate = useNavigate();
   const env = useEnv();
-
+  const isAlredyVoted = selectedVote?.usersVoted?.filter(x => x.id === env.rootStore.selfUser.id).length !== 0
   const handleSelectedVote = (value: number, index: number) => {
     setselectedVoteId(index);
     env.API.getVote(value)
@@ -233,7 +154,10 @@ const VotePage: React.FC = () => {
                 padding: '15px',
               }}
             >
-              <h3>{selectedVote.title}</h3>
+              <div className='flex gap-4 '>
+                <h3>{selectedVote.title}</h3>
+                 {selectedVote.isAnonymous && <Tag className='h-5' color="blue">Анонимное голосование</Tag>} 
+              </div>
               {selectedVote.user.id === env.rootStore.selfUser.id && (
                 <Button>
                   <EditOutlined />
@@ -380,7 +304,7 @@ const VotePage: React.FC = () => {
                     >
                       <h3>Участники</h3>
                       <p className="gray">
-                        {selectedVote.votedUsers?.length ?? 0}
+                        {selectedVote.usersVoted?.length ?? 0}
                       </p>
                     </div>
                   </div>
@@ -396,12 +320,12 @@ const VotePage: React.FC = () => {
                         height: 450,
                       }}
                     >
-                      {USERS_MOCK.map((x, index) => {
+                      {selectedVote.usersVoted.map((x, index) => {
                         return (
                           <ListUser
                             key={index}
-                            mail={x.mail}
-                            name={x.name}
+                            mail={''}
+                            name={x.fullName}
                             onDeleteClick={() => {}}
                           />
                         );
@@ -453,28 +377,26 @@ const VotePage: React.FC = () => {
             )}
 
             <div
+              className='bg-white py-3 px-5'
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '100%',
-                backgroundColor: '#FFF',
                 borderTop: '0.5px solid #DADADA',
               }}
             >
+              {!isAlredyVoted ? 
               <Button
+                className='w-200'
+                type='primary'
                 onClick={() => navigate(`/vote-progress/${selectedVote.id}`)}
-                style={{
-                  margin: '20px 40px 20px 20px',
-                  backgroundColor: '#1890FF',
-                  color: '#FFF',
-                  height: 32,
-                  width: 200,
-                  position: 'relative',
-                  bottom: 0,
-                }}
               >
                 Перейти к голосованию
-              </Button>
+              </Button> 
+              : <div className='flex gap-3'>
+                <Button
+                onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
+                >
+                  Посмотреть общую статистику
+                </Button>
+              </div>}
             </div>
           </div>
         ) : null}

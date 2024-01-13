@@ -98,16 +98,14 @@ BottomControl.defaultProps = {
 };
 
 export const VoteProgress: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-  const [sendPage, setsendPage] = useState(false);
   const env = useEnv();
+  const [sendPage, setsendPage] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>();
   const [searchParams] = useSearchParams();
+  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>();
   const selectedPage = Number(searchParams.get('selectedPage')) ?? 0;
   const [selectedQuest, setselectedQuest] = useState(selectedPage);
-  const [selectedAnswers, setselectedAnswers] = useState([])
   const selectedQuestion = selectedVote?.questions[selectedPage];
   const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index);
   const [answers, setanswers] = useState<{[K: number]: Array<number>}>({})
@@ -125,6 +123,7 @@ export const VoteProgress: React.FC = () => {
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
+        debugger
         setselectedVote(res.data);
       })
       .catch((err) => {
@@ -154,13 +153,6 @@ export const VoteProgress: React.FC = () => {
     }
   }
 
-  const error = () => {
-    messageApi.open({
-      type: 'error',
-      content: 'Нужно ответить на все вопросы',
-    });
-  };
-
   const isSelected = (id: number) => {
     if(selectedQuestion) {
       const questId = selectedQuestion.id
@@ -187,7 +179,7 @@ export const VoteProgress: React.FC = () => {
       .catch(err => env.logger.error(err))
     }
   }
-  
+  debugger
   if (!selectedQuestion) return <>'undefined question 404'</>;
   return (
     <div
@@ -262,7 +254,7 @@ export const VoteProgress: React.FC = () => {
                 //do stuf
                 handleSendAnswers()
               }else {
-                error()
+                env.messageApi.error('Нужно ответить на все вопросы')
               }
             }}
           />
@@ -324,13 +316,13 @@ export const VoteProgress: React.FC = () => {
               isShowBack={selectedQuest > 0}
               isShowNext
               onNextClick={() => {
-                selectedQuest !== QUESTIONS_MOCK.length - 1
+                selectedQuest < (QUESTIONS_MOCK?.length || 0) - 1
                   ? handleSetSelectedPage(selectedQuest + 1)
                   : setsendPage(true);
               }}
               onBackClick={() => handleSetSelectedPage(selectedQuest - 1)}
               nextText={
-                selectedQuest !== QUESTIONS_MOCK.length - 1
+                selectedQuest < (QUESTIONS_MOCK?.length || 0) - 1
                   ? 'Перейти далее'
                   : 'Завершить'
               }
@@ -351,7 +343,7 @@ export const VoteProgress: React.FC = () => {
             >
               <Progress
                 percent={Math.floor(
-                  (Object.values(answers).filter(x => x.length != 0).length / QUESTIONS_MOCK.length) * 100
+                  (Object.values(answers).filter(x => x.length != 0).length / (QUESTIONS_MOCK?.length || 1)) * 100
                 )}
               />
             </div>
@@ -362,7 +354,7 @@ export const VoteProgress: React.FC = () => {
                 borderCollapse: 'collapse',
               }}
             >
-              {...QUESTIONS_MOCK.map((x) => {
+              {QUESTIONS_MOCK?.map((x) => {
                 return (
                   <div
                     className="pointer"
@@ -389,7 +381,6 @@ export const VoteProgress: React.FC = () => {
           </div>
         </>
       )}
-      {contextHolder}
     </div>
   );
 };

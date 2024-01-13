@@ -15,32 +15,29 @@ export type UserTypeGet = {
 export const UserProfileModel = t.model()
 .props({
   id: t.number,
-  email: t.string,
-  password: t.string,
-  fullName: t.string,
-  phone: t.maybeNull(t.string) ,
-  photo: t.maybeNull(t.string),
+  email: t.maybe(t.string),
+  fullName: t.maybe(t.string),
   telegram: t.maybeNull(t.string),
-  telegramUserID: t.maybeNull(t.string),
 })
 .actions(self => ({
   setUserData(data: UserTypeGet) {
-    applySnapshot(self, data)
+    applySnapshot(self, {fullName: data.fullName, id: data.id, email: data.email, telegram: data.telegram})
   },
   async getMySelf() {
     const env: IEnv = getEnv(self)
-    const me = await env.API.getUserByToken()
-    this.setUserData(me.data)
+    env.API.getUserByToken()
+    .then(res => {
+      this.setUserData(res.data)
+    })
+    .catch(err => {
+      env.messageApi.error(err)
+    })
   },
 }))
 
 export const selfUser = UserProfileModel.create({
   id: -1,
   email: '',
-  password: '',
   fullName: '',
-  phone: '',
-  photo: '',
   telegram: '',
-  telegramUserID: '',
 })

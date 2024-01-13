@@ -3,15 +3,15 @@ export type Question = {
   description: string;
   answers: string[];
   files: {
-    file: "string",
-    name: "string",
-    type: "string"
-  }[],
+    file: string;
+    name: string;
+    type: string;
+  }[];
   photos: {
-    file: "string",
-    name: "string",
-    type: "string"
-  }[]
+    file: string;
+    name: string;
+    type: string;
+  }[];
   isMultiply: boolean;
 };
 
@@ -30,8 +30,8 @@ export type PostVote = {
 };
 
 export type GetVote = PostVote & {
-  id: number
-}
+  id: number;
+};
 
 export type GetVoteById = {
   id: number;
@@ -44,10 +44,10 @@ export type GetVoteById = {
     photo?: string;
     telegram?: string;
     telegramUserID?: string;
-  },
+  };
   isAdmin: string;
   isVoted: boolean;
-  votedUsers: {
+  usersVoted: {
     id: number;
     fullName: string;
     photo: string;
@@ -71,7 +71,7 @@ export type GetVoteById = {
       id: number;
       text: string;
       count: number;
-      votedUsers: {
+      users: {
         id: number;
         fullName: string;
         photo: string;
@@ -83,5 +83,29 @@ export type GetVoteById = {
     photos: string[];
     isMultiply: boolean;
   }[];
-}
+};
 
+export type GetUsers = {
+  id: 0;
+  fullName: string;
+  phone: string;
+  photo: string;
+  telegram: string;
+}[];
+
+
+export type PostMail = {
+  theme: string;
+  recievers: number[];
+  text: string;
+  files: {
+    file: string;
+    name: string;
+    type: string;
+  }[];
+  photos: {
+    file: string;
+    name: string;
+    type: string;
+  }[];
+}

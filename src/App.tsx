@@ -6,7 +6,7 @@ import MainContainer from './components/MainContainer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
-import VotePage from './pages/Vote/Vote';
+import VotePage from './pages/VoteList/Vote';
 import VotesPage from './pages/VotesList';
 import VoteCreate from './pages/VoteCreate/VoteCreate';
 import { VoteProgress } from './pages/VoteProgress/VoteProgress';
@@ -17,6 +17,8 @@ import { CreateRootStore, StoreType } from './models/voteCreate';
 import { MainPage } from './pages/Main';
 import { Completed } from './pages/Completed/Completed';
 import {MessageInstance} from 'antd/es/message/interface'
+import './style.css';
+import { Results } from './pages/Result/Results';
 
 
 const { Content } = Layout;
@@ -59,6 +61,7 @@ const App: React.FC = () => {
               <Route path="/mail" element={<MainContainer ><Mail /></MainContainer>} />
               <Route path="/voteCreate" element={<MainContainer ><VoteCreate /></MainContainer>} />
               <Route path="/vote-progress/:id" element={<MainContainer ><VoteProgress /></MainContainer>} />
+              <Route path="/vote/:id/results" element={<MainContainer ><Results /></MainContainer>} />
               <Route path="/completed" element={<MainContainer ><Completed /></MainContainer>} />
               <Route path="*" element={<div>404 Not Found</div>} />
             </Routes>

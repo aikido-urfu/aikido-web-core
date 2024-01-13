@@ -29,7 +29,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             )}
             <div style={{ marginTop: 16 }}>
               <TeamOutlined style={{ marginRight: 8 }} />
-              <a href={user.telegram}>Telegram</a>
+              <a href={user.telegram || ''}>Telegram</a>
             </div>
           </>
         }

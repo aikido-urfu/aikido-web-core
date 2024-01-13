@@ -62,7 +62,7 @@ const SecondStep: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
 }) => {
-  const [isShowModal, setshowModal] = useState(true);
+  const [isShowModal, setshowModal] = useState(false);
   const {rootStore} = useEnv()
   const voteCreateModel = rootStore.VoteCreate
   const env = useEnv()
@@ -77,17 +77,17 @@ const SecondStep: React.FC<SecondStepType> = ({
 
   const handleSendClick = () => {
     const res: PostVote = {
-      title: voteCreateModel.title,
-      description: voteCreateModel.description,
-      dateOfStart: voteCreateModel.dateOfStart,
-      dateOfEnd: voteCreateModel.dateOfEnd,
+      title: voteCreateModel.title || '',
+      description: voteCreateModel.description || '',
+      dateOfStart: voteCreateModel.dateOfStart || '',
+      dateOfEnd: voteCreateModel.dateOfEnd || '',
       isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
       privateUsers: [],
       files: [],
       photos: [],
-      questions: voteCreateModel.questions,
+      questions: voteCreateModel.questions || [],
     };
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if(Array.isArray(obj[field])) {
@@ -133,7 +133,7 @@ const SecondStep: React.FC<SecondStepType> = ({
           <p>Добавить вопрос +</p>
         </div>
       </div>
-      {...voteCreateModel.questions.map((x, index) => {
+      {voteCreateModel.questions?.map((x, index) => {
         return <QuestionBlock onDeleteClick={handleDeleteQuestionClick} id={index} data={x} />;
       })}
 
@@ -157,7 +157,7 @@ const SecondStep: React.FC<SecondStepType> = ({
           style={{
             margin: '20px 10px 20px 20px',
           }}
-          onClick={() => onStepChange(0)}
+          onClick={() => onStepChange && onStepChange(0)}
         >
           Назад
         </Button>
