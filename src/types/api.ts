@@ -93,7 +93,6 @@ export type GetUsers = {
   telegram: string;
 }[];
 
-
 export type PostMail = {
   theme: string;
   recievers: number[];
@@ -108,4 +107,4 @@ export type PostMail = {
     name: string;
     type: string;
   }[];
-}
+};
