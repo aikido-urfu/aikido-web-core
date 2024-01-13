@@ -1,13 +1,13 @@
-import { Instance, types as t } from 'mobx-state-tree';
-import { Question } from '../types/api';
-import { UserProfileModel, selfUser } from './userModel';
-import { IEnv } from '../App';
+import { Instance, types as t } from 'mobx-state-tree'
+import { Question } from '../types/api'
+import { UserProfileModel, selfUser } from './userModel'
+import { IEnv } from '../App'
 
 const files = t.model({
   file: t.string,
   name: t.string,
   type: t.string,
-});
+})
 const QuestionModel = t.model({
   title: t.string,
   description: t.string,
@@ -17,7 +17,7 @@ const QuestionModel = t.model({
   files: t.array(files),
   photos: t.array(files),
   isHidenCounter: t.boolean,
-});
+})
 
 const VoteCreateModel = t
   .model({
@@ -32,13 +32,13 @@ const VoteCreateModel = t
   .actions((self) => {
     return {
       setName(value: string) {
-        self.title = value;
+        self.title = value
       },
       setDescription(value: string) {
-        self.description = value;
+        self.description = value
       },
       setAnonim(value: boolean) {
-        self.isAnonim = value;
+        self.isAnonim = value
       },
       seneCreateVote() {},
       addQuestion(question: Question) {
@@ -53,34 +53,34 @@ const VoteCreateModel = t
             isAnonimic: false,
             isHidenCounter: false,
           }),
-        );
+        )
       },
       setDate(d1: string, d2: string) {
-        self.dateOfStart = d1;
-        self.dateOfEnd = d2;
+        self.dateOfStart = d1
+        self.dateOfEnd = d2
       },
       deleteQuestion(id: number) {
-        self.questions?.splice(id, 1);
+        self.questions?.splice(id, 1)
       },
       setUsets(users: number[]) {
-        self.users = t.array(t.number).create(users);
+        self.users = t.array(t.number).create(users)
       },
-    };
-  });
+    }
+  })
 
 const VoteCreate = VoteCreateModel.create({
   questions: [],
   isAnonim: false,
   title: '',
   description: '',
-});
+})
 
 const rootStoreModel = t.model({
   VoteCreate: VoteCreateModel,
   selfUser: UserProfileModel,
-});
+})
 
-export type StoreType = Instance<typeof rootStoreModel>;
+export type StoreType = Instance<typeof rootStoreModel>
 
 export const CreateRootStore = (env: IEnv) => {
   return rootStoreModel.create(
@@ -89,5 +89,5 @@ export const CreateRootStore = (env: IEnv) => {
       selfUser,
     },
     env,
-  );
-};
+  )
+}

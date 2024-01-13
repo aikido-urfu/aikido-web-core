@@ -1,20 +1,20 @@
-import { Button } from 'antd';
-import React, { useState } from 'react';
+import { Button } from 'antd'
+import React, { useState } from 'react'
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   DeleteOutlined,
-} from '@ant-design/icons';
-import { PostVote, Question } from '../../types/api';
-import { useEnv } from '../../App';
-import { observer } from 'mobx-react-lite';
-import { ModalAddQuestion } from './ModalAddQuestion';
+} from '@ant-design/icons'
+import { PostVote, Question } from '../../types/api'
+import { useEnv } from '../../App'
+import { observer } from 'mobx-react-lite'
+import { ModalAddQuestion } from './ModalAddQuestion'
 
 type QuestionType = {
-  data: Question;
-  id: number;
-  onDeleteClick: (id: number) => void;
-};
+  data: Question
+  id: number
+  onDeleteClick: (id: number) => void
+}
 
 const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
   return (
@@ -38,43 +38,43 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
           alignItems: 'center',
         }}
       >
-        {id > 0 && <ArrowUpOutlined style={{ fontSize: '150%' }} />}
+        {id + 1 > 1 && <ArrowUpOutlined style={{ fontSize: '150%' }} />}
         <ArrowDownOutlined style={{ fontSize: '150%' }} />
-        {id}
+        {id + 1}
         <div>
           <h4>{data.title}</h4>
-          <p className="gray">{data.description}</p>
+          <p className='gray'>{data.description}</p>
         </div>
       </div>
       <DeleteOutlined
-        className="pointer"
+        className='pointer'
         onClick={() => onDeleteClick(id)}
         style={{ fontSize: '150%' }}
       />
     </div>
-  );
-};
+  )
+}
 
 type SecondStepType = {
-  onStepChange?: (step: number) => void;
-  onFInallizeVote: (data: PostVote) => void;
-};
+  onStepChange?: (step: number) => void
+  onFInallizeVote: (data: PostVote) => void
+}
 const SecondStep: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
 }) => {
-  const [isShowModal, setshowModal] = useState(false);
-  const { rootStore } = useEnv();
-  const voteCreateModel = rootStore.VoteCreate;
-  const env = useEnv();
+  const [isShowModal, setshowModal] = useState(false)
+  const { rootStore } = useEnv()
+  const voteCreateModel = rootStore.VoteCreate
+  const env = useEnv()
 
   const showModal = () => {
-    setshowModal(true);
-  };
+    setshowModal(true)
+  }
 
   const onQuestionAdd = (data: Question) => {
-    voteCreateModel.addQuestion(data);
-  };
+    voteCreateModel.addQuestion(data)
+  }
 
   const handleSendClick = () => {
     const res: PostVote = {
@@ -89,33 +89,33 @@ const SecondStep: React.FC<SecondStepType> = ({
       files: [],
       photos: [],
       questions: voteCreateModel.questions || [],
-    };
+    }
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
         //@ts-expect-error AAA
         if (obj[field].length === 0) {
-          env.messageApi.error(`Поле ${field} должно иметь длину больше 0`);
-          return false;
+          env.messageApi.error(`Поле ${field} должно иметь длину больше 0`)
+          return false
         }
-        return true;
+        return true
       }
       // eslint-disable-next-line no-prototype-builtins
       if (obj.hasOwnProperty(field) && obj[field] !== '') {
-        return true;
+        return true
       } else {
-        env.messageApi.error(`Поле ${field} должно быть заполненно`);
+        env.messageApi.error(`Поле ${field} должно быть заполненно`)
       }
-    };
+    }
     checkField(res, 'title') &&
       checkField(res, 'description') &&
       checkField(res, 'dateOfEnd') &&
       checkField(res, 'questions') &&
-      onFInallizeVote(res);
-  };
+      onFInallizeVote(res)
+  }
 
   const handleDeleteQuestionClick = (id: number) => {
-    voteCreateModel.deleteQuestion(id);
-  };
+    voteCreateModel.deleteQuestion(id)
+  }
 
   return (
     <div
@@ -134,8 +134,8 @@ const SecondStep: React.FC<SecondStepType> = ({
           padding: '0 20px',
         }}
       >
-        <div className="pointer" onClick={showModal}>
-          <p>Добавить вопрос +</p>
+        <div className='pointer' onClick={showModal}>
+          <p className='select-none	'>Добавить вопрос +</p>
         </div>
       </div>
       {voteCreateModel.questions?.map((x, index) => {
@@ -145,7 +145,7 @@ const SecondStep: React.FC<SecondStepType> = ({
             id={index}
             data={x}
           />
-        );
+        )
       })}
 
       <div
@@ -179,7 +179,7 @@ const SecondStep: React.FC<SecondStepType> = ({
         setshowModal={setshowModal}
       />
     </div>
-  );
-};
+  )
+}
 
-export default observer(SecondStep);
+export default observer(SecondStep)

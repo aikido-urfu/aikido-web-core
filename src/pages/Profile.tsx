@@ -1,17 +1,17 @@
-import React from 'react';
-import { Result, Button, Avatar } from 'antd';
-import { UserOutlined, TeamOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { useEnv } from '../App';
-import { observer } from 'mobx-react-lite';
+import React from 'react'
+import { Result, Button, Avatar } from 'antd'
+import { UserOutlined, TeamOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
+import { useEnv } from '../App'
+import { observer } from 'mobx-react-lite'
 
 interface ProfileProps {
-  isOwner: boolean;
+  isOwner: boolean
 }
 
 const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
-  const env = useEnv();
-  const user = env.rootStore.selfUser;
+  const env = useEnv()
+  const user = env.rootStore.selfUser
 
   return (
     <div
@@ -29,8 +29,8 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
         extra={
           <>
             {isOwner && (
-              <Link to="/edit-profile">
-                <Button type="primary">Edit Profile</Button>
+              <Link to='/edit-profile'>
+                <Button type='primary'>Edit Profile</Button>
               </Link>
             )}
             <div style={{ marginTop: 16 }}>
@@ -41,7 +41,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
         }
       />
     </div>
-  );
-};
+  )
+}
 
-export default observer(Profile);
+export default observer(Profile)

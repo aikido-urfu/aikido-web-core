@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import './index.css';
-import { Button, Checkbox, Progress, Radio, Space } from 'antd';
+import React, { useEffect, useState } from 'react'
+import './index.css'
+import { Button, Checkbox, Progress, Radio, Space } from 'antd'
 import {
   createSearchParams,
   useNavigate,
   useParams,
   useSearchParams,
-} from 'react-router-dom';
-import { useEnv } from '../../App';
-import { GetVoteById } from '../../types/api';
+} from 'react-router-dom'
+import { useEnv } from '../../App'
+import { GetVoteById } from '../../types/api'
 
 type BottomControlType = {
-  onBackClick?: () => void;
-  onNextClick?: () => void;
-  isShowBack?: boolean;
-  isShowNext?: boolean;
-  nextText?: string;
-  backText?: string;
-};
+  onBackClick?: () => void
+  onNextClick?: () => void
+  isShowBack?: boolean
+  isShowNext?: boolean
+  nextText?: string
+  backText?: string
+}
 
 const BottomControl: React.FC<BottomControlType> = ({
   onBackClick,
@@ -52,104 +52,111 @@ const BottomControl: React.FC<BottomControlType> = ({
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 BottomControl.defaultProps = {
   backText: 'Перейти назад',
   nextText: 'Перейти далее',
   isShowBack: true,
   isShowNext: true,
-};
+}
 
 export const VoteProgress: React.FC = () => {
-  const env = useEnv();
-  const [sendPage, setsendPage] = useState(false);
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>();
-  const selectedPage = Number(searchParams.get('selectedPage')) ?? 0;
-  const [selectedQuest, setselectedQuest] = useState(selectedPage);
-  const selectedQuestion = selectedVote?.questions[selectedPage];
-  const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index);
-  const [answers, setanswers] = useState<{ [K: number]: Array<number> }>({});
+  const env = useEnv()
+  const [sendPage, setsendPage] = useState(false)
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const [searchParams] = useSearchParams()
+  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
+  const selectedPage = Number(searchParams.get('selectedPage')) ?? 0
+  const [selectedQuest, setselectedQuest] = useState(selectedPage)
+  const selectedQuestion = selectedVote?.questions[selectedPage]
+  const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index)
+  const [answers, setanswers] = useState<{ [K: number]: Array<number> }>({})
 
   const handleSetSelectedPage = (selectedPage: number) => {
-    setselectedQuest(selectedPage);
+    setselectedQuest(selectedPage)
     navigate({
       pathname: '',
       search: createSearchParams({
         selectedPage: selectedPage.toString(),
       }).toString(),
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
-        setselectedVote(res.data);
+        setselectedVote(res.data)
       })
       .catch((err) => {
-        env.logger.error(err);
-      });
-  }, [id, selectedPage]);
+        env.logger.error(err)
+      })
+  }, [id, selectedPage])
 
   const handleAnswerSet = (value: number) => {
     if (selectedQuestion) {
-      const isMulty = selectedQuestion.isMultiply;
-      const questId = selectedQuestion.id;
+      const isMulty = selectedQuestion.isMultiply
+      const questId = selectedQuestion.id
       if (!isMulty) {
-        const newObj = { ...answers, [questId]: [value] };
-        setanswers(newObj);
+        const newObj = { ...answers, [questId]: [value] }
+        setanswers(newObj)
       } else {
-        const newObj = { ...answers };
-        if (!newObj[questId]) newObj[questId] = [];
-        const arr = newObj[questId];
-        const index = arr.indexOf(value);
+        const newObj = { ...answers }
+        if (!newObj[questId]) newObj[questId] = []
+        const arr = newObj[questId]
+        const index = arr.indexOf(value)
         if (index !== -1) {
-          arr.splice(index, 1);
+          arr.splice(index, 1)
         } else {
-          arr.push(value);
+          arr.push(value)
         }
-        setanswers(newObj);
+        setanswers(newObj)
       }
     }
-  };
+  }
 
   const isSelected = (id: number) => {
     if (selectedQuestion) {
-      const questId = selectedQuestion.id;
+      const questId = selectedQuestion.id
       return (
         answers[questId] != undefined && answers[questId].indexOf(id) !== -1
-      );
+      )
     }
-    return false;
-  };
+    return false
+  }
 
   const canSendAnswers = () => {
     return (
       selectedVote &&
       selectedVote.questions.length ===
         Object.values(answers).filter((x) => x.length !== 0).length
-    );
-  };
+    )
+  }
 
   const handleSendAnswers = () => {
     if (selectedQuestion) {
       env.API.sendAnswers(answers, selectedVote.id)
         .then((res) => {
-          env.logger.info(res);
+          env.logger.info(res)
           navigate('/completed', {
             state: {
               text: 'Поздравляем! Ответы отправлены',
             },
-          });
+          })
         })
-        .catch((err) => env.logger.error(err));
+        .catch((err) => env.logger.error(err))
     }
-  };
+  }
   // eslint-disable-next-line react/no-unescaped-entities
-  if (!selectedQuestion) return <>'undefined question 404'</>;
+  if (!selectedQuestion) {
+    navigate('/completed', {
+      state: {
+        text: 'Что то пошло не так',
+      },
+    })
+    return <></>
+  }
   return (
     <div
       style={{
@@ -217,20 +224,20 @@ export const VoteProgress: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </div>
           <BottomControl
             onBackClick={() => setsendPage(false)}
-            backText="Вернуться к голосованию"
-            nextText="Закончить голосование"
+            backText='Вернуться к голосованию'
+            nextText='Закончить голосование'
             onNextClick={() => {
               if (canSendAnswers()) {
                 //do stuf
-                handleSendAnswers();
+                handleSendAnswers()
               } else {
-                env.messageApi.error('Нужно ответить на все вопросы');
+                env.messageApi.error('Нужно ответить на все вопросы')
               }
             }}
           />
@@ -272,7 +279,7 @@ export const VoteProgress: React.FC = () => {
               ></div>
               {!selectedQuestion.isMultiply ? (
                 <>
-                  <Space direction="vertical">
+                  <Space direction='vertical'>
                     {selectedQuestion.answers.map((x) => (
                       <Radio
                         checked={isSelected(x.id)}
@@ -286,12 +293,12 @@ export const VoteProgress: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Space direction="vertical">
+                  <Space direction='vertical'>
                     {selectedQuestion.answers.map((x) => (
                       <Checkbox
                         checked={isSelected(x.id)}
                         onChange={() => {
-                          handleAnswerSet(x.id);
+                          handleAnswerSet(x.id)
                         }}
                       >
                         {x.text}
@@ -307,7 +314,7 @@ export const VoteProgress: React.FC = () => {
               onNextClick={() => {
                 selectedQuest < (QUESTIONS_MOCK?.length || 0) - 1
                   ? handleSetSelectedPage(selectedQuest + 1)
-                  : setsendPage(true);
+                  : setsendPage(true)
               }}
               onBackClick={() => handleSetSelectedPage(selectedQuest - 1)}
               nextText={
@@ -348,7 +355,7 @@ export const VoteProgress: React.FC = () => {
               {QUESTIONS_MOCK?.map((x) => {
                 return (
                   <div
-                    className="pointer"
+                    className='pointer'
                     style={{
                       width: 70,
                       height: 70,
@@ -361,17 +368,17 @@ export const VoteProgress: React.FC = () => {
                           : '1px solid #DADADA',
                     }}
                     onClick={() => {
-                      handleSetSelectedPage(x);
+                      handleSetSelectedPage(x)
                     }}
                   >
                     <div>{x + 1}</div>
                   </div>
-                );
+                )
               })}
             </div>
           </div>
         </>
       )}
     </div>
-  );
-};
+  )
+}

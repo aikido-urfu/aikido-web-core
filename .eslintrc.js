@@ -29,6 +29,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "react", "prettier"],
   ignorePatterns: ["*.js", "**/vendor/*.js"],
   rules: {
+    "semi": "off",
     "quotes": [2, "single", { "avoidEscape": true }],
     "prettier/prettier": "error",
     "react/jsx-key": "off",

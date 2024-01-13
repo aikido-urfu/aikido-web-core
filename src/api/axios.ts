@@ -1,20 +1,21 @@
-import axios from 'axios';
+import axios from 'axios'
 import {
+  GetMail,
   GetUsers,
   GetVote,
   GetVoteById,
   PostMail,
   PostVote,
-} from '../types/api';
-import { UserTypeGet } from '../models/userModel';
+} from '../types/api'
+import { UserTypeGet } from '../models/userModel'
 
 const a = axios.create({
   baseURL: 'http://venchass.ru:3005',
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1MDc5MDgwLCJleHAiOjE3MDc2NzEwODB9.eFWg-XUd1Wb0L3w4QmCyV8XwlDgTg-gOI8VEmKkS0dc',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1MTcyOTU2LCJleHAiOjE3MDc3NjQ5NTZ9.1XOQNtrmeg0chXvLuLClL0dL72Bfuadms3OANoh5HnM',
   },
-});
+})
 
 export const API = {
   sendCreateVote(data: PostVote) {
@@ -22,28 +23,34 @@ export const API = {
       headers: {
         ContentType: 'application/json',
       },
-    });
+    })
   },
   getVotes() {
-    return a.get<{ votes: GetVote[] }>('/votes');
+    return a.get<{ votes: GetVote[] }>('/votes')
   },
   getVote(id: number) {
-    return a.get<GetVoteById>(`/votes/${id}`);
+    return a.get<GetVoteById>(`/votes/${id}`)
   },
   sendAnswers(answers: { [k: number]: Array<number> }, voteId: number) {
-    return a.put(`/votes/${voteId}`, answers, {});
+    return a.put(`/votes/${voteId}`, answers, {})
   },
   getUserByToken() {
-    return a.get<UserTypeGet>('/users/me');
+    return a.get<UserTypeGet>('/users/me')
   },
   getUsersAll() {
-    return a.get<GetUsers>('/users');
+    return a.get<GetUsers>('/users')
   },
   sendMail(data: PostMail) {
     a.post('/mail', data, {
       headers: {
         ContentType: 'application/json',
       },
-    });
+    })
   },
-};
+  getMail() {
+    return a.get<GetMail>('/mail')
+  },
+  readMail(id: number) {
+    return a.put(`/mail/${id}`, {})
+  },
+}

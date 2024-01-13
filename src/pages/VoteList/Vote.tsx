@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Input, Tag } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { Button, Input, Tag } from 'antd'
 import {
   CheckSquareOutlined,
   EditOutlined,
   FieldTimeOutlined,
   MenuFoldOutlined,
   UserOutlined,
-} from '@ant-design/icons';
-import { ListUser } from './ListUser';
-import { ListVote } from './ListVote';
-import { useNavigate } from 'react-router-dom';
-import { useEnv } from '../../App';
-import { GetVote, GetVoteById } from '../../types/api';
-import { prettyDate } from '../../api/tools';
-import { observer } from 'mobx-react-lite';
+} from '@ant-design/icons'
+import { ListUser } from './ListUser'
+import { ListVote } from './ListVote'
+import { useNavigate } from 'react-router-dom'
+import { useEnv } from '../../App'
+import { GetVote, GetVoteById } from '../../types/api'
+import { prettyDate } from '../../api/tools'
+import { observer } from 'mobx-react-lite'
 
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
-  const [votes, setvotes] = useState<GetVote[]>([]);
-  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>();
-  const [selectedVoteId, setselectedVoteId] = useState(-1);
-  const navigate = useNavigate();
-  const env = useEnv();
+  const [votes, setvotes] = useState<GetVote[]>([])
+  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
+  const [selectedVoteId, setselectedVoteId] = useState(-1)
+  const navigate = useNavigate()
+  const env = useEnv()
   const isAlredyVoted =
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)
-      .length !== 0;
+      .length !== 0
   const handleSelectedVote = (value: number, index: number) => {
-    setselectedVoteId(index);
+    setselectedVoteId(index)
     env.API.getVote(value)
       .then((res) => {
-        setselectedVote(res.data);
+        setselectedVote(res.data)
       })
       .catch((err) => {
-        env.logger.error(err);
-        err;
-      });
-  };
+        env.logger.error(err)
+        err
+      })
+  }
 
   useEffect(() => {
     env.API.getVotes()
       .then((res) => {
-        setvotes(res.data.votes);
-        handleSelectedVote(res.data.votes[0]?.id, 0);
+        setvotes(res.data.votes)
+        handleSelectedVote(res.data.votes[0]?.id, 0)
       })
       .catch((err) => {
-        env.logger.error(err);
-      });
-  }, []);
+        env.logger.error(err)
+      })
+  }, [])
 
   return (
     <>
@@ -79,14 +79,13 @@ const VotePage: React.FC = () => {
             height: 32,
           }}
           onClick={() => {
-            navigate('/voteCreate');
+            navigate('/voteCreate')
           }}
         >
           Добавить голосование
         </Button>
       </div>
       <div
-        className="container"
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -96,11 +95,11 @@ const VotePage: React.FC = () => {
           style={{
             background: '#FFF',
             //boxShadow: '0px 6px 25px 5px rgba(0, 0, 0, 0.10)',
-            maxHeight: 'calc(100vh - 124px)',
+            minHeight: 'calc(100vh - 124px)',
           }}
         >
           <Input.Search
-            placeholder="Enter a keyword"
+            placeholder='Enter a keyword'
             onSearch={() => {}}
             style={{
               width: 400,
@@ -110,7 +109,7 @@ const VotePage: React.FC = () => {
           />
           <div
             style={{
-              overflowY: 'scroll',
+              overflowY: 'auto',
               maxHeight: 'calc(100vh - 124px - 73px)',
             }}
           >
@@ -118,7 +117,7 @@ const VotePage: React.FC = () => {
               return (
                 <div
                   onClick={() => {
-                    handleSelectedVote(x.id, index);
+                    handleSelectedVote(x.id, index)
                   }}
                 >
                   <ListVote
@@ -132,7 +131,7 @@ const VotePage: React.FC = () => {
                     description={x.description}
                   />
                 </div>
-              );
+              )
             })}
           </div>
         </div>
@@ -142,7 +141,6 @@ const VotePage: React.FC = () => {
             style={{
               padding: '15px',
               width: '100%',
-              height: '800px',
               filter: 'drop-shadow(0px 3px 25px rgba(0, 0, 0, 0.10))',
             }}
           >
@@ -156,16 +154,16 @@ const VotePage: React.FC = () => {
                 padding: '15px',
               }}
             >
-              <div className="flex gap-4 ">
+              <div className='flex gap-4 '>
                 <h3>{selectedVote.title}</h3>
                 {selectedVote.isAnonymous && (
-                  <Tag className="h-5" color="blue">
+                  <Tag className='h-5' color='blue'>
                     Анонимное голосование
                   </Tag>
                 )}
               </div>
               {selectedVote.user.id === env.rootStore.selfUser.id && (
-                <Button>
+                <Button onClick={() => {}}>
                   <EditOutlined />
                   Редактировать
                 </Button>
@@ -201,7 +199,7 @@ const VotePage: React.FC = () => {
                   >
                     <div>
                       <h4>Организатор</h4>
-                      <p className="gray">{selectedVote.user.fullName}</p>
+                      <p className='gray'>{selectedVote.user.fullName}</p>
                     </div>
                     <UserOutlined
                       style={{ marginLeft: 'auto', fontSize: '150%' }}
@@ -217,7 +215,7 @@ const VotePage: React.FC = () => {
                   <div style={{ display: 'flex' }}>
                     <div>
                       <h4>Сроки проведения</h4>
-                      <p className="gray">{`${prettyDate(
+                      <p className='gray'>{`${prettyDate(
                         selectedVote.dateOfStart,
                       )}-${prettyDate(selectedVote.dateOfEnd)}`}</p>
                     </div>
@@ -238,7 +236,7 @@ const VotePage: React.FC = () => {
                 <div style={{ display: 'flex' }}>
                   <div>
                     <h4>Кол-во вопросов</h4>
-                    <p className="gray">{selectedVote.questions.length}</p>
+                    <p className='gray'>{selectedVote.questions.length}</p>
                   </div>
                   <CheckSquareOutlined
                     style={{
@@ -277,7 +275,6 @@ const VotePage: React.FC = () => {
               </div>
             ) : (
               <div
-                className="container"
                 style={{
                   display: 'flex',
                   width: '100%',
@@ -287,7 +284,7 @@ const VotePage: React.FC = () => {
               >
                 <div //1column
                   style={{
-                    minHeight: 620,
+                    minHeight: 480,
                     maxHeight: 700,
                     backgroundColor: '#FFF',
                     flexBasis: '66%',
@@ -315,20 +312,20 @@ const VotePage: React.FC = () => {
                       }}
                     >
                       <h3>Участники</h3>
-                      <p className="gray">
+                      <p className='gray'>
                         {selectedVote.usersVoted?.length ?? 0}
                       </p>
                     </div>
                   </div>
                   <div
-                    className="usersContainer"
+                    className='usersContainer'
                     style={{
                       backgroundColor: '#FFF',
                     }}
                   >
                     <div
                       style={{
-                        overflowY: 'scroll',
+                        overflowY: 'auto',
                         height: 450,
                       }}
                     >
@@ -340,7 +337,7 @@ const VotePage: React.FC = () => {
                             name={x.fullName}
                             onDeleteClick={() => {}}
                           />
-                        );
+                        )
                       })}
                     </div>
                   </div>
@@ -349,7 +346,7 @@ const VotePage: React.FC = () => {
                 <div //2column
                   style={{
                     flexBasis: '34%',
-                    minHeight: 620,
+                    minHeight: 400,
                     maxHeight: 700,
                     backgroundColor: '#FFF',
                     borderLeft: '1px solid #DADADA',
@@ -389,21 +386,21 @@ const VotePage: React.FC = () => {
             )}
 
             <div
-              className="bg-white py-3 px-5"
+              className='bg-white py-3 px-5'
               style={{
                 borderTop: '0.5px solid #DADADA',
               }}
             >
               {!isAlredyVoted ? (
                 <Button
-                  className="w-200"
-                  type="primary"
+                  className='w-200'
+                  type='primary'
                   onClick={() => navigate(`/vote-progress/${selectedVote.id}`)}
                 >
                   Перейти к голосованию
                 </Button>
               ) : (
-                <div className="flex gap-3">
+                <div className='flex gap-3'>
                   <Button
                     onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
                   >
@@ -416,7 +413,7 @@ const VotePage: React.FC = () => {
         ) : null}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default observer(VotePage);
+export default observer(VotePage)

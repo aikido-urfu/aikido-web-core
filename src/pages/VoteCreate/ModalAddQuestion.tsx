@@ -1,45 +1,45 @@
-import { Button, Input, Modal, Switch } from 'antd';
-import { Question } from '../../types/api';
-import React, { useState } from 'react';
-import { DeleteOutlined, UploadOutlined } from '@ant-design/icons';
-import TextArea from 'antd/es/input/TextArea';
-import { useEnv } from '../../App';
+import { Button, Input, Modal, Switch } from 'antd'
+import { Question } from '../../types/api'
+import React, { useState } from 'react'
+import { DeleteOutlined, UploadOutlined } from '@ant-design/icons'
+import TextArea from 'antd/es/input/TextArea'
+import { useEnv } from '../../App'
 
 type ModalAddQuestionType = {
-  isShowModal: boolean;
-  setshowModal: (val: boolean) => void;
-  onAddClick: (q: Question) => void;
-};
+  isShowModal: boolean
+  setshowModal: (val: boolean) => void
+  onAddClick: (q: Question) => void
+}
 
 function convertFilesToBase64(
   files: UploadFile[],
 ): Promise<{ file: string; name: string; type: string }[]> {
-  const promises: Promise<{ file: string; name: string; type: string }>[] = [];
+  const promises: Promise<{ file: string; name: string; type: string }>[] = []
 
   for (const file of files) {
     const promise = new Promise<{ file: string; name: string; type: string }>(
       (resolve, reject) => {
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onloadend = () => {
           if (typeof reader.result === 'string') {
             resolve({
               file: reader.result,
               name: file.name,
               type: file.type || '',
-            });
+            })
           } else {
-            reject(new Error('Failed to convert file to base64'));
+            reject(new Error('Failed to convert file to base64'))
           }
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file as unknown as Blob);
+        }
+        reader.onerror = reject
+        reader.readAsDataURL(file as unknown as Blob)
       },
-    );
+    )
 
-    promises.push(promise);
+    promises.push(promise)
   }
 
-  return Promise.all(promises);
+  return Promise.all(promises)
 }
 
 export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
@@ -47,20 +47,20 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   setshowModal,
   onAddClick,
 }) => {
-  const [name, setname] = useState('');
-  const [description, setdescription] = useState('');
-  const [questions, setquestions] = useState<string[]>(['', '']);
-  const [isMultiply, setisMultiply] = useState(false);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const env = useEnv();
+  const [name, setname] = useState('')
+  const [description, setdescription] = useState('')
+  const [questions, setquestions] = useState<string[]>(['', ''])
+  const [isMultiply, setisMultiply] = useState(false)
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const env = useEnv()
 
   const clear = () => {
-    setname('');
-    setdescription('');
-    setquestions(['', '']);
-    setisMultiply(false);
-    setFileList([]);
-  };
+    setname('')
+    setdescription('')
+    setquestions(['', ''])
+    setisMultiply(false)
+    setFileList([])
+  }
 
   const handleAddClick = () => {
     convertFilesToBase64(fileList)
@@ -72,31 +72,31 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
           photos: res,
           isMultiply,
           answers: questions,
-        });
+        })
       })
-      .catch((err) => env.messageApi.error(err));
-    clear();
-    setshowModal(false);
-  };
+      .catch((err) => env.messageApi.error(err))
+    clear()
+    setshowModal(false)
+  }
 
   const handleDeleteAnswer = (index: number) => {
-    const copy = [...questions];
-    copy.splice(index, 1);
-    setquestions([...copy]);
-  };
+    const copy = [...questions]
+    copy.splice(index, 1)
+    setquestions([...copy])
+  }
 
   return (
     <Modal
       footer={[]}
-      title=""
+      title=''
       width={1200}
-      cancelText="Отмена"
+      cancelText='Отмена'
       open={isShowModal}
       onOk={() => {
-        handleAddClick();
+        handleAddClick()
       }}
       onCancel={() => {
-        setshowModal(false);
+        setshowModal(false)
       }}
     >
       <div>
@@ -122,7 +122,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             >
               <h3>Создание вопроса</h3>
             </div>
-            <p style={{ marginTop: 20 }} className="gray">
+            <p style={{ marginTop: 20 }} className='gray'>
               Название вопроса
             </p>
             <div
@@ -139,7 +139,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 onChange={(val) => setisMultiply(val)}
               />
             </div>
-            <p className="gray">Описание</p>
+            <p className='gray'>Описание</p>
             <TextArea
               rows={12}
               onChange={(e) => setdescription(e.target.value)}
@@ -159,11 +159,11 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 >
                   <p>{index + 1}</p>
                   <Input
-                    placeholder="вариант ответа"
+                    placeholder='вариант ответа'
                     value={x}
                     onChange={(e) => {
-                      questions[index] = e.target.value;
-                      setquestions([...questions]);
+                      questions[index] = e.target.value
+                      setquestions([...questions])
                     }}
                   />
                   {index > 1 && (
@@ -173,19 +173,19 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                     />
                   )}
                 </div>
-              );
+              )
             })}
             <div
-              className="pointer"
+              className='pointer'
               style={{
                 color: '#1890FF',
               }}
               onClick={() => {
-                questions.push('');
-                setquestions([...questions]);
+                questions.push('')
+                setquestions([...questions])
               }}
             >
-              <h4>Добавить вопрос +</h4>
+              <h4 className='select-none	'>Добавить вопрос +</h4>
             </div>
           </div>
           <div
@@ -219,37 +219,37 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             margin: '20px 0 0 0',
           }}
         >
-          <Button onClick={handleAddClick} type="primary">
+          <Button onClick={handleAddClick} type='primary'>
             Сохранить
           </Button>
           <Button onClick={() => setshowModal(false)}>Отмена</Button>
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-import { Upload } from 'antd';
-import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { Upload } from 'antd'
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
 type AddFiesType = {
-  fileList: UploadFile<any>[];
-  setFileList: React.Dispatch<React.SetStateAction<UploadFile<any>[]>>;
-};
+  fileList: UploadFile<any>[]
+  setFileList: React.Dispatch<React.SetStateAction<UploadFile<any>[]>>
+}
 const AddFiles: React.FC<AddFiesType> = ({ fileList, setFileList }) => {
   const props: UploadProps = {
     onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
+      const index = fileList.indexOf(file)
+      const newFileList = fileList.slice()
+      newFileList.splice(index, 1)
+      setFileList(newFileList)
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file]);
+      setFileList([...fileList, file])
 
-      return false;
+      return false
     },
     fileList,
-  };
+  }
 
   return (
     <div
@@ -257,9 +257,9 @@ const AddFiles: React.FC<AddFiesType> = ({ fileList, setFileList }) => {
         marginTop: 20,
       }}
     >
-      <Upload listType="picture" {...props}>
+      <Upload listType='picture' {...props}>
         <Button icon={<UploadOutlined />}>Загрузить Файлы</Button>
       </Upload>
     </div>
-  );
-};
+  )
+}

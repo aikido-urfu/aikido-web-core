@@ -11,4 +11,4 @@ export const USERS_MOCK = [
     name: 'Шолов Евгений Дмитреевич',
     mail: 'v.sergeev@mail.ru',
   },
-];
+]

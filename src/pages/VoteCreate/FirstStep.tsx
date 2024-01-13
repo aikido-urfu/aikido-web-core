@@ -1,21 +1,22 @@
-import { Button, DatePicker, Input, Switch } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import React, { useState } from 'react';
-import { ListUser } from '../VoteList/ListUser';
-import { observer } from 'mobx-react-lite';
-import { useEnv } from '../../App';
-import { SelectUsers } from './SelectUsers';
-import { GetUsers } from '../../types/api';
+import { Button, DatePicker, Input, Switch } from 'antd'
+import TextArea from 'antd/es/input/TextArea'
+import React, { useState } from 'react'
+import { ListUser } from '../VoteList/ListUser'
+import { observer } from 'mobx-react-lite'
+import { useEnv } from '../../App'
+import { SelectUsers } from './SelectUsers'
+import { GetUsers } from '../../types/api'
 
 type FirstStepType = {
-  onStepChange: (step: number) => void;
-};
+  onStepChange: (step: number) => void
+}
 
 export const FirstStep: React.FC<FirstStepType> = observer(
   ({ onStepChange }) => {
-    const { rootStore } = useEnv();
-    const voteCreate = rootStore.VoteCreate;
-    const [users, setusers] = useState<GetUsers>([]);
+    const { rootStore } = useEnv()
+    const voteCreate = rootStore.VoteCreate
+    const [users, setusers] = useState<GetUsers>([])
+    const [savedDate, setsavedDate] = useState<any>()
     return (
       <>
         <div
@@ -42,7 +43,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                   flexBasis: 700,
                 }}
               >
-                <p className="gray">Название голосования</p>
+                <p className='gray'>Название голосования</p>
                 <Input
                   onChange={(e) => voteCreate.setName(e.target.value)}
                   value={voteCreate.title || ''}
@@ -54,14 +55,16 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                   marginLeft: 'auto',
                 }}
               >
-                <p className="gray">Сроки проведения</p>
+                <p className='gray'>Сроки проведения</p>
                 <DatePicker.RangePicker
                   onChange={(val) => {
-                    if (val?.length != 2) return;
-                    const d1 = val[0];
-                    const d2 = val[1];
-                    voteCreate.setDate(d1!.toISOString(), d2!.toISOString());
+                    if (val?.length != 2) return
+                    setsavedDate(val)
+                    const d1 = val[0]
+                    const d2 = val[1]
+                    voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
                   }}
+                  value={savedDate}
                   format={'YYYY-MM-DD'}
                 />
               </div>
@@ -72,7 +75,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
               ></Switch>
             </div>
             <div>
-              <p className="gray">Описание</p>
+              <p className='gray'>Описание</p>
               <TextArea
                 rows={6}
                 onChange={(e) => voteCreate.setDescription(e.target.value)}
@@ -89,7 +92,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
               >
                 <h3>Участники</h3>
                 <p
-                  className="gray"
+                  className='gray'
                   style={{
                     color: 'gray',
                   }}
@@ -100,7 +103,7 @@ export const FirstStep: React.FC<FirstStepType> = observer(
             </div>
           </div>
           <div
-            className="pointer flex"
+            className='pointer flex'
             style={{
               height: 60,
               display: 'flex',
@@ -127,10 +130,9 @@ export const FirstStep: React.FC<FirstStepType> = observer(
                 <ListUser
                   name={x.fullName}
                   mail={''}
-                  isCanBeDeleted
                   onDeleteClick={() => {}}
                 />
-              );
+              )
             })}
           </div>
         </div>
@@ -141,12 +143,12 @@ export const FirstStep: React.FC<FirstStepType> = observer(
             color: '#FFF',
           }}
           onClick={() => {
-            onStepChange(1);
+            onStepChange(1)
           }}
         >
           Перейти далее
         </Button>
       </>
-    );
+    )
   },
-);
+)

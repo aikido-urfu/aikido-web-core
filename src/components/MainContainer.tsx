@@ -1,12 +1,12 @@
-import React from 'react';
-import { Layout } from 'antd';
+import React from 'react'
+import { Layout } from 'antd'
 
-import HeaderComponent from './HeaderComponent';
+import HeaderComponent from './HeaderComponent'
 
-const { Content } = Layout;
+const { Content } = Layout
 
 interface MainContainerProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
@@ -22,7 +22,7 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
         {children}
       </Content>
     </Layout>
-  );
-};
+  )
+}
 
-export default MainContainer;
+export default MainContainer

@@ -1,31 +1,31 @@
-import { Button, Steps } from 'antd';
-import React, { useState } from 'react';
-import { FirstStep } from './FirstStep';
-import SecondStep from './SecondStep';
-import { useNavigate } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useEnv } from '../../App';
-import { PostVote } from '../../types/api';
+import { Button, Steps } from 'antd'
+import React, { useState } from 'react'
+import { FirstStep } from './FirstStep'
+import SecondStep from './SecondStep'
+import { useNavigate } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import { useEnv } from '../../App'
+import { PostVote } from '../../types/api'
 
 const VoteCreate: React.FC = () => {
-  const [step, setstep] = useState(0);
-  const navigate = useNavigate();
-  const { API, logger } = useEnv();
+  const [step, setstep] = useState(0)
+  const navigate = useNavigate()
+  const { API, logger } = useEnv()
 
   const onFInallizeVote = (data: PostVote) => {
     API.sendCreateVote(data)
       .then((res) => {
-        logger.info(res);
+        logger.info(res)
         navigate('/completed', {
           state: {
             text: 'Поздравляем! Голосование создано',
           },
-        });
+        })
       })
       .catch((err) => {
-        logger.error(err);
-      });
-  };
+        logger.error(err)
+      })
+  }
 
   return (
     <>
@@ -75,7 +75,7 @@ const VoteCreate: React.FC = () => {
             }}
           >
             <Steps
-              size="small"
+              size='small'
               current={step}
               items={[
                 {
@@ -91,7 +91,7 @@ const VoteCreate: React.FC = () => {
         {step === 0 ? (
           <FirstStep
             onStepChange={(x) => {
-              setstep(x);
+              setstep(x)
             }}
           />
         ) : step === 1 ? (
@@ -102,7 +102,7 @@ const VoteCreate: React.FC = () => {
         ) : null}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default observer(VoteCreate);
+export default observer(VoteCreate)

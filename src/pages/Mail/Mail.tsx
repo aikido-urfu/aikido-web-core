@@ -3,68 +3,37 @@ import {
   FileTextOutlined,
   MoreOutlined,
   PaperClipOutlined,
-} from '@ant-design/icons';
-import { Button, Input, Modal, Pagination, Radio, Tag } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import React, { useState } from 'react';
-import { GetUsers } from '../../types/api';
-import { SelectUsers } from '../VoteCreate/SelectUsers';
-import { useEnv } from '../../App';
-
-const USER_MAIL_MOCK = [
-  {
-    avatar: '',
-    username: 'Vad Ser',
-    mail: 'chuvak@mail.ru',
-    messageDescription: 'О встрече.',
-    messageShort:
-      'Здравствуйте, хотел бы уточнить о завтрашней встрече в 18:00. В каком кабинете встречаемся и что необходим...',
-    messageTime: '20:44',
-    isReaded: true,
-  },
-  {
-    avatar: '',
-    username: 'Vad Ser',
-    mail: 'chuvak@mail.ru',
-    messageDescription: 'О встрече.',
-    messageShort:
-      'Здравствуйте, хотел бы уточнить о завтрашней встрече в 18:00. В каком кабинете встречаемся и что необходим...',
-    messageTime: '20:44',
-    isReaded: false,
-  },
-  {
-    avatar: '',
-    username: 'Vad Ser',
-    mail: 'chuvak@mail.ru',
-    messageDescription: 'О встрече.',
-    messageShort:
-      'Здравствуйте, хотел бы уточнить о завтрашней встрече в 18:00. В каком кабинете встречаемся и что необходим...',
-    messageTime: '20:44',
-    isReaded: false,
-  },
-];
+} from '@ant-design/icons'
+import { Button, Input, Modal, Pagination, Radio, Tag } from 'antd'
+import TextArea from 'antd/es/input/TextArea'
+import React, { useEffect, useState } from 'react'
+import { GetMail, GetUsers, PostMail } from '../../types/api'
+import { SelectUsers } from '../VoteCreate/SelectUsers'
+import { useEnv } from '../../App'
 
 type ReadMessageModalType = {
-  isOpen: boolean;
-  close: () => void;
-};
+  isOpen: boolean
+  close: () => void
+  data: GetMail[0]
+}
 
 const ReadMessageModal: React.FC<ReadMessageModalType> = ({
   isOpen,
   close,
+  data,
 }) => {
   return (
     <Modal onCancel={close} open={isOpen} centered width={'80vw'} footer={[]}>
       <div
-        className="mail-modal"
+        className='mail-modal'
         style={{
           backgroundColor: '#FFF',
-          height: 900,
+          minHeight: 700,
         }}
       >
         <div
           style={{
-            height: 900 - 80,
+            height: 800 - 80,
           }}
         >
           <div
@@ -95,26 +64,33 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({
               marginBottom: 30,
             }}
           >
-            <h4>О встрече.</h4>
-            <Tag style={{ borderRadius: 10 }}>От 21.12.2023</Tag>
+            <h4>{data.theme}</h4>
+            <Tag style={{ borderRadius: 10 }}>От {data.date}</Tag>
           </div>
           <div
-            className="mail-user"
+            className='mail-user'
             style={{
               display: 'flex',
               gap: 10,
               width: 600,
             }}
           >
-            <img src="" alt="avatar" width={30} height={30} />
+            <img
+              src='https://ru-static.z-dn.net/files/d96/ced913ba9fe71679ae395a4be5fac683.jpg'
+              alt='avatar'
+              width={30}
+              height={30}
+            />
             <div>
-              <p>Cергей Киреев | sergey_kireev@mail.ru</p>
+              <p>
+                {data.user.fullName} | {data.user.email}
+              </p>
               <p>кому: мне</p>
             </div>
-            <p style={{ marginLeft: 'auto' }}>21.12.2023 19:23</p>
+            <p style={{ marginLeft: 'auto' }}>{data.date}</p>
           </div>
           <div
-            className="mail-message"
+            className='mail-message'
             style={{
               width: 600,
               marginTop: 15,
@@ -123,12 +99,9 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({
               padding: 15,
             }}
           >
-            <p>
-              Здравствуйте. Необходимо выдать логин и пароль новому сотруднику.
-              ФИО: Кошкина Любовь Сергеевна.
-            </p>
+            <p>{data.text}</p>
             <Tag
-              className="pointer"
+              className='pointer'
               style={{
                 borderRadius: 10,
                 marginTop: 25,
@@ -151,68 +124,71 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({
           }}
         >
           <TextArea rows={1} />
-          <p className="pointer" style={{ color: '#1890FF' }}>
+          <p className='pointer' style={{ color: '#1890FF' }}>
             Прикрепить
           </p>
-          <Button type="primary">Отправить</Button>
+          <Button type='primary'>Отправить</Button>
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
 type messageType = {
-  title: string;
-  description: string;
-};
+  title: string
+  description: string
+}
 
 type SendMessageModalType = {
-  setisShowModal: (val: boolean) => void;
-  isShowModal: boolean;
-};
+  setisShowModal: (val: boolean) => void
+  isShowModal: boolean
+  onMessageSend?: (message: PostMail) => void
+}
 
 const SendMessageModal: React.FC<SendMessageModalType> = ({
   setisShowModal,
   isShowModal,
+  onMessageSend,
 }) => {
-  const [data, setdata] = useState<messageType>({ title: '', description: '' });
-  const [users, setusers] = useState<GetUsers>([]);
+  const [data, setdata] = useState<messageType>({ title: '', description: '' })
+  const [users, setusers] = useState<GetUsers>([])
 
-  const env = useEnv();
+  const env = useEnv()
   const sendMessage = () => {
-    //TODO
-    env.API.sendMail({
+    const message = {
       theme: data.title,
-      recievers: users.map((x) => x.id),
+      receivers: users.map((x) => x.id),
       text: data.description,
       photos: [],
       files: [],
-    });
-    setisShowModal(false);
-  };
+    }
+    env.API.sendMail(message)
+    onMessageSend && onMessageSend(message)
+    setisShowModal(false)
+  }
   return (
     <Modal
       onCancel={() => setisShowModal(false)}
       onOk={sendMessage}
       open={isShowModal}
       centered
-      title="Новое письмо"
+      title='Новое письмо'
       width={'80vw'}
-      cancelText="Отмена"
-      okText="Отправить"
+      cancelText='Отмена'
+      okText='Отправить'
       footer={[]}
     >
       <div
-        className="mail-modal"
+        className='mail-modal'
         style={{
           backgroundColor: '#FFF',
-          height: 900,
+          height: 800,
           borderTop: '1px solid #DADADA',
         }}
       >
         <div
           style={{
-            height: 900 - 40,
+            height: 800 - 40,
           }}
         >
           <div
@@ -247,8 +223,8 @@ const SendMessageModal: React.FC<SendMessageModalType> = ({
 
           <Input.TextArea
             style={{ resize: 'none' }}
-            placeholder="Введите текст..."
-            rows={32}
+            placeholder='Введите текст...'
+            rows={26}
             value={data.description}
             onChange={(e) => setdata({ ...data, description: e.target.value })}
           ></Input.TextArea>
@@ -263,33 +239,59 @@ const SendMessageModal: React.FC<SendMessageModalType> = ({
             borderTop: '1px solid #DADADA',
           }}
         >
-          <Button onClick={sendMessage} type="primary">
+          <Button onClick={sendMessage} type='primary'>
             Отправить
           </Button>
-          <PaperClipOutlined className="pointer" style={{ fontSize: '150%' }} />
+          <PaperClipOutlined className='pointer' style={{ fontSize: '150%' }} />
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
 export const Mail: React.FC = () => {
-  const [isShowModal, setisShowModal] = useState(false);
-  const [isShowMessage, setisShowMessage] = useState(false);
+  const [isShowModal, setisShowModal] = useState(false)
+  const [isShowMessage, setisShowMessage] = useState(false)
+  const [mails, setmails] = useState<GetMail>([])
+  const [selectedMail, setselectedMail] = useState<GetMail[0]>()
+
+  const env = useEnv()
+  const handleReadMail = (selected: GetMail[0]) => {
+    env.API.readMail(selected.id).then(() => {
+      updateMail()
+    })
+    setselectedMail(selected)
+  }
+  const updateMail = () => {
+    env.API.getMail()
+      .then((res) => {
+        setmails(res.data)
+      })
+      .catch((err) => {
+        env.messageApi.error(err)
+      })
+  }
+  useEffect(() => {
+    updateMail()
+  }, [])
 
   return (
     <div>
-      <ReadMessageModal
-        close={() => setisShowMessage(false)}
-        isOpen={isShowMessage}
-      />
+      {selectedMail && (
+        <ReadMessageModal
+          close={() => setisShowMessage(false)}
+          isOpen={isShowMessage}
+          data={selectedMail}
+        />
+      )}
       <SendMessageModal
         setisShowModal={setisShowModal}
         isShowModal={isShowModal}
+        onMessageSend={() => updateMail()}
       />
 
       <div
-        className="mail-header"
+        className='mail-header'
         style={{
           padding: '30px 30px 20px 30px',
           display: 'flex',
@@ -299,22 +301,22 @@ export const Mail: React.FC = () => {
       >
         <Button
           onClick={() => {
-            setisShowModal(true);
+            setisShowModal(true)
           }}
           style={{
             marginRight: 20,
           }}
-          type="primary"
+          type='primary'
         >
           Написать письмо
         </Button>
-        <Radio.Group defaultValue="Входящие">
-          <Radio.Button value="Входящие">Входящие</Radio.Button>
-          <Radio.Button value="Отправленные">Отправленные</Radio.Button>
+        <Radio.Group defaultValue='Входящие'>
+          <Radio.Button value='Входящие'>Входящие</Radio.Button>
+          <Radio.Button value='Отправленные'>Отправленные</Radio.Button>
         </Radio.Group>
       </div>
       <div
-        className="mail-container"
+        className='mail-container'
         style={{
           margin: '0 30px',
           borderRadius: '15px 15px 0 0',
@@ -323,31 +325,37 @@ export const Mail: React.FC = () => {
           overflowY: 'scroll',
         }}
       >
-        {...USER_MAIL_MOCK.map((x) => {
+        {...mails.map((x) => {
           return (
             <div
               onClick={() => {
-                setisShowMessage(true);
+                handleReadMail(x)
+                setisShowMessage(true)
               }}
-              className="pointer"
+              className='pointer'
               style={{
                 height: 80,
-                background: x.isReaded ? '#FFF' : 'rgba(24, 144, 255, 0.05)',
+                background: x.isReaden ? '#FFF' : 'rgba(24, 144, 255, 0.05)',
                 display: 'flex',
                 padding: '0 30px 0 50px',
                 alignItems: 'center',
                 borderBottom: '1px solid #DADADA',
               }}
             >
-              <img src={x.avatar} alt="user avatat" height={30} width={30} />
+              <img
+                src='https://ru-static.z-dn.net/files/d96/ced913ba9fe71679ae395a4be5fac683.jpg'
+                alt='user avatat'
+                height={30}
+                width={30}
+              />
               <div
                 style={{
                   margin: '0 10px',
                   width: 180,
                 }}
               >
-                <h4>{x.username}</h4>
-                <p style={{ color: '#949494' }}>{x.mail}</p>
+                <h4>{x.user.fullName}</h4>
+                <p style={{ color: '#949494' }}>{x.user.email}</p>
               </div>
               <div
                 style={{
@@ -355,25 +363,25 @@ export const Mail: React.FC = () => {
                   marginRight: 35,
                 }}
               >
-                <h4>{x.messageDescription}</h4>
+                <h4>{x.theme}</h4>
               </div>
               <div
                 style={{
                   marginRight: 100,
                 }}
               >
-                <p>{x.messageShort}</p>
+                <p>{x.text}</p>
               </div>
               <div style={{ marginLeft: 'auto', display: 'flex', gap: 15 }}>
-                <p>{x.messageTime}</p>
+                <p>{x.date}</p>
                 <MoreOutlined style={{ fontSize: '150%' }} />
               </div>
             </div>
-          );
+          )
         })}
       </div>
       <div
-        className="mail-footer"
+        className='mail-footer'
         style={{
           height: 50,
           backgroundColor: '#FFF',
@@ -384,8 +392,8 @@ export const Mail: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Pagination defaultCurrent={1} total={50} />
+        <Pagination defaultCurrent={1} total={1} />
       </div>
     </div>
-  );
-};
+  )
+}

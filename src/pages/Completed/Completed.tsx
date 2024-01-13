@@ -1,12 +1,12 @@
-import { CheckCircleOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { CheckCircleOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import React from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Completed: React.FC = () => {
-  const { state } = useLocation();
-  const { text } = state;
-  const navigate = useNavigate();
+  const { state } = useLocation()
+  const { text } = state
+  const navigate = useNavigate()
 
   return (
     <div
@@ -29,9 +29,9 @@ export const Completed: React.FC = () => {
       >
         {text}
       </p>
-      <Button size="large" onClick={() => navigate('/vote')}>
+      <Button size='large' onClick={() => navigate('/vote')}>
         На главную
       </Button>
     </div>
-  );
-};
+  )
+}

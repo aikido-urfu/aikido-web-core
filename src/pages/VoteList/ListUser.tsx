@@ -1,12 +1,13 @@
-import React from 'react';
-import './index.css';
-import { DeleteOutlined } from '@ant-design/icons';
+import React from 'react'
+import './index.css'
+import { DeleteOutlined } from '@ant-design/icons'
+
 type ListUserType = {
-  name: string;
-  mail: string;
-  isCanBeDeleted?: boolean;
-  onDeleteClick?: () => void;
-};
+  name: string
+  mail: string
+  isCanBeDeleted?: boolean
+  onDeleteClick?: () => void
+}
 
 export const ListUser: React.FC<ListUserType> = ({
   name,
@@ -17,7 +18,7 @@ export const ListUser: React.FC<ListUserType> = ({
   return (
     <>
       <div
-        className="vote-list-vote"
+        className='vote-list-vote'
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -32,15 +33,16 @@ export const ListUser: React.FC<ListUserType> = ({
             display: 'flex',
           }}
         >
-          <div
+          <img
+            src='https://ru-static.z-dn.net/files/d96/ced913ba9fe71679ae395a4be5fac683.jpg'
             style={{
               width: '50px',
               height: '50px',
-              backgroundColor: 'black',
+              backgroundColor: 'gray',
               borderRadius: '50%',
               margin: '0 15px 0 0',
             }}
-          ></div>
+          ></img>
           <div>
             <h4>{name}</h4>
             <p style={{ color: 'gray' }}>{mail}</p>
@@ -54,5 +56,5 @@ export const ListUser: React.FC<ListUserType> = ({
         )}
       </div>
     </>
-  );
-};
+  )
+}

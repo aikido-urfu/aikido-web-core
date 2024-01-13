@@ -1,12 +1,12 @@
-import React from 'react';
-import './index.css';
+import React from 'react'
+import './index.css'
 type ListVoteType = {
-  id: number;
-  name: string;
-  date: string;
-  description: string;
-  isSelected: boolean;
-};
+  id: number
+  name: string
+  date: string
+  description: string
+  isSelected: boolean
+}
 
 export const ListVote: React.FC<ListVoteType> = ({
   name,
@@ -16,7 +16,7 @@ export const ListVote: React.FC<ListVoteType> = ({
 }) => {
   return (
     <div
-      className="vote-list-vote"
+      className='vote-list-vote'
       style={{
         height: '100px',
         width: '400px',
@@ -43,5 +43,5 @@ export const ListVote: React.FC<ListVoteType> = ({
       </div>
       <div>{description.substring(0, 25)}</div>
     </div>
-  );
-};
+  )
+}

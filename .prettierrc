@@ -1,4 +1,6 @@
 {
+  "semi": false,
   "singleQuote": true,
-  "max_line_length": 200
+  "max_line_length": 200,
+  "jsxSingleQuote": true
 }
