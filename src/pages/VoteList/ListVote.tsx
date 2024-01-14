@@ -1,5 +1,6 @@
 import React from 'react'
 import './index.css'
+import { maxString } from '../../api/tools'
 type ListVoteType = {
   id: number
   name: string
@@ -18,7 +19,7 @@ export const ListVote: React.FC<ListVoteType> = ({
     <div
       className='vote-list-vote'
       style={{
-        height: '100px',
+        minHeight: '100px',
         width: '400px',
         padding: '15px',
         borderBottom: '1px solid #DADADA',
@@ -39,9 +40,9 @@ export const ListVote: React.FC<ListVoteType> = ({
         }}
       >
         <h3>{name}</h3>
-        <p>{date}</p>
+        <p className='w-[155px] whitespace-nowrap	'>{date}</p>
       </div>
-      <div>{description.substring(0, 25)}</div>
+      <div>{maxString(description, 35)}</div>
     </div>
   )
 }

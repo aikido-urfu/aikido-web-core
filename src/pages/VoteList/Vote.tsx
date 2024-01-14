@@ -110,6 +110,7 @@ const VotePage: React.FC = () => {
           <div
             style={{
               overflowY: 'auto',
+              overflowX: 'hidden',
               maxHeight: 'calc(100vh - 124px - 73px)',
             }}
           >
@@ -217,7 +218,7 @@ const VotePage: React.FC = () => {
                       <h4>Сроки проведения</h4>
                       <p className='gray'>{`${prettyDate(
                         selectedVote.dateOfStart,
-                      )}-${prettyDate(selectedVote.dateOfEnd)}`}</p>
+                      )} - ${prettyDate(selectedVote.dateOfEnd)}`}</p>
                     </div>
                     <FieldTimeOutlined
                       style={{ marginLeft: 'auto', fontSize: '150%' }}

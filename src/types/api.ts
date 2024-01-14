@@ -7,11 +7,7 @@ export type Question = {
     name: string
     type: string
   }[]
-  photos: {
-    file: string
-    name: string
-    type: string
-  }[]
+  photos: string[]
   isMultiply: boolean
 }
 

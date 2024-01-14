@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { GetMail, GetUsers, PostMail } from '../../types/api'
 import { SelectUsers } from '../VoteCreate/SelectUsers'
 import { useEnv } from '../../App'
+import { maxString, prettyDate } from '../../api/tools'
 
 type ReadMessageModalType = {
   isOpen: boolean
@@ -65,7 +66,7 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({
             }}
           >
             <h4>{data.theme}</h4>
-            <Tag style={{ borderRadius: 10 }}>От {data.date}</Tag>
+            <Tag style={{ borderRadius: 10 }}>От {prettyDate(data.date)}</Tag>
           </div>
           <div
             className='mail-user'
@@ -87,7 +88,7 @@ const ReadMessageModal: React.FC<ReadMessageModalType> = ({
               </p>
               <p>кому: мне</p>
             </div>
-            <p style={{ marginLeft: 'auto' }}>{data.date}</p>
+            <p style={{ marginLeft: 'auto' }}>{prettyDate(data.date)}</p>
           </div>
           <div
             className='mail-message'
@@ -351,7 +352,7 @@ export const Mail: React.FC = () => {
               <div
                 style={{
                   margin: '0 10px',
-                  width: 180,
+                  minWidth: 180,
                 }}
               >
                 <h4>{x.user.fullName}</h4>
@@ -359,7 +360,7 @@ export const Mail: React.FC = () => {
               </div>
               <div
                 style={{
-                  width: 110,
+                  minWidth: 110,
                   marginRight: 35,
                 }}
               >
@@ -370,10 +371,10 @@ export const Mail: React.FC = () => {
                   marginRight: 100,
                 }}
               >
-                <p>{x.text}</p>
+                <p>{maxString(x.text, 125)}</p>
               </div>
               <div style={{ marginLeft: 'auto', display: 'flex', gap: 15 }}>
-                <p>{x.date}</p>
+                <p className='whitespace-nowrap'>{prettyDate(x.date)}</p>
                 <MoreOutlined style={{ fontSize: '150%' }} />
               </div>
             </div>

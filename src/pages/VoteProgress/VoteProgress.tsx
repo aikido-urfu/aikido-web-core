@@ -268,15 +268,19 @@ export const VoteProgress: React.FC = () => {
               >
                 {selectedQuestion.description}
               </p>
-              <div
-                style={{
-                  width: 600,
-                  height: 300,
-                  marginBottom: 20,
-                  backgroundImage:
-                    'url(https://bloximages.newyork1.vip.townnews.com/oanow.com/content/tncms/assets/v3/editorial/c/35/c35153f0-456f-11e6-b443-536a5188bfe3/57804b6433fec.image.jpg?resize=1200%2C800)',
-                }}
-              ></div>
+              {selectedQuestion.photos.map((x) => {
+                return (
+                  <div
+                    style={{
+                      width: 600,
+                      height: 300,
+                      marginBottom: 20,
+                      backgroundImage: `url(${x})`,
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  ></div>
+                )
+              })}
               {!selectedQuestion.isMultiply ? (
                 <>
                   <Space direction='vertical'>

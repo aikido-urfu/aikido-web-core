@@ -11,37 +11,6 @@ type ModalAddQuestionType = {
   onAddClick: (q: Question) => void
 }
 
-function convertFilesToBase64(
-  files: UploadFile[],
-): Promise<{ file: string; name: string; type: string }[]> {
-  const promises: Promise<{ file: string; name: string; type: string }>[] = []
-
-  for (const file of files) {
-    const promise = new Promise<{ file: string; name: string; type: string }>(
-      (resolve, reject) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          if (typeof reader.result === 'string') {
-            resolve({
-              file: reader.result,
-              name: file.name,
-              type: file.type || '',
-            })
-          } else {
-            reject(new Error('Failed to convert file to base64'))
-          }
-        }
-        reader.onerror = reject
-        reader.readAsDataURL(file as unknown as Blob)
-      },
-    )
-
-    promises.push(promise)
-  }
-
-  return Promise.all(promises)
-}
-
 export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   isShowModal,
   setshowModal,
@@ -52,7 +21,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   const [questions, setquestions] = useState<string[]>(['', ''])
   const [isMultiply, setisMultiply] = useState(false)
   const [fileList, setFileList] = useState<UploadFile[]>([])
-  const env = useEnv()
+  const [urlList, seturlList] = useState<string[]>([])
 
   const clear = () => {
     setname('')
@@ -63,18 +32,14 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   }
 
   const handleAddClick = () => {
-    convertFilesToBase64(fileList)
-      .then((res) => {
-        onAddClick({
-          title: name,
-          description,
-          files: [],
-          photos: res,
-          isMultiply,
-          answers: questions,
-        })
-      })
-      .catch((err) => env.messageApi.error(err))
+    onAddClick({
+      title: name,
+      description,
+      files: [],
+      photos: urlList,
+      isMultiply,
+      answers: questions,
+    })
     clear()
     setshowModal(false)
   }
@@ -185,7 +150,7 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 setquestions([...questions])
               }}
             >
-              <h4 className='select-none	'>Добавить вопрос +</h4>
+              <h4 className='select-none	'>Добавить вариант ответа +</h4>
             </div>
           </div>
           <div
@@ -207,7 +172,12 @@ export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             >
               <h3>Документы</h3>
             </div>
-            <AddFiles fileList={fileList} setFileList={setFileList} />
+            <AddFiles
+              urlList={urlList}
+              seturlList={seturlList}
+              fileList={fileList}
+              setFileList={setFileList}
+            />
           </div>
         </div>
         <div
@@ -234,17 +204,35 @@ import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
 type AddFiesType = {
   fileList: UploadFile<any>[]
   setFileList: React.Dispatch<React.SetStateAction<UploadFile<any>[]>>
+  urlList: string[]
+  seturlList: (val: string[]) => void
 }
-const AddFiles: React.FC<AddFiesType> = ({ fileList, setFileList }) => {
+const AddFiles: React.FC<AddFiesType> = ({
+  fileList,
+  setFileList,
+  urlList,
+  seturlList,
+}) => {
+  const env = useEnv()
   const props: UploadProps = {
     onRemove: (file) => {
       const index = fileList.indexOf(file)
       const newFileList = fileList.slice()
+      const newUrlList = urlList.slice()
       newFileList.splice(index, 1)
+      newUrlList.splice(index, 1)
       setFileList(newFileList)
+      seturlList(newUrlList)
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file])
+      env.API.uploadPhoto(file)
+        .then((res) => {
+          setFileList([...fileList, file])
+          seturlList([...urlList, res.data.url])
+        })
+        .catch((err) => {
+          env.messageApi.error(err)
+        })
 
       return false
     },

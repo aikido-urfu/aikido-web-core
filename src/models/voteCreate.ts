@@ -15,7 +15,7 @@ const QuestionModel = t.model({
   isAnonimic: t.boolean,
   answers: t.array(t.string),
   files: t.array(files),
-  photos: t.array(files),
+  photos: t.array(t.string),
   isHidenCounter: t.boolean,
 })
 

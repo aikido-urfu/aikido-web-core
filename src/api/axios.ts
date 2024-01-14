@@ -13,7 +13,7 @@ const a = axios.create({
   baseURL: 'http://venchass.ru:3005',
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1MTcyOTU2LCJleHAiOjE3MDc3NjQ5NTZ9.1XOQNtrmeg0chXvLuLClL0dL72Bfuadms3OANoh5HnM',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA1MjQwNTIxLCJleHAiOjE3MDc4MzI1MjF9.ytCJ9hDucbH1JwJUnwv5aluIjdgNv6vU7mv_1PYBD4E',
   },
 })
 
@@ -52,5 +52,15 @@ export const API = {
   },
   readMail(id: number) {
     return a.put(`/mail/${id}`, {})
+  },
+  uploadPhoto(file: File) {
+    const formData = new FormData()
+    formData.append('photo', file)
+
+    return a.post<{ url: string }>('/files/photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
   },
 }
