@@ -99,7 +99,7 @@ const VotePage: React.FC = () => {
           }}
         >
           <Input.Search
-            placeholder='Enter a keyword'
+            placeholder='Поиск по голосованиям'
             onSearch={() => {}}
             style={{
               width: 400,
