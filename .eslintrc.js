@@ -6,9 +6,9 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended"
   ],
   overrides: [
     {
@@ -31,7 +31,14 @@ module.exports = {
   rules: {
     "semi": "off",
     "quotes": [2, "single", { "avoidEscape": true }],
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
     "react/jsx-key": "off",
     "@typescript-eslint/no-explicit-any": "off"
   },

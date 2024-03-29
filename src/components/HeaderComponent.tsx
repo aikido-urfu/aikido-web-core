@@ -31,9 +31,9 @@ const CustomHeader: React.FC = () => {
         <Menu.Item key='2'>
           <Link to='/vote'>Голосования</Link>
         </Menu.Item>
-        <Menu.Item key='3'>
+        {/* <Menu.Item key='3'>
           <Link to='/mail'>Почта</Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key='4' style={{ float: 'right' }}>
           <Link to='/profile'>
             <Avatar icon={<UserOutlined />} />

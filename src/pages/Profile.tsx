@@ -29,8 +29,10 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
         extra={
           <>
             {isOwner && (
-              <Link to='/edit-profile'>
-                <Button type='primary'>Edit Profile</Button>
+              <Link to='/login'>
+                <Button type='primary' block>
+                  Сменить пользователя
+                </Button>
               </Link>
             )}
             <div style={{ marginTop: 16 }}>

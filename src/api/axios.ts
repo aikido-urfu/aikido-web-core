@@ -10,10 +10,10 @@ import {
 import { UserTypeGet } from '../models/userModel'
 
 const a = axios.create({
-  baseURL: 'http://venchass.ru:3005',
+  baseURL: 'localhost',
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzA1MjQwNTIxLCJleHAiOjE3MDc4MzI1MjF9.ytCJ9hDucbH1JwJUnwv5aluIjdgNv6vU7mv_1PYBD4E',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzExNzI1ODk0LCJleHAiOjE3MTQzMTc4OTR9.uDMwddUScs7WP3qIVm-gZAGd_c4vvPl7DhmOp3JwUXY',
   },
 })
 

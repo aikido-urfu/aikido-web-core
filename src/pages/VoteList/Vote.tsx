@@ -155,10 +155,20 @@ const VotePage: React.FC = () => {
                 padding: '15px',
               }}
             >
-              <div className='flex gap-4 '>
-                <h3>{selectedVote.title}</h3>
+              <div
+                className='flex gap-4 '
+                style={{ alignItems: 'center', height: 24 }}
+              >
+                <h3 style={{ lineHeight: '22px' }}>{selectedVote.title}</h3>
                 {selectedVote.isAnonymous && (
-                  <Tag className='h-5' color='blue'>
+                  <Tag
+                    color='blue'
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      height: 24,
+                    }}
+                  >
                     Анонимное голосование
                   </Tag>
                 )}
@@ -266,7 +276,7 @@ const VotePage: React.FC = () => {
                 </div>
                 <div
                   style={{
-                    height: 550,
+                    height: 450,
                     overflowY: 'auto',
                     padding: 20,
                   }}
