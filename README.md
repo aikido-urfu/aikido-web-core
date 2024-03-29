@@ -1,3 +1,3 @@
-.env
-REACT_APP_SERVER_URL='http://localhost:3005'
-REACT_APP_ACCESS_TOKEN='<TOKEN>'
+.env\
+REACT_APP_SERVER_URL='http://localhost:3005' \
+REACT_APP_ACCESS_TOKEN='<TOKEN>' 
