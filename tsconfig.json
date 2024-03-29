@@ -8,5 +8,9 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution":"node",
     "strict": true,
+    "esModuleInterop": true
   },
+  "include": [
+    "src"
+  ]
 }

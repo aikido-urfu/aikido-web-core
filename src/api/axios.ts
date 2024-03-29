@@ -10,10 +10,9 @@ import {
 import { UserTypeGet } from '../models/userModel'
 
 const a = axios.create({
-  baseURL: 'http://192.168.0.109:3005',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzExNzI3NTY5LCJleHAiOjE3MTQzMTk1Njl9.mL_qqM1oZ_IfvJj5aU0Kj6yypDW7_XK3eZYQGTQK2TY',
+    Authorization: 'Bearer ' + process.env.REACT_APP_ACCESS_TOKEN,
   },
 })
 

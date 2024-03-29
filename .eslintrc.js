@@ -3,6 +3,7 @@ const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommen
 module.exports = {
   env: {
     browser: true,
+    node: true,
     es2021: true,
   },
   extends: [
