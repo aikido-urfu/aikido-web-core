@@ -10,10 +10,10 @@ import {
 import { UserTypeGet } from '../models/userModel'
 
 const a = axios.create({
-  baseURL: 'localhost',
+  baseURL: 'http://192.168.0.109:3005',
   headers: {
     Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzExNzI1ODk0LCJleHAiOjE3MTQzMTc4OTR9.uDMwddUScs7WP3qIVm-gZAGd_c4vvPl7DhmOp3JwUXY',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzExNzI3NTY5LCJleHAiOjE3MTQzMTk1Njl9.mL_qqM1oZ_IfvJj5aU0Kj6yypDW7_XK3eZYQGTQK2TY',
   },
 })
 
