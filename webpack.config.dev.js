@@ -57,5 +57,6 @@ module.exports = {
     compress: true,
     port: 3004,
     hot: true,
+    allowedHosts: ['192.168.1.50', 'aikido.sytes.net', 'http://aikido.sytes.net/'],
   },
 };
