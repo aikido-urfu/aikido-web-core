@@ -174,7 +174,7 @@ const VotePage: React.FC = () => {
                 )}
               </div>
               {selectedVote.user.id === env.rootStore.selfUser.id && (
-                <Button onClick={() => {}}>
+                <Button disabled onClick={() => {}}>
                   <EditOutlined />
                   Редактировать
                 </Button>

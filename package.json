@@ -36,6 +36,7 @@
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^9.5.2",
     "react": "^18.2.0",
+    "react-cookie": "^7.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "style-loader": "^3.3.4",

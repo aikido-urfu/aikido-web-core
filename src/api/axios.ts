@@ -1,18 +1,30 @@
 import axios from 'axios'
 import {
-  GetMail,
+  // GetMail,
   GetUsers,
   GetVote,
   GetVoteById,
-  PostMail,
+  // PostMail,
   PostVote,
 } from '../types/api'
 import { UserTypeGet } from '../models/userModel'
+// import { Cookies } from 'react-cookie'
+
+function getCookie(name: any) {
+  const matches = document.cookie.match(
+    new RegExp(
+      '(?:^|; )' +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
+        '=([^;]*)',
+    ),
+  )
+  return matches ? decodeURIComponent(matches[1]) : undefined
+}
 
 const a = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
-    Authorization: 'Bearer ' + process.env.REACT_APP_ACCESS_TOKEN,
+    Authorization: 'Bearer ' + getCookie('user'),
   },
 })
 
@@ -39,19 +51,19 @@ export const API = {
   getUsersAll() {
     return a.get<GetUsers>('/users')
   },
-  sendMail(data: PostMail) {
-    a.post('/mail', data, {
-      headers: {
-        ContentType: 'application/json',
-      },
-    })
-  },
-  getMail() {
-    return a.get<GetMail>('/mail')
-  },
-  readMail(id: number) {
-    return a.put(`/mail/${id}`, {})
-  },
+  // sendMail(data: PostMail) {
+  //   a.post('/mail', data, {
+  //     headers: {
+  //       ContentType: 'application/json',
+  //     },
+  //   })
+  // },
+  // getMail() {
+  //   return a.get<GetMail>('/mail')
+  // },
+  // readMail(id: number) {
+  //   return a.put(`/mail/${id}`, {})
+  // },
   uploadPhoto(file: File) {
     const formData = new FormData()
     formData.append('photo', file)

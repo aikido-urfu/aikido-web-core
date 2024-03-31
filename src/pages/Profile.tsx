@@ -4,6 +4,7 @@ import { UserOutlined, TeamOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { useEnv } from '../App'
 import { observer } from 'mobx-react-lite'
+import { CookiesProvider } from 'react-cookie'
 
 interface ProfileProps {
   isOwner: boolean
@@ -28,13 +29,15 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
         subTitle={user.email}
         extra={
           <>
-            {isOwner && (
-              <Link to='/login'>
-                <Button type='primary' block>
-                  Сменить пользователя
-                </Button>
-              </Link>
-            )}
+            <CookiesProvider defaultSetOptions={{ path: '/' }}>
+              {isOwner && (
+                <Link to='/login'>
+                  <Button type='primary' block>
+                    Сменить пользователя
+                  </Button>
+                </Link>
+              )}
+            </CookiesProvider>
             <div style={{ marginTop: 16 }}>
               <TeamOutlined style={{ marginRight: 8 }} />
               <a href={user.telegram || ''}>Telegram</a>

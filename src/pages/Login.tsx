@@ -1,18 +1,51 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+// import { useCookies } from 'react-cookie'
+// import { Link } from 'react-router-dom'
+
 import { Form, Input, Button, message, Typography, Col, Row } from 'antd'
 
+import { useInput } from '../hooks/input.hook'
+
 const Login: React.FC = () => {
+  // const [cookies, setCookie, removeCookie] = useCookies(['token'])
+
+  const email = useInput('')
+  const password = useInput('')
+
   const [loading, setLoading] = useState(false)
+  const [successLogin, setSuccessLogin] = useState(false)
+
+  //30days
+  // const date = new Date(Date.now() + 86400e3 * 30).toUTCString
+
+  // const myRef = useRef(1)
+
+  // useEffect(() => {
+  //   myRef.current++
+  //   console.log(myRef.current)
+  // })
 
   const handleSubmit = () => {
     setLoading(true)
 
-    // Simulating an API call
-    setTimeout(() => {
-      setLoading(false)
-
-      message.success('Авторизация получилась')
-    }, 2000)
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+        email: email.value,
+        password: password.value,
+      })
+      .then((data) => {
+        const token = data.data.token
+        setSuccessLogin(true)
+        setLoading(false)
+        message.success('Авторизация получилась')
+        document.cookie = `user=${token}; path=/; max-age=${3600 * 24 * 30}; secure`
+        // console.log(document.cookie)
+      })
+      .catch(() => {
+        setLoading(false)
+        message.error('Некорректные данные')
+      })
   }
 
   return (
@@ -46,14 +79,14 @@ const Login: React.FC = () => {
               name='username'
               rules={[{ required: true, message: 'Введите ваш логин' }]}
             >
-              <Input />
+              <Input onChange={email.onChange} autoFocus />
             </Form.Item>
             <Form.Item
               label='Пароль'
               name='password'
               rules={[{ required: true, message: 'Введите ваш пароль' }]}
             >
-              <Input.Password />
+              <Input.Password onChange={password.onChange} />
             </Form.Item>
             <Form.Item>
               <Button type='primary' htmlType='submit' loading={loading} block>

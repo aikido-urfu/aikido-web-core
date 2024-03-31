@@ -8,8 +8,8 @@ const { Header } = Layout
 const selectedMap = {
   '/': 2,
   '/vote': 2,
-  '/mail': 3,
-  '/profile': 4,
+  // '/mail': 3,
+  '/profile': 3,
 }
 
 const CustomHeader: React.FC = () => {

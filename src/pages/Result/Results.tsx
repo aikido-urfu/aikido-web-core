@@ -39,7 +39,7 @@ export const Results: React.FC = () => {
         </Button>
       </div>
 
-      <span className='bg-white flex flex-col items pb-12  m-[30px] min-h-[900px]'>
+      <span className='bg-white flex flex-col items pb-12  m-[30px] min-h-[700px]'>
         <div className=' py-[10px]'>
           {selectedVote?.questions.map((x) => (
             <div
