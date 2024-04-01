@@ -3,28 +3,31 @@ import { Layout } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import MainContainer from './components/MainContainer'
-import Login from './pages/Login'
-// import Register from './pages/Register'
-import Profile from './pages/Profile'
-import VotePage from './pages/VoteList/Vote'
-import VotesPage from './pages/VotesList'
-import VoteCreate from './pages/VoteCreate/VoteCreate'
-import { VoteProgress } from './pages/VoteProgress/VoteProgress'
 import { API } from './api/axios'
 import { logger } from './api/tools'
 // import { Mail } from './pages/Mail/Mail'
 import { CreateRootStore, StoreType } from './models/voteCreate'
-import { MainPage } from './pages/Main'
-import { Completed } from './pages/Completed/Completed'
+
+import {
+  MainPage,
+  Completed,
+  Results,
+  Login,
+  Profile,
+  VoteProgress,
+  VotePage,
+  VotesPage,
+  VoteCreate,
+  Page404,
+} from './pages'
+import { messageApiType, useMessageApi } from './api/useMessageApi'
 
 import './style.css'
-import { Results } from './pages/Result/Results'
-import { messageApiType, useMessageApi } from './api/useMessageApi'
 
 const { Content } = Layout
 const ENV = {
-  API: API,
-  logger: logger,
+  API,
+  logger,
   rootStore: {} as StoreType,
   messageApi: {} as messageApiType,
 }
@@ -37,6 +40,7 @@ export const useEnv = () => {
 }
 
 ENV.rootStore.selfUser.getMySelf()
+console.log('getMySelf')
 
 //@ts-expect-error no window
 window.env = ENV
@@ -51,6 +55,7 @@ const App: React.FC = () => {
         <Layout>
           <Content>
             <Routes>
+              <Route path='/login' element={<Login />} />
               <Route
                 path='/'
                 element={
@@ -59,7 +64,6 @@ const App: React.FC = () => {
                   </MainContainer>
                 }
               />
-              <Route path='/login' element={<Login />} />
               {/* <Route path='/register' element={<Register />} /> */}
               <Route
                 path='/profile'
@@ -125,7 +129,7 @@ const App: React.FC = () => {
                   </MainContainer>
                 }
               />
-              <Route path='*' element={<div>404 Not Found</div>} />
+              <Route path='*' element={<Page404 />} />
             </Routes>
           </Content>
         </Layout>

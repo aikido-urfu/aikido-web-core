@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Result, Button, Avatar } from 'antd'
 import { UserOutlined, TeamOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { useEnv } from '../App'
+import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { CookiesProvider } from 'react-cookie'
+// import { getCookie } from '../../api/axios'
 
 interface ProfileProps {
   isOwner: boolean
@@ -12,6 +13,10 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   const env = useEnv()
+  // env.API.getUserByToken().then((data) => console.log(data))
+  // console.log(env.API.getUserByToken())
+
+  env.rootStore.selfUser.getMySelf().then((data) => console.log(data))
   const user = env.rootStore.selfUser
 
   return (

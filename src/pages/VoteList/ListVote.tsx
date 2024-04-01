@@ -9,7 +9,7 @@ type ListVoteType = {
   isSelected: boolean
 }
 
-export const ListVote: React.FC<ListVoteType> = ({
+const ListVote: React.FC<ListVoteType> = ({
   name,
   description,
   date,
@@ -46,3 +46,5 @@ export const ListVote: React.FC<ListVoteType> = ({
     </div>
   )
 }
+
+export default ListVote

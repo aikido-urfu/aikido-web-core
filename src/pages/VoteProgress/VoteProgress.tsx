@@ -61,7 +61,7 @@ BottomControl.defaultProps = {
   isShowNext: true,
 }
 
-export const VoteProgress: React.FC = () => {
+const VoteProgress: React.FC = () => {
   const env = useEnv()
   const [sendPage, setsendPage] = useState(false)
   const navigate = useNavigate()
@@ -386,3 +386,5 @@ export const VoteProgress: React.FC = () => {
     </div>
   )
 }
+
+export default VoteProgress

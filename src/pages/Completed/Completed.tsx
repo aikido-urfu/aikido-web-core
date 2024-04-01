@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-export const Completed: React.FC = () => {
+const Completed: React.FC = () => {
   const { state } = useLocation()
   const { text } = state
   const navigate = useNavigate()
@@ -35,3 +35,5 @@ export const Completed: React.FC = () => {
     </div>
   )
 }
+
+export default Completed

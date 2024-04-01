@@ -8,9 +8,7 @@ type SelectedUsersType = {
   setSelectedUsers: (val: GetUsers) => void
 }
 
-export const SelectUsers: React.FC<SelectedUsersType> = ({
-  setSelectedUsers,
-}) => {
+const SelectUsers: React.FC<SelectedUsersType> = ({ setSelectedUsers }) => {
   const [options, setoptions] = useState<SelectProps['options']>([])
   const [selectedUsers, setData] = useState<GetUsers>([])
   const env = useEnv()
@@ -47,3 +45,5 @@ export const SelectUsers: React.FC<SelectedUsersType> = ({
     </Space>
   )
 }
+
+export default SelectUsers

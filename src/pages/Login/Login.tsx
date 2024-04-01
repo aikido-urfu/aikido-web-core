@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 // import { useCookies } from 'react-cookie'
-// import { Link } from 'react-router-dom'
 
 import { Form, Input, Button, message, Typography, Col, Row } from 'antd'
 
-import { useInput } from '../hooks/input.hook'
+import { useInput } from '../../hooks/input.hook'
 
 const Login: React.FC = () => {
   // const [cookies, setCookie, removeCookie] = useCookies(['token'])
 
   const email = useInput('')
   const password = useInput('')
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [successLogin, setSuccessLogin] = useState(false)
@@ -28,7 +29,6 @@ const Login: React.FC = () => {
 
   const handleSubmit = () => {
     setLoading(true)
-
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
         email: email.value,
@@ -40,13 +40,19 @@ const Login: React.FC = () => {
         setLoading(false)
         message.success('Авторизация получилась')
         document.cookie = `user=${token}; path=/; max-age=${3600 * 24 * 30}; secure`
+        return navigate('/profile')
         // console.log(document.cookie)
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false)
         message.error('Некорректные данные')
+        console.log(err)
       })
   }
+
+  // const disableBtn = (e: any) => {
+  //   loading ? (e.target.disabled = true) : (e.target.disabled = false)
+  // }
 
   return (
     <div

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 
-export const Results: React.FC = () => {
+const Results: React.FC = () => {
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
   const { id } = useParams()
   const navigate = useNavigate()
@@ -79,3 +79,5 @@ export const Results: React.FC = () => {
     </div>
   )
 }
+
+export default Results

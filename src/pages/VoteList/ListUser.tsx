@@ -9,7 +9,7 @@ type ListUserType = {
   onDeleteClick?: () => void
 }
 
-export const ListUser: React.FC<ListUserType> = ({
+const ListUser: React.FC<ListUserType> = ({
   name,
   mail,
   isCanBeDeleted,
@@ -58,3 +58,5 @@ export const ListUser: React.FC<ListUserType> = ({
     </>
   )
 }
+
+export default ListUser

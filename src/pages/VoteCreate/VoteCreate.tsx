@@ -1,7 +1,6 @@
 import { Button, Steps } from 'antd'
 import React, { useState } from 'react'
-import { FirstStep } from './FirstStep'
-import SecondStep from './SecondStep'
+import { FirstStep, SecondStep } from '../../pages'
 import { useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'

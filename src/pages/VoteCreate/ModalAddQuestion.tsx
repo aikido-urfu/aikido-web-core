@@ -11,7 +11,7 @@ type ModalAddQuestionType = {
   onAddClick: (q: Question) => void
 }
 
-export const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
+const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   isShowModal,
   setshowModal,
   onAddClick,
@@ -251,3 +251,5 @@ const AddFiles: React.FC<AddFiesType> = ({
     </div>
   )
 }
+
+export default ModalAddQuestion

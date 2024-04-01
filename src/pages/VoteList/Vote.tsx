@@ -7,8 +7,9 @@ import {
   MenuFoldOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { ListUser } from './ListUser'
-import { ListVote } from './ListVote'
+
+import { ListUser, ListVote } from '../../pages'
+
 import { useNavigate } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { GetVote, GetVoteById } from '../../types/api'
@@ -174,7 +175,7 @@ const VotePage: React.FC = () => {
                 )}
               </div>
               {selectedVote.user.id === env.rootStore.selfUser.id && (
-                <Button disabled onClick={() => {}}>
+                <Button onClick={() => {}}>
                   <EditOutlined />
                   Редактировать
                 </Button>

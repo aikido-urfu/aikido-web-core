@@ -8,7 +8,7 @@ import {
 import { PostVote, Question } from '../../types/api'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
-import { ModalAddQuestion } from './ModalAddQuestion'
+import { ModalAddQuestion } from '../../pages'
 
 type QuestionType = {
   data: Question

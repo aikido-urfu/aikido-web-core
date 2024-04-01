@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   // GetMail,
@@ -10,7 +11,7 @@ import {
 import { UserTypeGet } from '../models/userModel'
 // import { Cookies } from 'react-cookie'
 
-function getCookie(name: any) {
+const getCookie = (name: any) => {
   const matches = document.cookie.match(
     new RegExp(
       '(?:^|; )' +
@@ -18,6 +19,9 @@ function getCookie(name: any) {
         '=([^;]*)',
     ),
   )
+
+  console.log('cookie:')
+  console.log(matches ? decodeURIComponent(matches[1]) : undefined)
   return matches ? decodeURIComponent(matches[1]) : undefined
 }
 
