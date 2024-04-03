@@ -1,58 +1,46 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-// import { useCookies } from 'react-cookie'
 
 import { Form, Input, Button, message, Typography, Col, Row } from 'antd'
 
 import { useInput } from '../../hooks/input.hook'
 
-const Login: React.FC = () => {
-  // const [cookies, setCookie, removeCookie] = useCookies(['token'])
+import { setCookie } from '../helpers/cookie.helper'
 
+const Login: React.FC = () => {
   const email = useInput('')
   const password = useInput('')
-  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [successLogin, setSuccessLogin] = useState(false)
 
-  //30days
-  // const date = new Date(Date.now() + 86400e3 * 30).toUTCString
+  const navigate = useNavigate()
 
-  // const myRef = useRef(1)
-
-  // useEffect(() => {
-  //   myRef.current++
-  //   console.log(myRef.current)
-  // })
-
-  const handleSubmit = () => {
+  const handleSubmit = async (e: any) => {
+    console.log(e)
     setLoading(true)
-    axios
+    await axios
       .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
         email: email.value,
         password: password.value,
       })
       .then((data) => {
         const token = data.data.token
+        setCookie('user', token)
+        // document.cookie = `user=${token}; path=/; max-age=${3600 * 24 * 30}; secure`
         setSuccessLogin(true)
         setLoading(false)
-        message.success('Авторизация получилась')
-        document.cookie = `user=${token}; path=/; max-age=${3600 * 24 * 30}; secure`
-        return navigate('/profile')
-        // console.log(document.cookie)
+        message.success('Вы успешно вошли')
+        return navigate('/')
       })
       .catch((err) => {
         setLoading(false)
+        setSuccessLogin(false)
         message.error('Некорректные данные')
         console.log(err)
       })
   }
-
-  // const disableBtn = (e: any) => {
-  //   loading ? (e.target.disabled = true) : (e.target.disabled = false)
-  // }
 
   return (
     <div
@@ -85,14 +73,14 @@ const Login: React.FC = () => {
               name='username'
               rules={[{ required: true, message: 'Введите ваш логин' }]}
             >
-              <Input onChange={email.onChange} autoFocus />
+              <Input type='text' onChange={email.onChange} autoFocus />
             </Form.Item>
             <Form.Item
               label='Пароль'
               name='password'
               rules={[{ required: true, message: 'Введите ваш пароль' }]}
             >
-              <Input.Password onChange={password.onChange} />
+              <Input.Password type='text' onChange={password.onChange} />
             </Form.Item>
             <Form.Item>
               <Button type='primary' htmlType='submit' loading={loading} block>

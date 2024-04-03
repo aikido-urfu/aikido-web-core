@@ -1,0 +1,51 @@
+type Option = {
+  path?: string
+  'max-age'?: number
+  secure?: boolean
+  expires?: any
+  [key: string]: any
+}
+
+export const getCookie = (name: string) => {
+  const matches = document.cookie.match(
+    new RegExp(
+      '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)',
+    ),
+  )
+  return matches ? decodeURIComponent(matches[1]) : undefined
+}
+
+export const setCookie = (
+  name: string,
+  value: string,
+  options: Option = {},
+) => {
+  options = {
+    path: '/',
+    'max-age': 3600 * 24 * 30,
+    // secure: true,
+    ...options,
+  }
+
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString()
+  }
+
+  let updatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value)
+
+  for (const optionKey in options) {
+    updatedCookie += '; ' + optionKey
+    const optionValue = options[optionKey]
+    if (optionValue !== true) {
+      updatedCookie += '=' + optionValue
+    }
+  }
+
+  document.cookie = updatedCookie
+}
+
+export const deleteCookie = (name: string) => {
+  setCookie(name, '', {
+    'max-age': -1,
+  })
+}

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Result, Button, Avatar } from 'antd'
 import { UserOutlined, TeamOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { CookiesProvider } from 'react-cookie'
-// import { getCookie } from '../../api/axios'
+import { getCookie } from '../helpers/cookie.helper'
+import { COOKIE } from '../../api/axios'
 
 interface ProfileProps {
   isOwner: boolean
@@ -13,10 +14,12 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   const env = useEnv()
-  // env.API.getUserByToken().then((data) => console.log(data))
-  // console.log(env.API.getUserByToken())
+  const navigate = useNavigate()
 
-  env.rootStore.selfUser.getMySelf().then((data) => console.log(data))
+  if (getCookie('user') !== COOKIE) {
+    navigate(0)
+  }
+
   const user = env.rootStore.selfUser
 
   return (

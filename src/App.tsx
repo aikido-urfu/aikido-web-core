@@ -40,7 +40,6 @@ export const useEnv = () => {
 }
 
 ENV.rootStore.selfUser.getMySelf()
-console.log('getMySelf')
 
 //@ts-expect-error no window
 window.env = ENV

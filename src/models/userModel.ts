@@ -33,8 +33,6 @@ export const UserProfileModel = t
       const env: IEnv = getEnv(self)
       env.API.getUserByToken()
         .then((res) => {
-          console.log('getUserByToken')
-          console.log(res)
           this.setUserData(res.data)
         })
         .catch((err) => {

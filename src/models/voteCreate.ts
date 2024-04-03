@@ -2,6 +2,7 @@ import { Instance, types as t } from 'mobx-state-tree'
 import { Question } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
+import { string } from 'mobx-state-tree/dist/internal'
 
 const files = t.model({
   file: t.string,
@@ -40,7 +41,7 @@ const VoteCreateModel = t
       setAnonim(value: boolean) {
         self.isAnonim = value
       },
-      seneCreateVote() {},
+      sendCreateVote() {},
       addQuestion(question: Question) {
         self.questions?.push(
           QuestionModel.create({
@@ -62,7 +63,8 @@ const VoteCreateModel = t
       deleteQuestion(id: number) {
         self.questions?.splice(id, 1)
       },
-      setUsets(users: number[]) {
+      setUsers(users: number[]) {
+        console.log(users)
         self.users = t.array(t.number).create(users)
       },
     }

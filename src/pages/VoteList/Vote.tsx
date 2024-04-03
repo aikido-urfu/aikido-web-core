@@ -16,6 +16,9 @@ import { GetVote, GetVoteById } from '../../types/api'
 import { prettyDate } from '../../api/tools'
 import { observer } from 'mobx-react-lite'
 
+import { getCookie } from '../helpers/cookie.helper'
+import { COOKIE } from '../../api/axios'
+
 const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
@@ -24,6 +27,11 @@ const VotePage: React.FC = () => {
   const [selectedVoteId, setselectedVoteId] = useState(-1)
   const navigate = useNavigate()
   const env = useEnv()
+
+  if (getCookie('user') !== COOKIE) {
+    navigate(0)
+  }
+
   const isAlredyVoted =
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)
       .length !== 0

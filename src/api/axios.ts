@@ -20,15 +20,15 @@ const getCookie = (name: any) => {
     ),
   )
 
-  console.log('cookie:')
-  console.log(matches ? decodeURIComponent(matches[1]) : undefined)
   return matches ? decodeURIComponent(matches[1]) : undefined
 }
+
+export const COOKIE = getCookie('user')
 
 const a = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
-    Authorization: 'Bearer ' + getCookie('user'),
+    Authorization: 'Bearer ' + COOKIE,
   },
 })
 

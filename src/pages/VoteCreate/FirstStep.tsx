@@ -5,16 +5,38 @@ import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
 import { SelectUsers, ListUser } from '../../pages'
 import { GetUsers } from '../../types/api'
+import dayjs, { Dayjs } from 'dayjs'
 
 type FirstStepType = {
   onStepChange: (step: number) => void
 }
 
+type Generic = string
+type GenericFn = (value: Dayjs) => string
+
+export type FormatType =
+  | Generic
+  | GenericFn
+  | Array<Generic | GenericFn>
+  | {
+      format: string
+      type?: 'mask'
+    }
+
 const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
   const { rootStore } = useEnv()
   const voteCreate = rootStore.VoteCreate
   const [users, setusers] = useState<GetUsers>([])
-  const [savedDate, setsavedDate] = useState<any>()
+  // const [savedDate, setsavedDate] = useState<any>(['', ''])
+
+  console.log(users)
+
+  const rangePickerHandler = (val: any) => {
+    if (val?.length != 2) return
+    const [d1, d2] = val
+    voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
+  }
+
   return (
     <>
       <div
@@ -55,14 +77,15 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
             >
               <p className='gray'>Сроки проведения</p>
               <DatePicker.RangePicker
-                onChange={(val) => {
-                  if (val?.length != 2) return
-                  setsavedDate(val)
-                  const d1 = val[0]
-                  const d2 = val[1]
-                  voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
-                }}
-                value={savedDate}
+                onChange={rangePickerHandler}
+                value={[
+                  dayjs(voteCreate.dateOfStart).isValid()
+                    ? dayjs(voteCreate.dateOfStart)
+                    : null,
+                  dayjs(voteCreate.dateOfEnd).isValid()
+                    ? dayjs(voteCreate.dateOfEnd)
+                    : null,
+                ]}
                 format={'YYYY-MM-DD'}
               />
             </div>
@@ -75,7 +98,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
           <div>
             <p className='gray'>Описание</p>
             <TextArea
-              rows={6}
+              rows={4}
               onChange={(e) => voteCreate.setDescription(e.target.value)}
               value={voteCreate.description || ''}
             ></TextArea>
@@ -120,7 +143,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
         <div
           style={{
             overflowY: 'scroll',
-            height: '320px',
+            height: '280px',
           }}
         >
           {...users.map((x) => {
