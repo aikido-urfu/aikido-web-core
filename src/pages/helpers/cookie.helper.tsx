@@ -23,7 +23,6 @@ export const setCookie = (
   options = {
     path: '/',
     'max-age': 3600 * 24 * 30,
-    // secure: true,
     ...options,
   }
 
