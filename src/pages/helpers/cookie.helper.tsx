@@ -1,7 +1,6 @@
 type Option = {
   path?: string
   'max-age'?: number
-  secure?: boolean
   expires?: any
   [key: string]: any
 }

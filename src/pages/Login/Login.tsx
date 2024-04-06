@@ -28,7 +28,6 @@ const Login: React.FC = () => {
       .then((data) => {
         const token = data.data.token
         setCookie('user', token)
-        // document.cookie = `user=${token}; path=/; max-age=${3600 * 24 * 30}; secure`
         setSuccessLogin(true)
         setLoading(false)
         message.success('Вы успешно вошли')
