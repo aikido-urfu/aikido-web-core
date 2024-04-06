@@ -4,8 +4,7 @@ import { UserOutlined, TeamOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
-import { CookiesProvider } from 'react-cookie'
-import { getCookie } from '../helpers/cookie.helper'
+import { getCookie, deleteCookie } from '../helpers/cookie.helper'
 import { COOKIE } from '../../api/axios'
 
 interface ProfileProps {
@@ -18,6 +17,10 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
 
   if (getCookie('user') !== COOKIE) {
     navigate(0)
+  }
+
+  const deleteCookieHandler = () => {
+    deleteCookie('user')
   }
 
   const user = env.rootStore.selfUser
@@ -37,15 +40,13 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
         subTitle={user.email}
         extra={
           <>
-            <CookiesProvider defaultSetOptions={{ path: '/' }}>
-              {isOwner && (
-                <Link to='/login'>
-                  <Button type='primary' block>
-                    Сменить пользователя
-                  </Button>
-                </Link>
-              )}
-            </CookiesProvider>
+            {isOwner && (
+              <Link to='/login'>
+                <Button type='primary' block onClick={deleteCookieHandler}>
+                  Сменить пользователя
+                </Button>
+              </Link>
+            )}
             <div style={{ marginTop: 16 }}>
               <TeamOutlined style={{ marginRight: 8 }} />
               <a href={user.telegram || ''}>Telegram</a>
