@@ -12,6 +12,7 @@ import { UserTypeGet } from '../models/userModel'
 import { getCookie } from '../pages/helpers/cookie.helper'
 
 export const COOKIE = getCookie('user')
+console.log(COOKIE)
 
 const a = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,

@@ -28,9 +28,13 @@ const VotePage: React.FC = () => {
   const navigate = useNavigate()
   const env = useEnv()
 
-  if (getCookie('user') !== COOKIE) {
-    navigate(0)
-  }
+  useEffect(() => {
+    if (getCookie('user') !== COOKIE) {
+      console.log('ok')
+      navigate(0)
+      console.log('done')
+    }
+  })
 
   const isAlredyVoted =
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)

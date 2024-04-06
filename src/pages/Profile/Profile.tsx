@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Result, Button, Avatar } from 'antd'
 import { UserOutlined, TeamOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,9 +15,13 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   const env = useEnv()
   const navigate = useNavigate()
 
-  if (getCookie('user') !== COOKIE) {
-    navigate(0)
-  }
+  useEffect(() => {
+    if (getCookie('user') !== COOKIE) {
+      console.log('ok')
+      navigate(0)
+      console.log('done')
+    }
+  })
 
   const deleteCookieHandler = () => {
     deleteCookie('user')
