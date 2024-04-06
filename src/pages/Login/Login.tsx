@@ -17,8 +17,7 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: any) => {
-    console.log(e)
+  const handleSubmit = async () => {
     setLoading(true)
     await axios
       .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
@@ -26,18 +25,19 @@ const Login: React.FC = () => {
         password: password.value,
       })
       .then((data) => {
+        message.success('Вы успешно вошли')
         const token = data.data.token
         setCookie('user', token)
         setSuccessLogin(true)
         setLoading(false)
-        message.success('Вы успешно вошли')
-        return navigate('/')
+        setTimeout(() => {
+          return navigate('/')
+        }, 250)
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false)
         setSuccessLogin(false)
         message.error('Некорректные данные')
-        console.log(err)
       })
   }
 
