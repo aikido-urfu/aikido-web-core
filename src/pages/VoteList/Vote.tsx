@@ -139,9 +139,7 @@ const VotePage: React.FC = () => {
                     isSelected={index === selectedVoteId}
                     name={x.title}
                     id={x.id}
-                    date={`${prettyDate(x.dateOfStart)}-${prettyDate(
-                      x.dateOfEnd,
-                    )}`}
+                    date={`${prettyDate(x.startDate)}-${prettyDate(x.endDate)}`}
                     description={x.description}
                   />
                 </div>
@@ -240,8 +238,8 @@ const VotePage: React.FC = () => {
                     <div>
                       <h4>Сроки проведения</h4>
                       <p className='gray'>{`${prettyDate(
-                        selectedVote.dateOfStart,
-                      )} - ${prettyDate(selectedVote.dateOfEnd)}`}</p>
+                        selectedVote.startDate,
+                      )} - ${prettyDate(selectedVote.endDate)}`}</p>
                     </div>
                     <FieldTimeOutlined
                       style={{ marginLeft: 'auto', fontSize: '150%' }}

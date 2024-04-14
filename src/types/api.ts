@@ -14,8 +14,8 @@ export type Question = {
 export type PostVote = {
   title: string
   description: string
-  dateOfStart: string
-  dateOfEnd: string
+  startDate: string
+  endDate: string
   isAnonymous: boolean
   isActive: boolean
   isHidenCounter: boolean
@@ -50,8 +50,8 @@ export type GetVoteById = {
   }[]
   title: string
   description: string
-  dateOfStart: string
-  dateOfEnd: string
+  startDate: string
+  endDate: string
   creationDate: string
   isAnonymous: boolean
   isActive: boolean

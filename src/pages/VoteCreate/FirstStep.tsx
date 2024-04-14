@@ -82,11 +82,11 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 showTime
                 onChange={rangePickerHandler}
                 value={[
-                  dayjs(voteCreate.dateOfStart).isValid()
-                    ? dayjs(voteCreate.dateOfStart)
+                  dayjs(voteCreate.startDate).isValid()
+                    ? dayjs(voteCreate.startDate)
                     : null,
-                  dayjs(voteCreate.dateOfEnd).isValid()
-                    ? dayjs(voteCreate.dateOfEnd)
+                  dayjs(voteCreate.endDate).isValid()
+                    ? dayjs(voteCreate.endDate)
                     : null,
                 ]}
                 // format={'YYYY-MM-DD'}

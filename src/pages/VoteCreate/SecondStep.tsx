@@ -80,8 +80,8 @@ const SecondStep: React.FC<SecondStepType> = ({
     const res: PostVote = {
       title: voteCreateModel.title || '',
       description: voteCreateModel.description || '',
-      dateOfStart: voteCreateModel.dateOfStart || '',
-      dateOfEnd: voteCreateModel.dateOfEnd || '',
+      startDate: voteCreateModel.startDate || '',
+      endDate: voteCreateModel.endDate || '',
       isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
@@ -108,7 +108,7 @@ const SecondStep: React.FC<SecondStepType> = ({
     }
     checkField(res, 'title') &&
       checkField(res, 'description') &&
-      checkField(res, 'dateOfEnd') &&
+      checkField(res, 'endDate') &&
       checkField(res, 'questions') &&
       onFInallizeVote(res)
   }

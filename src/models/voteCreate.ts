@@ -27,8 +27,8 @@ const VoteCreateModel = t
     isAnonim: t.maybeNull(t.boolean),
     users: t.maybeNull(t.array(t.number)),
     questions: t.maybeNull(t.array(QuestionModel)),
-    dateOfStart: t.maybeNull(t.string),
-    dateOfEnd: t.maybeNull(t.string),
+    startDate: t.maybeNull(t.string),
+    endDate: t.maybeNull(t.string),
   })
   .actions((self) => {
     return {
@@ -57,8 +57,8 @@ const VoteCreateModel = t
         )
       },
       setDate(d1: string, d2: string) {
-        self.dateOfStart = d1
-        self.dateOfEnd = d2
+        self.startDate = d1
+        self.endDate = d2
       },
       deleteQuestion(id: number) {
         self.questions?.splice(id, 1)
