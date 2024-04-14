@@ -13,7 +13,6 @@ const Login: React.FC = () => {
   const password = useInput('')
 
   const [loading, setLoading] = useState(false)
-  const [successLogin, setSuccessLogin] = useState(false)
 
   const navigate = useNavigate()
 
@@ -24,19 +23,15 @@ const Login: React.FC = () => {
         email: email.value,
         password: password.value,
       })
-      .then((data) => {
-        message.success('Вы успешно вошли')
+      .then(async (data) => {
+        await message.success('Вы успешно вошли')
         const token = data.data.token
         setCookie('user', token)
-        setSuccessLogin(true)
         setLoading(false)
-        setTimeout(() => {
-          return navigate('/')
-        }, 250)
+        return navigate('/')
       })
       .catch(() => {
         setLoading(false)
-        setSuccessLogin(false)
         message.error('Некорректные данные')
       })
   }

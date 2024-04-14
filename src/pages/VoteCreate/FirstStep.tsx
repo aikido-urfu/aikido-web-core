@@ -29,12 +29,14 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
   const [users, setusers] = useState<GetUsers>([])
   // const [savedDate, setsavedDate] = useState<any>(['', ''])
 
-  console.log(users)
-
   const rangePickerHandler = (val: any) => {
     if (val?.length != 2) return
     const [d1, d2] = val
+    console.log(d1)
+    console.log(d2)
     voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
+    console.log(d1!.toISOString())
+    console.log(d2!.toISOString())
   }
 
   return (
@@ -77,6 +79,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
             >
               <p className='gray'>Сроки проведения</p>
               <DatePicker.RangePicker
+                showTime
                 onChange={rangePickerHandler}
                 value={[
                   dayjs(voteCreate.dateOfStart).isValid()
@@ -86,7 +89,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     ? dayjs(voteCreate.dateOfEnd)
                     : null,
                 ]}
-                format={'YYYY-MM-DD'}
+                // format={'YYYY-MM-DD'}
               />
             </div>
             <p>Анонимное</p>
