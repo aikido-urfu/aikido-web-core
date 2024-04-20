@@ -23,16 +23,16 @@ const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
   const [votes, setvotes] = useState<GetVote[]>([])
+  const [dataSource, setDataSource] = useState<GetVote[]>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
   const [selectedVoteId, setselectedVoteId] = useState(-1)
+  const [value, setValue] = useState('')
   const navigate = useNavigate()
   const env = useEnv()
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
-      console.log('ok')
       navigate(0)
-      console.log('done')
     }
   })
 
@@ -47,7 +47,6 @@ const VotePage: React.FC = () => {
       })
       .catch((err) => {
         env.logger.error(err)
-        err
       })
   }
 
@@ -61,6 +60,16 @@ const VotePage: React.FC = () => {
         env.logger.error(err)
       })
   }, [])
+
+  const handleSearch = (e: any) => {
+    const currValue = e.target.value
+    setValue(currValue)
+
+    const filteredData = votes.filter((entry: any) =>
+      entry.title.includes(currValue),
+    )
+    setDataSource(filteredData)
+  }
 
   return (
     <>
@@ -113,7 +122,8 @@ const VotePage: React.FC = () => {
         >
           <Input.Search
             placeholder='Поиск по голосованиям'
-            onSearch={() => {}}
+            value={value}
+            onChange={handleSearch}
             style={{
               width: 400,
               padding: '20px 15px',
@@ -127,24 +137,43 @@ const VotePage: React.FC = () => {
               maxHeight: 'calc(100vh - 124px - 73px)',
             }}
           >
-            {votes.map((x, index) => {
-              return (
-                <div
-                  onClick={() => {
-                    handleSelectedVote(x.id, index)
-                  }}
-                >
-                  <ListVote
-                    key={x.id}
-                    isSelected={index === selectedVoteId}
-                    name={x.title}
-                    id={x.id}
-                    date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
-                    description={x.description}
-                  />
-                </div>
-              )
-            })}
+            {value.trim() === ''
+              ? votes.map((x, index) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        handleSelectedVote(x.id, index)
+                      }}
+                    >
+                      <ListVote
+                        key={x.id}
+                        isSelected={index === selectedVoteId}
+                        name={x.title}
+                        id={x.id}
+                        date={`${prettyDate(x.startDate)} -${prettyDate(x.endDate)}`}
+                        description={x.description}
+                      />
+                    </div>
+                  )
+                })
+              : dataSource.map((x, index) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        handleSelectedVote(x.id, index)
+                      }}
+                    >
+                      <ListVote
+                        key={x.id}
+                        isSelected={index === selectedVoteId}
+                        name={x.title}
+                        id={x.id}
+                        date={`${prettyDate(x.startDate)} -${prettyDate(x.endDate)}`}
+                        description={x.description}
+                      />
+                    </div>
+                  )
+                })}
           </div>
         </div>
 

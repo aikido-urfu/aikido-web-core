@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './index.css'
-import { Button, Checkbox, Progress, Radio, Space } from 'antd'
+import { Button, Checkbox, Progress, Radio, Space, message } from 'antd'
 import {
   createSearchParams,
   useNavigate,
@@ -145,7 +145,9 @@ const VoteProgress: React.FC = () => {
             },
           })
         })
-        .catch((err) => env.logger.error(err))
+        .catch((err) => {
+          message.error(err.response.data.response.message)
+        })
     }
   }
   // eslint-disable-next-line react/no-unescaped-entities

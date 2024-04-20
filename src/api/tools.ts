@@ -11,10 +11,8 @@ export const logger = {
 
 export const prettyDate = (date: string, year: boolean = false) => {
   if (!year) {
-    console.log(date)
     const d = new Date(date)
-    console.log(d)
-    return dateFormat(d, 'dd.mm hh:mm')
+    return dateFormat(d, 'dd.mm HH:MM')
   }
   return date?.substring(0, 10) || ''
 }

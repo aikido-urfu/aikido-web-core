@@ -32,11 +32,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
   const rangePickerHandler = (val: any) => {
     if (val?.length != 2) return
     const [d1, d2] = val
-    console.log(d1)
-    console.log(d2)
     voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
-    console.log(d1!.toISOString())
-    console.log(d2!.toISOString())
   }
 
   return (
