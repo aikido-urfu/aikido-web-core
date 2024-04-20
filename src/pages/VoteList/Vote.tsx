@@ -139,7 +139,7 @@ const VotePage: React.FC = () => {
                     isSelected={index === selectedVoteId}
                     name={x.title}
                     id={x.id}
-                    date={`${prettyDate(x.startDate)}-${prettyDate(x.endDate)}`}
+                    date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
                     description={x.description}
                   />
                 </div>
@@ -184,12 +184,12 @@ const VotePage: React.FC = () => {
                   </Tag>
                 )}
               </div>
-              {selectedVote.user.id === env.rootStore.selfUser.id && (
+              {/* {selectedVote.user.id === env.rootStore.selfUser.id && (
                 <Button onClick={() => {}}>
                   <EditOutlined />
                   Редактировать
                 </Button>
-              )}
+              )} */}
             </div>
             <div
               style={{

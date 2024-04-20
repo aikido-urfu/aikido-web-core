@@ -94,7 +94,8 @@ const SecondStep: React.FC<SecondStepType> = ({
       if (Array.isArray(obj[field])) {
         //@ts-expect-error AAA
         if (obj[field].length === 0) {
-          env.messageApi.error(`Поле ${field} должно иметь длину больше 0`)
+          // env.messageApi.error(`Поле ${field} должно иметь длину больше 0`)
+          env.messageApi.error('Не задан вопрос голосования')
           return false
         }
         return true
@@ -103,7 +104,22 @@ const SecondStep: React.FC<SecondStepType> = ({
       if (obj.hasOwnProperty(field) && obj[field] !== '') {
         return true
       } else {
-        env.messageApi.error(`Поле ${field} должно быть заполненно`)
+        // console.log(obj)
+        switch (field) {
+          case 'title':
+            env.messageApi.error('Не задано название голосования')
+            break
+          case 'description':
+            env.messageApi.error('Не заданы сроки проведения голосования')
+            break
+          case 'endDate':
+            env.messageApi.error('Не задан конец голосования')
+            break
+          case 'questions':
+            env.messageApi.error('Не задан вопрос голосования')
+            break
+        }
+        // env.messageApi.error(`Поле ${field} должно быть заполненно`)
       }
     }
     checkField(res, 'title') &&

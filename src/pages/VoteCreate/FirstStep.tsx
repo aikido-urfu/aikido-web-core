@@ -79,7 +79,9 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
             >
               <p className='gray'>Сроки проведения</p>
               <DatePicker.RangePicker
-                showTime
+                showTime={{ format: 'HH:mm' }}
+                format='YYYY-MM-DD HH:mm'
+                // needConfirm={false}
                 onChange={rangePickerHandler}
                 value={[
                   dayjs(voteCreate.startDate).isValid()
@@ -89,7 +91,6 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     ? dayjs(voteCreate.endDate)
                     : null,
                 ]}
-                // format={'YYYY-MM-DD'}
               />
             </div>
             <p>Анонимное</p>

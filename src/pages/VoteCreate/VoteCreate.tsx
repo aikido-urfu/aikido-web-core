@@ -1,4 +1,4 @@
-import { Button, Steps } from 'antd'
+import { Button, Steps, message } from 'antd'
 import React, { useState } from 'react'
 import { FirstStep, SecondStep } from '../../pages'
 import { useNavigate } from 'react-router-dom'
@@ -21,8 +21,9 @@ const VoteCreate: React.FC = () => {
           },
         })
       })
-      .catch((err) => {
-        logger.error(err)
+      .catch(() => {
+        message.error('Неправильные сроки голосования')
+        // logger.error(err)
       })
   }
 
