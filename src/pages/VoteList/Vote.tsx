@@ -150,7 +150,7 @@ const VotePage: React.FC = () => {
                         isSelected={index === selectedVoteId}
                         name={x.title}
                         id={x.id}
-                        date={`${prettyDate(x.startDate)} -${prettyDate(x.endDate)}`}
+                        date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
                         description={x.description}
                       />
                     </div>

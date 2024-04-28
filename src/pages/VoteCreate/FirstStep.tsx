@@ -139,14 +139,13 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
           <h3>Добавить нового участника</h3>
           <SelectUsers setSelectedUsers={setusers} />
         </div>
-
         <div
           style={{
             overflowY: 'scroll',
             height: '280px',
           }}
         >
-          {...users.map((x) => {
+          {...users.map((x: { fullName: any }) => {
             return (
               <ListUser name={x.fullName} mail={''} onDeleteClick={() => {}} />
             )

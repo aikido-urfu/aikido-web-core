@@ -1,4 +1,4 @@
-import { Instance, types as t } from 'mobx-state-tree'
+import { Instance, types as t, cast } from 'mobx-state-tree'
 import { Question } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
@@ -25,7 +25,7 @@ const VoteCreateModel = t
     title: t.maybeNull(t.string),
     description: t.maybeNull(t.string),
     isAnonim: t.maybeNull(t.boolean),
-    users: t.maybeNull(t.array(t.number)),
+    users: t.maybeNull(t.array(t.integer)),
     questions: t.maybeNull(t.array(QuestionModel)),
     startDate: t.maybeNull(t.string),
     endDate: t.maybeNull(t.string),
@@ -64,8 +64,7 @@ const VoteCreateModel = t
         self.questions?.splice(id, 1)
       },
       setUsers(users: number[]) {
-        console.log(users)
-        self.users = t.array(t.number).create(users)
+        self.users = cast(users)
       },
     }
   })

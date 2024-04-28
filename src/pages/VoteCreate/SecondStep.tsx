@@ -77,6 +77,7 @@ const SecondStep: React.FC<SecondStepType> = ({
   }
 
   const handleSendClick = () => {
+    console.log(voteCreateModel)
     const res: PostVote = {
       title: voteCreateModel.title || '',
       description: voteCreateModel.description || '',
@@ -85,16 +86,15 @@ const SecondStep: React.FC<SecondStepType> = ({
       isAnonymous: !!voteCreateModel.isAnonim,
       isActive: true,
       isHidenCounter: false,
-      privateUsers: [],
       files: [],
       photos: [],
       questions: voteCreateModel.questions || [],
+      respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || null,
     }
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
         //@ts-expect-error AAA
         if (obj[field].length === 0) {
-          // env.messageApi.error(`Поле ${field} должно иметь длину больше 0`)
           env.messageApi.error('Не задан вопрос голосования')
           return false
         }
@@ -104,7 +104,6 @@ const SecondStep: React.FC<SecondStepType> = ({
       if (obj.hasOwnProperty(field) && obj[field] !== '') {
         return true
       } else {
-        // console.log(obj)
         switch (field) {
           case 'title':
             env.messageApi.error('Не задано название голосования')
@@ -119,9 +118,9 @@ const SecondStep: React.FC<SecondStepType> = ({
             env.messageApi.error('Не задан вопрос голосования')
             break
         }
-        // env.messageApi.error(`Поле ${field} должно быть заполненно`)
       }
     }
+    console.log(voteCreateModel.users)
     checkField(res, 'title') &&
       checkField(res, 'description') &&
       checkField(res, 'endDate') &&

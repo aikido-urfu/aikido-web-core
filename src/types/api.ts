@@ -19,10 +19,10 @@ export type PostVote = {
   isAnonymous: boolean
   isActive: boolean
   isHidenCounter: boolean
-  privateUsers: number[]
   files: string[]
   photos: string[]
   questions: Question[]
+  respondents: number[]
 }
 
 export type GetVote = PostVote & {
