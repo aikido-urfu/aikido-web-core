@@ -21,8 +21,9 @@ const VoteCreate: React.FC = () => {
           },
         })
       })
-      .catch(() => {
-        message.error('Неправильные сроки голосования')
+      .catch((err) => {
+        // console.log(err)
+        message.error(err.response.data.message)
         // logger.error(err)
       })
   }

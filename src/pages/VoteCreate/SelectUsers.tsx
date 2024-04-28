@@ -23,8 +23,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({ setSelectedUsers }) => {
       users.push(value.id)
     })
     voteCreateModel.setUsers(users)
-    console.log(voteCreateModel.users)
-    console.log(JSON.parse(JSON.stringify(voteCreateModel.users)))
   }
 
   const loadUsers = () => {

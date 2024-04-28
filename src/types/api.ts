@@ -79,6 +79,7 @@ export type GetVoteById = {
     photos: string[]
     isMultiply: boolean
   }[]
+  respondents: number[]
 }
 
 export type GetUsers = {

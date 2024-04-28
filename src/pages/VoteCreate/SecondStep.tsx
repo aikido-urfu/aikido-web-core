@@ -77,7 +77,6 @@ const SecondStep: React.FC<SecondStepType> = ({
   }
 
   const handleSendClick = () => {
-    console.log(voteCreateModel)
     const res: PostVote = {
       title: voteCreateModel.title || '',
       description: voteCreateModel.description || '',
@@ -120,7 +119,6 @@ const SecondStep: React.FC<SecondStepType> = ({
         }
       }
     }
-    console.log(voteCreateModel.users)
     checkField(res, 'title') &&
       checkField(res, 'description') &&
       checkField(res, 'endDate') &&

@@ -22,21 +22,51 @@ const Results: React.FC = () => {
       })
   }, [id])
 
-  const percent = selectedVote?.questions[0].answers.length
+  // const percent = selectedVote?.questions[0].answers.length
+
+  const data = selectedVote?.questions[0].answers.map((answ) => {
+    const obj = {
+      type: answ.text,
+      value: answ.count,
+    }
+    console.log(selectedVote)
+    return obj
+  })
+
+  type TinyType = {
+    width: number
+    height: number
+    showInfo: boolean
+    autoFit: boolean
+    percent: number
+    color: string[]
+    annotations: any
+  }
+
+  const getPercentOfVoted = () => {
+    const usersVoted = selectedVote?.usersVoted.length
+    const respondents = selectedVote?.respondents.length
+    if (
+      typeof usersVoted !== 'undefined' &&
+      typeof respondents !== 'undefined'
+    ) {
+      return usersVoted / respondents
+    }
+  }
 
   const TinyProgress = () => {
-    const config = {
+    const config: TinyType = {
       width: 480,
       height: 60,
       showInfo: true,
       autoFit: false,
-      percent: typeof percent === 'undefined' ? 100 : percent / 100,
+      percent: getPercentOfVoted() || 1,
       color: ['#EAEAEA', '#BDDBFF'],
       annotations: [
         {
           type: 'text',
           style: {
-            text: `${selectedVote?.questions[0].answers.length}`,
+            text: `${selectedVote?.usersVoted.length}`,
             x: '50%',
             y: '50%',
             textAlign: 'center',
@@ -57,14 +87,6 @@ const Results: React.FC = () => {
     label: any
     legend: any
   }
-
-  const data = selectedVote?.questions[0].answers.map((answ) => {
-    const obj = {
-      type: answ.text,
-      value: answ.count,
-    }
-    return obj
-  })
 
   const CustomPie = () => {
     const config: PieType = {
@@ -118,7 +140,7 @@ const Results: React.FC = () => {
         }}
         className='h-[60px] bg-white flex gap-3 items-center pl-[30px]'
       >
-        <h3>Статистика голосования {}</h3>
+        <h3>Статистика голосования ({selectedVote?.questions.length})</h3>
         <Button
           onClick={() => {
             navigate(-1)
@@ -129,6 +151,42 @@ const Results: React.FC = () => {
       </div>
 
       <span className='bg-white flex flex-col items pb-12  m-[30px] min-h-[700px]'>
+        <div className='flex items-center p-[20px]'>
+          <h3 className='flex items-center mr-[20px]'>Общая сводка</h3>
+          <figure
+            style={{
+              display: 'flex',
+              background: '#BDDBFF',
+              borderRadius: '50%',
+              height: '16px',
+              width: '16px',
+              marginRight: '8px',
+            }}
+          ></figure>
+          <span style={{ lineHeight: '20px', marginRight: '20px' }}>
+            Проголосовало
+          </span>
+          <figure
+            style={{
+              display: 'flex',
+              background: '#EAEAEA',
+              borderRadius: '50%',
+              height: '16px',
+              width: '16px',
+              marginRight: '8px',
+            }}
+          ></figure>
+          <span style={{ lineHeight: '20px' }}>Воздержались</span>
+        </div>
+        <div className='px-[20px] mb-[10px]'>
+          <TinyProgress />
+        </div>
+        <div
+          className='pl-[40px]'
+          style={{
+            borderTop: '1px solid #DADADA',
+          }}
+        ></div>
         <div>
           {selectedVote?.questions.map((x) => (
             <div
@@ -136,54 +194,16 @@ const Results: React.FC = () => {
                 borderBottom: '1px solid #DADADA',
               }}
             >
-              <div className='flex items-center p-[20px]'>
-                <h3 className='flex items-center mr-[20px]'>Общая сводка</h3>
-                <figure
-                  style={{
-                    display: 'flex',
-                    background: '#BDDBFF',
-                    borderRadius: '50%',
-                    height: '16px',
-                    width: '16px',
-                    marginRight: '8px',
-                  }}
-                ></figure>
-                <span style={{ lineHeight: '20px', marginRight: '20px' }}>
-                  Проголосовало
-                </span>
-                <figure
-                  style={{
-                    display: 'flex',
-                    background: '#EAEAEA',
-                    borderRadius: '50%',
-                    height: '16px',
-                    width: '16px',
-                    marginRight: '8px',
-                  }}
-                ></figure>
-                <span style={{ lineHeight: '20px' }}>Воздержались</span>
-              </div>
-              <div className='px-[20px] mb-[10px]'>
-                <TinyProgress />
-              </div>
-              <div
-                className='pl-[40px]'
-                style={{
-                  borderTop: '1px solid #DADADA',
-                }}
-              ></div>
               <h3 className='px-[20px] h-[50px] flex items-center'>
                 {x.title}
               </h3>
               <div className='px-[20px] w-[422px] h-[381px]'>
-                {x.answers.length > 5 ? <CustomPie /> : <CustomColumn />}
+                {selectedVote?.usersVoted.length > 5 ? (
+                  <CustomPie />
+                ) : (
+                  <CustomColumn />
+                )}
               </div>
-              <div
-                className='pl-[40px]'
-                style={{
-                  borderTop: '1px solid #DADADA',
-                }}
-              ></div>
             </div>
           ))}
         </div>
