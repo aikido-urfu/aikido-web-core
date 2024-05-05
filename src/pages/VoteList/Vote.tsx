@@ -71,6 +71,10 @@ const VotePage: React.FC = () => {
     setDataSource(filteredData)
   }
 
+  const showMembers = () => {
+    return selectedVote?.respondents.length
+  }
+
   return (
     <>
       <div
@@ -363,9 +367,7 @@ const VotePage: React.FC = () => {
                       }}
                     >
                       <h3>Участники</h3>
-                      <p className='gray'>
-                        {selectedVote.usersVoted?.length ?? 0}
-                      </p>
+                      <p className='gray'>{showMembers()}</p>
                     </div>
                   </div>
                   <div
@@ -380,7 +382,7 @@ const VotePage: React.FC = () => {
                         height: 450,
                       }}
                     >
-                      {selectedVote.usersVoted.map((x, index) => {
+                      {selectedVote.respondents.map((x: any, index) => {
                         return (
                           <ListUser
                             key={index}
@@ -451,14 +453,19 @@ const VotePage: React.FC = () => {
                   Перейти к голосованию
                 </Button>
               ) : (
-                <div className='flex gap-3'>
-                  <Button
-                    onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
-                  >
-                    Посмотреть общую статистику
-                  </Button>
-                </div>
+                <Button
+                  gap-3
+                  onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
+                >
+                  Посмотреть общую статистику
+                </Button>
               )}
+              <Button
+                style={{ marginLeft: 20 }}
+                onClick={() => navigate(`/vote/${selectedVote.id}/discussion`)}
+              >
+                Перейти к обсуждению
+              </Button>
             </div>
           </div>
         ) : null}

@@ -13,7 +13,7 @@ const SelectUsers: React.FC<SelectedUsersType> = ({ setSelectedUsers }) => {
   const [selectedUsers, setData] = useState<GetUsers>([])
   const env = useEnv()
   const { rootStore } = useEnv()
-  const voteCreateModel = rootStore.VoteCreate
+  const voteCreate = rootStore.VoteCreate
 
   const handleChange = (value: string[]) => {
     const newVal = selectedUsers?.filter((x) => value.includes(x.fullName))
@@ -22,7 +22,7 @@ const SelectUsers: React.FC<SelectedUsersType> = ({ setSelectedUsers }) => {
     newVal.forEach((value) => {
       users.push(value.id)
     })
-    voteCreateModel.setUsers(users)
+    voteCreate.setUsers(users)
   }
 
   const loadUsers = () => {

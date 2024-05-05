@@ -15,7 +15,7 @@
   "author": "venchass@yandex.ru",
   "license": "ISC",
   "dependencies": {
-    "@ant-design/icons": "^5.3.6",
+    "@ant-design/icons": "^5.3.7",
     "@ant-design/plots": "^2.2.1",
     "@types/antd": "^1.0.0",
     "antd": "^5.16.5",

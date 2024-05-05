@@ -12,6 +12,7 @@ import ModalAddQuestion from './VoteCreate/ModalAddQuestion'
 import SecondStep from './VoteCreate/SecondStep'
 import SelectUsers from './VoteCreate/SelectUsers'
 import VoteCreate from './VoteCreate/VoteCreate'
+import Discussion from './Discussion/Discussion'
 
 //VoteList
 import ListUser from './VoteList/ListUser'
@@ -41,5 +42,6 @@ export {
   VotePage,
   VotesPage,
   VoteProgress,
+  Discussion,
   Page404,
 }

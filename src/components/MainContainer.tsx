@@ -38,4 +38,23 @@ const MainContainer: React.FC<MainContainerProps> = ({ children }) => {
   )
 }
 
+const SecondContainer: React.FC<MainContainerProps> = ({ children }) => {
+  return (
+    <RequireAuth>
+      <Layout>
+        <HeaderComponent />
+        <Content
+          style={{
+            minHeight: 'calc(100vh - 64px)',
+          }}
+          className='bg-white'
+        >
+          {children}
+        </Content>
+      </Layout>
+    </RequireAuth>
+  )
+}
+
 export default MainContainer
+export { SecondContainer }

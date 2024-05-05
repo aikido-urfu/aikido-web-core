@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Layout } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import MainContainer from './components/MainContainer'
+import MainContainer, { SecondContainer } from './components/MainContainer'
 import { API } from './api/axios'
 import { logger } from './api/tools'
 // import { Mail } from './pages/Mail/Mail'
@@ -19,6 +19,7 @@ import {
   VotesPage,
   VoteCreate,
   Page404,
+  Discussion,
 } from './pages'
 import { messageApiType, useMessageApi } from './api/useMessageApi'
 
@@ -110,6 +111,14 @@ const App: React.FC = () => {
                   <MainContainer>
                     <VoteProgress />
                   </MainContainer>
+                }
+              />
+              <Route
+                path='/vote/:id/discussion'
+                element={
+                  <SecondContainer>
+                    <Discussion />
+                  </SecondContainer>
                 }
               />
               <Route
