@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { ArrowLeftOutlined } from '@ant-design/icons'
+import { PostComment } from '../../types/api'
 
 import ListComments from './ListComments'
 
@@ -99,6 +100,12 @@ const Discussion: React.FC = () => {
         </div>
       </div>
     )
+  }
+
+  const sendComment = (data: PostComment) => {
+    return {
+      data,
+    }
   }
 
   return (

@@ -10,6 +10,7 @@ type ListVoteType = {
 }
 
 const ListVote: React.FC<ListVoteType> = ({
+  id,
   name,
   description,
   date,
@@ -17,6 +18,7 @@ const ListVote: React.FC<ListVoteType> = ({
 }) => {
   return (
     <div
+      id={id + ''}
       className='vote-list-vote'
       style={{
         minHeight: '100px',

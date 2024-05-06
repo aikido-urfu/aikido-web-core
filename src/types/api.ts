@@ -90,38 +90,10 @@ export type GetUsers = {
   telegram: string
 }[]
 
-// export type PostMail = {
-//   theme: string
-//   receivers: number[]
-//   text: string
-//   files: {
-//     file: string
-//     name: string
-//     type: string
-//   }[]
-//   photos: {
-//     file: string
-//     name: string
-//     type: string
-//   }[]
-// }
-
-// export type GetMail = {
-//   id: number
-//   user: {
-//     id: number
-//     fullName: string
-//     email: string
-//     photo: string
-//   }
-//   isReaden: boolean
-//   date: string
-//   theme: string
-//   recievers: {
-//     name: string
-//     email: string
-//   }[]
-//   text: string
-//   files: string[]
-//   photos: string[]
-// }[]
+export type PostComment = {
+  userId: number
+  voteId: number
+  text: string
+  isRef: boolean
+  refComId: number
+}[]

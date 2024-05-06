@@ -88,13 +88,18 @@ const SecondStep: React.FC<SecondStepType> = ({
       files: [],
       photos: [],
       questions: voteCreateModel.questions || [],
-      respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || null,
+      respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
     }
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
+        console.log(field)
         //@ts-expect-error AAA
         if (obj[field].length === 0) {
-          env.messageApi.error('Не задан вопрос голосования')
+          if (field === 'questions') {
+            env.messageApi.error('Не задан вопрос голосования')
+          } else if (field === 'respondents') {
+            env.messageApi.error('Не заданы участники')
+          }
           return false
         }
         return true
@@ -108,7 +113,7 @@ const SecondStep: React.FC<SecondStepType> = ({
             env.messageApi.error('Не задано название голосования')
             break
           case 'description':
-            env.messageApi.error('Не заданы сроки проведения голосования')
+            env.messageApi.error('Не задано описание')
             break
           case 'endDate':
             env.messageApi.error('Не задан конец голосования')
@@ -123,6 +128,7 @@ const SecondStep: React.FC<SecondStepType> = ({
       checkField(res, 'description') &&
       checkField(res, 'endDate') &&
       checkField(res, 'questions') &&
+      checkField(res, 'respondents') &&
       onFInallizeVote(res)
   }
 

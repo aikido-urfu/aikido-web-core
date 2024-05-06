@@ -45,7 +45,7 @@ const SelectUsers: React.FC<SelectedUsersType> = ({ setSelectedUsers }) => {
         allowClear
         style={{ width: '100%' }}
         placeholder='Иван Иванов...'
-        defaultValue={[]}
+        // defaultValue={[]}
         onChange={handleChange}
         options={options}
       />

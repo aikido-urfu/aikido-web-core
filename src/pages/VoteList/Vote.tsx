@@ -10,7 +10,7 @@ import {
 
 import { ListUser, ListVote } from '../../pages'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { GetVote, GetVoteById } from '../../types/api'
 import { prettyDate } from '../../api/tools'
@@ -29,6 +29,7 @@ const VotePage: React.FC = () => {
   const [value, setValue] = useState('')
   const navigate = useNavigate()
   const env = useEnv()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
@@ -40,6 +41,7 @@ const VotePage: React.FC = () => {
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)
       .length !== 0
   const handleSelectedVote = (value: number, index: number) => {
+    // navigate(`/vote/${value}`)
     setselectedVoteId(index)
     env.API.getVote(value)
       .then((res) => {
@@ -125,7 +127,7 @@ const VotePage: React.FC = () => {
           }}
         >
           <Input.Search
-            placeholder='Поиск по голосованиям'
+            placeholder='Поиск по названиям'
             value={value}
             onChange={handleSearch}
             style={{
@@ -172,7 +174,7 @@ const VotePage: React.FC = () => {
                         isSelected={index === selectedVoteId}
                         name={x.title}
                         id={x.id}
-                        date={`${prettyDate(x.startDate)} -${prettyDate(x.endDate)}`}
+                        date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
                         description={x.description}
                       />
                     </div>

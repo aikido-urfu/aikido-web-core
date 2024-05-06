@@ -82,6 +82,14 @@ const App: React.FC = () => {
                 }
               />
               <Route
+                path='/vote/:id'
+                element={
+                  <MainContainer>
+                    <VotePage />
+                  </MainContainer>
+                }
+              />
+              <Route
                 path='/vote-list'
                 element={
                   <MainContainer>

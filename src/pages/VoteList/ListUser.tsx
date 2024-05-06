@@ -34,7 +34,6 @@ const ListUser: React.FC<ListUserType> = ({
           }}
         >
           <img
-            // src='https://ru-static.z-dn.net/files/d96/ced913ba9fe71679ae395a4be5fac683.jpg'
             src='/avatar2.jpg'
             style={{
               width: '50px',
