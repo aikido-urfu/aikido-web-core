@@ -1,12 +1,12 @@
 // import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
-  // GetMail,
   GetUsers,
   GetVote,
   GetVoteById,
-  // PostMail,
+  PostMessage,
   PostVote,
+  GetMessages,
 } from '../types/api'
 import { UserTypeGet } from '../models/userModel'
 import { getCookie } from '../pages/helpers/cookie.helper'
@@ -28,8 +28,18 @@ export const API = {
       },
     })
   },
+  sendComment(data: PostMessage) {
+    return a.post('/messages', data, {
+      headers: {
+        ContentType: 'application/json',
+      },
+    })
+  },
+  getComments(id: number) {
+    return a.get<{ messages: GetMessages[] }>(`/votes/${id}/messages`)
+  },
   getVotes() {
-    return a.get<{ votes: GetVote[] }>('/votes')
+    return a.get<{ votes: GetVote[] }>('/users/me/votes')
   },
   getVote(id: number) {
     return a.get<GetVoteById>(`/votes/${id}`)
@@ -43,19 +53,6 @@ export const API = {
   getUsersAll() {
     return a.get<GetUsers>('/users')
   },
-  // sendMail(data: PostMail) {
-  //   a.post('/mail', data, {
-  //     headers: {
-  //       ContentType: 'application/json',
-  //     },
-  //   })
-  // },
-  // getMail() {
-  //   return a.get<GetMail>('/mail')
-  // },
-  // readMail(id: number) {
-  //   return a.put(`/mail/${id}`, {})
-  // },
   uploadPhoto(file: File) {
     const formData = new FormData()
     formData.append('photo', file)

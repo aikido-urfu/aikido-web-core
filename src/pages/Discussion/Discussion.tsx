@@ -1,21 +1,29 @@
-import { Button, Form, Input } from 'antd'
+// import { Button, Form, Input } from 'antd'
 import React, { useEffect, useId } from 'react'
 import { GetVoteById } from '../../types/api'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { ArrowLeftOutlined } from '@ant-design/icons'
-import { PostComment } from '../../types/api'
+import { PostMessage } from '../../types/api'
+import { GetMessages } from '../../types/api'
+import { Button, Form, Input } from 'antd'
 
 import ListComments from './ListComments'
 
 const Discussion: React.FC = () => {
   // const [selectedUsers, setData] = useState<GetUsers>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
+  const [messages, setmessages] = useState<GetMessages[]>([])
+  const [newComment, setNewComment] = useState(false)
   const { id } = useParams()
   const navigate = useNavigate()
   const env = useEnv()
+  // const { rootStore } = useEnv()
+  // const sendCommentModel = rootStore.SendComment
+  const { API, logger } = useEnv()
   const postTextAreaId = useId()
+  const [form] = Form.useForm()
 
   const selfUser = env.rootStore.selfUser
 
@@ -29,84 +37,53 @@ const Discussion: React.FC = () => {
       })
   }, [id])
 
+  useEffect(() => {
+    env.API.getComments(Number(id))
+      .then((res) => {
+        setmessages(res.data.messages)
+        console.log(res)
+        setNewComment(false)
+        // if (url_id) {
+        //   navigate(`/vote/${url_id}`)
+        //   handleSelectedVote(+url_id, 0)
+        // }
+        // // handleSelectedVote(+url_id, 0)
+      })
+      .catch((err) => {
+        env.logger.error(err)
+      })
+  }, [id, newComment])
+
+  const postComment = (data: PostMessage) => {
+    API.sendComment(data)
+      .then((res) => {
+        setNewComment(true)
+        logger.info(res)
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+        // message.error(err.response.data.message)
+        logger.error(err)
+      })
+  }
+
   const onFinish = (values: any) => {
-    console.log(values)
-    console.log(selfUser)
-    addComment(selfUser.fullName, values.selfUser.fullName.comment)
-  }
-
-  const addComment = (user: string | undefined, text: string) => {
-    return (
-      <div style={{ display: 'flex', width: '1118px', margin: '16px 0' }}>
-        <img
-          src='/avatar2.jpg'
-          style={{
-            width: '32px',
-            height: '32px',
-            backgroundColor: 'white',
-            borderRadius: '50%',
-            margin: '0 16px 0 0',
-          }}
-        ></img>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex' }}>
-            <h4
-              style={{
-                lineHeight: '18px',
-                fontSize: '14px',
-                fontWeight: '400',
-                marginRight: 8,
-              }}
-            >
-              {user}
-            </h4>
-            <span
-              style={{
-                lineHeight: '18px',
-                fontSize: '14px',
-                fontWeight: '400',
-                color: '#8C8C8C',
-              }}
-            >
-              недавно
-            </span>
-          </div>
-          <div style={{ margin: '8px 0' }}>{text}</div>
-          <div style={{ display: 'flex' }}>
-            <span
-              style={{
-                lineHeight: '22px',
-                fontSize: '14px',
-                fontWeight: '400',
-                marginRight: 20,
-                color: '#1890FF',
-              }}
-            >
-              Ответить
-            </span>
-            <div className='flex'>
-              <span
-                style={{
-                  lineHeight: '22px',
-                  fontSize: '14px',
-                  fontWeight: '400',
-                  color: '#1890FF',
-                }}
-              >
-                Скрыть ответы
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const sendComment = (data: PostComment) => {
-    return {
-      data,
+    const name = selfUser.fullName || ''
+    const res: PostMessage = {
+      userId: selfUser.id,
+      voteId: selectedVote?.id || -1,
+      text: values[name].comment,
+      isRef: false,
+      refComId: undefined,
     }
+    form.resetFields()
+    postComment(res)
   }
+
+  console.log(messages)
+
+  console.log(selfUser)
 
   return (
     <div>
@@ -130,17 +107,30 @@ const Discussion: React.FC = () => {
           style={{ marginLeft: 'auto', marginRight: 'auto', width: '1200px' }}
         >
           <main style={{ marginTop: '20px' }}>
-            <ListComments
-              id={selfUser.id}
-              name={selfUser.fullName}
-              text={'какой хороший день'}
-              // date={`${new Date()}`}
-            ></ListComments>
+            {messages.map((x: any, index) => {
+              return (
+                // <div
+                // onClick={() => {
+                //   handleSelectedVote(x.id, index)
+                //   console.log(x.id, index)
+                // }}
+                // >
+                <ListComments
+                  id={x.id}
+                  name={x.userName}
+                  text={x.text}
+                  creationDate={x.creationDate}
+                  // postComment={postComment}
+                />
+                // </div>
+              )
+            })}
           </main>
           <Form
+            form={form}
             layout='vertical'
             onFinish={onFinish}
-            style={{ marginTop: '20px' }}
+            style={{ marginTop: '20px', marginBottom: '60px' }}
             className='flex flex-col'
           >
             <label
@@ -165,13 +155,13 @@ const Discussion: React.FC = () => {
                 style={{ width: 1120, height: 88 }}
                 placeholder='Введите текст'
                 rows={3}
-                maxLength={200}
+                maxLength={1000}
               />
             </Form.Item>
             <Button
               htmlType='submit'
               style={{ maxWidth: 200, fontWeight: 400 }}
-              onClick={() => {}}
+              onClick={onFinish}
             >
               Отправить комментарий
             </Button>

@@ -90,10 +90,27 @@ export type GetUsers = {
   telegram: string
 }[]
 
-export type PostComment = {
+export type PostMessage = {
   userId: number
   voteId: number
   text: string
   isRef: boolean
-  refComId: number
+  refComId?: number
+}
+
+export type GetMessages = {
+  id: number
+  text: string
+  creationDate: string
+  userId: number
+  userName: string
+  isRef: false
+  refComId?: number
+  refUserId?: number
+  refUserName?: string
 }[]
+
+// export type GetMessage = GetMessages &
+//   {
+//     id: number
+//   }[]

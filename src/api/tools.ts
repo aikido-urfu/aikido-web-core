@@ -1,4 +1,5 @@
 import dateFormat from 'dateformat'
+import dayjs from 'dayjs'
 
 export const logger = {
   info(message: any) {
@@ -22,4 +23,27 @@ export const maxString = (val: string, len: number) => {
     return `${val.substring(0, len)}...`
   }
   return val
+}
+
+export const valueTime = (creationDate: string) => {
+  const currentDate = dayjs()
+  const defaultTime = dayjs(creationDate)
+  const seconds = currentDate.diff(defaultTime, 'seconds')
+  const minutes = currentDate.diff(defaultTime, 'minutes')
+  const hours = currentDate.diff(defaultTime, 'hours')
+  console.log(`hours: ${hours}`)
+  const days = currentDate.diff(defaultTime, 'days')
+  const years = currentDate.diff(defaultTime, 'years')
+  if (seconds <= 59 && minutes === 0 && hours === 0 && days === 0) {
+    return `${seconds} с. назад`
+  }
+  if (minutes <= 59 && hours === 0 && days === 0) {
+    return `${minutes} м. назад`
+  }
+  if (hours <= 23 && days === 0) {
+    return `${hours} ч. назад`
+  }
+  if (days <= 364 && years === 0) {
+    return `${days} д. назад`
+  }
 }

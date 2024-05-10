@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Input, Tag } from 'antd'
 import {
   CheckSquareOutlined,
-  EditOutlined,
+  // EditOutlined,
   FieldTimeOutlined,
   MenuFoldOutlined,
   UserOutlined,
@@ -10,7 +10,7 @@ import {
 
 import { ListUser, ListVote } from '../../pages'
 
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { GetVote, GetVoteById } from '../../types/api'
 import { prettyDate } from '../../api/tools'
@@ -25,11 +25,12 @@ const VotePage: React.FC = () => {
   const [votes, setvotes] = useState<GetVote[]>([])
   const [dataSource, setDataSource] = useState<GetVote[]>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
-  const [selectedVoteId, setselectedVoteId] = useState(-1)
   const [value, setValue] = useState('')
   const navigate = useNavigate()
   const env = useEnv()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { id } = useParams()
+  const url_id = id || ''
+  const [selectedVoteId, setselectedVoteId] = useState(+url_id)
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
@@ -37,14 +38,21 @@ const VotePage: React.FC = () => {
     }
   })
 
+  // console.log(selectedVoteId)
+
   const isAlredyVoted =
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)
       .length !== 0
   const handleSelectedVote = (value: number, index: number) => {
-    // navigate(`/vote/${value}`)
     setselectedVoteId(index)
+    // setselectedVoteId(+url_id)
+    // console.log('selectedVoteId')
+    // console.log(selectedVoteId)
     env.API.getVote(value)
       .then((res) => {
+        console.log('value')
+        console.log(value)
+        navigate(`/vote/${value}`)
         setselectedVote(res.data)
       })
       .catch((err) => {
@@ -56,7 +64,11 @@ const VotePage: React.FC = () => {
     env.API.getVotes()
       .then((res) => {
         setvotes(res.data.votes)
-        handleSelectedVote(res.data.votes[0]?.id, 0)
+        if (url_id) {
+          navigate(`/vote/${url_id}`)
+          handleSelectedVote(+url_id, 0)
+        }
+        // handleSelectedVote(+url_id, 0)
       })
       .catch((err) => {
         env.logger.error(err)
@@ -149,6 +161,7 @@ const VotePage: React.FC = () => {
                     <div
                       onClick={() => {
                         handleSelectedVote(x.id, index)
+                        console.log(x.id, index)
                       }}
                     >
                       <ListVote
@@ -167,6 +180,7 @@ const VotePage: React.FC = () => {
                     <div
                       onClick={() => {
                         handleSelectedVote(x.id, index)
+                        console.log(x.id, index)
                       }}
                     >
                       <ListVote

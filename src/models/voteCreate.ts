@@ -2,7 +2,7 @@ import { Instance, types as t, cast } from 'mobx-state-tree'
 import { Question } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
-import { string } from 'mobx-state-tree/dist/internal'
+// import { string } from 'mobx-state-tree/dist/internal'
 
 const files = t.model({
   file: t.string,
@@ -76,9 +76,43 @@ const VoteCreate = VoteCreateModel.create({
   description: '',
 })
 
+const SendCommentModel = t
+  .model({
+    userId: t.maybeNull(t.integer),
+    voteId: t.maybeNull(t.integer),
+    text: t.maybeNull(t.string),
+    isRef: t.maybeNull(t.boolean),
+    refComId: t.maybeNull(t.integer),
+  })
+  .actions((self) => {
+    return {
+      setUserId(value: number) {
+        self.userId = value
+      },
+      setVoteId(value: number) {
+        self.voteId = value
+      },
+      setText(value: string) {
+        self.text = value
+      },
+      setRef(value: boolean) {
+        self.isRef = value
+      },
+      setRefComId(value: number) {
+        self.refComId = value
+      },
+    }
+  })
+
+const SendComment = SendCommentModel.create({
+  text: '',
+  isRef: false,
+})
+
 const rootStoreModel = t.model({
   VoteCreate: VoteCreateModel,
   selfUser: UserProfileModel,
+  SendComment: SendCommentModel,
 })
 
 export type StoreType = Instance<typeof rootStoreModel>
@@ -87,6 +121,7 @@ export const CreateRootStore = (env: IEnv) => {
   return rootStoreModel.create(
     {
       VoteCreate,
+      SendComment,
       selfUser,
     },
     env,

@@ -1,19 +1,27 @@
-import React from 'react'
-import { maxString } from '../../api/tools'
+import React, { useEffect, useId } from 'react'
+import { maxString, valueTime } from '../../api/tools'
+// import { PostMessage } from '../../types/api'
+import { useEnv } from '../../App'
+
 type ListVoteType = {
   id: number
   name: string | undefined
-  // date: string
+  creationDate: string
   text: string
-  // isSelected: boolean
+  // postComment: (data: PostMessage) => void
 }
 
 const ListComments: React.FC<ListVoteType> = ({
   name,
-  // date,
+  creationDate,
   text,
-  // isSelected,
+  // postComment,
 }) => {
+  const { rootStore } = useEnv()
+  const sendCommentModel = rootStore.SendComment
+  const env = useEnv()
+  const selfUser = env.rootStore.selfUser
+
   return (
     <div style={{ display: 'flex', width: '1118px', margin: '16px 0' }}>
       <img
@@ -46,10 +54,10 @@ const ListComments: React.FC<ListVoteType> = ({
               color: '#8C8C8C',
             }}
           >
-            недавно
+            {valueTime(creationDate)}
           </span>
         </div>
-        <div style={{ margin: '8px 0' }}>{text}</div>
+        <div style={{ margin: '8px 0' }}>{maxString(text, 1000)}</div>
         <div style={{ display: 'flex' }}>
           <a
             style={{
