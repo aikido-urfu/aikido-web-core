@@ -1,5 +1,8 @@
 import dateFormat from 'dateformat'
 import dayjs from 'dayjs'
+import { useCallback, useState } from 'react'
+
+import type { Dispatch, SetStateAction } from 'react'
 
 export const logger = {
   info(message: any) {
@@ -8,6 +11,18 @@ export const logger = {
   error(message: any) {
     console.error(message)
   },
+}
+
+export function useToggle(
+  defaultValue?: boolean,
+): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
+  const [value, setValue] = useState(!!defaultValue)
+
+  const toggle = useCallback(() => {
+    setValue((x) => !x)
+  }, [])
+
+  return [value, toggle, setValue]
 }
 
 export const prettyDate = (date: string, year: boolean = false) => {
@@ -31,16 +46,21 @@ export const valueTime = (creationDate: string) => {
   const seconds = currentDate.diff(defaultTime, 'seconds')
   const minutes = currentDate.diff(defaultTime, 'minutes')
   const hours = currentDate.diff(defaultTime, 'hours')
-  console.log(`hours: ${hours}`)
   const days = currentDate.diff(defaultTime, 'days')
   const years = currentDate.diff(defaultTime, 'years')
-  if (seconds <= 59 && minutes === 0 && hours === 0 && days === 0) {
+  if (
+    seconds <= 59 &&
+    minutes === 0 &&
+    hours === 0 &&
+    days === 0 &&
+    years === 0
+  ) {
     return `${seconds} с. назад`
   }
-  if (minutes <= 59 && hours === 0 && days === 0) {
+  if (minutes <= 59 && hours === 0 && days === 0 && years === 0) {
     return `${minutes} м. назад`
   }
-  if (hours <= 23 && days === 0) {
+  if (hours <= 23 && days === 0 && years === 0) {
     return `${hours} ч. назад`
   }
   if (days <= 364 && years === 0) {

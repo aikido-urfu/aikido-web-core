@@ -41,7 +41,6 @@ const Discussion: React.FC = () => {
     env.API.getComments(Number(id))
       .then((res) => {
         setmessages(res.data.messages)
-        console.log(res)
         setNewComment(false)
         // if (url_id) {
         //   navigate(`/vote/${url_id}`)
@@ -80,10 +79,6 @@ const Discussion: React.FC = () => {
     form.resetFields()
     postComment(res)
   }
-
-  console.log(messages)
-
-  console.log(selfUser)
 
   return (
     <div>
