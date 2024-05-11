@@ -6,6 +6,7 @@ import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { getCookie, deleteCookie } from '../helpers/cookie.helper'
 import { COOKIE } from '../../api/axios'
+import { GetTgToken } from '../../types/api'
 
 interface ProfileProps {
   isOwner: boolean
@@ -14,6 +15,7 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   const env = useEnv()
   const navigate = useNavigate()
+  const [tgToken, setTgToken] = useState<GetTgToken>()
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
@@ -26,6 +28,16 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
   const deleteCookieHandler = () => {
     deleteCookie('user')
   }
+
+  useEffect(() => {
+    env.API.getTgToken()
+      .then((res) => {
+        setTgToken(res.data)
+      })
+      .catch((err) => {
+        env.logger.error(err)
+      })
+  }, [])
 
   const user = env.rootStore.selfUser
 
@@ -53,7 +65,14 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             )}
             <div style={{ marginTop: 16 }}>
               <TeamOutlined style={{ marginRight: 8 }} />
-              <a href={user.telegram || ''}>Telegram</a>
+              <a
+                href={
+                  'https://t.me/aikido_notify_test_bot?start=' +
+                    tgToken?.token || ''
+                }
+              >
+                Telegram
+              </a>
             </div>
           </>
         }

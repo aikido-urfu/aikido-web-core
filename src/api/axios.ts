@@ -7,6 +7,7 @@ import {
   PostMessage,
   PostVote,
   GetMessages,
+  GetTgToken,
 } from '../types/api'
 import { UserTypeGet } from '../models/userModel'
 import { getCookie } from '../pages/helpers/cookie.helper'
@@ -52,6 +53,9 @@ export const API = {
   },
   getUsersAll() {
     return a.get<GetUsers>('/users')
+  },
+  getTgToken() {
+    return a.get<GetTgToken>('/telegram/token')
   },
   uploadPhoto(file: File) {
     const formData = new FormData()
