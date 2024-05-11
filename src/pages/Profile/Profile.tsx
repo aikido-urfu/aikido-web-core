@@ -37,7 +37,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
       .catch((err) => {
         env.logger.error(err)
       })
-  })
+  }, [])
 
   const user = env.rootStore.selfUser
 
