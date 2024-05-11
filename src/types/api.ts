@@ -110,6 +110,10 @@ export type GetMessages = {
   refUserName?: string
 }[]
 
+export type GetTgToken = {
+  token: string
+}
+
 // export type GetMessage = GetMessages &
 //   {
 //     id: number
