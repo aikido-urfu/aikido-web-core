@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Tag } from 'antd'
+import { Button, Input, Tag, Tooltip } from 'antd'
 import {
   CheckSquareOutlined,
   // EditOutlined,
@@ -453,14 +453,13 @@ const VotePage: React.FC = () => {
                 </div>
               </div>
             )}
-
             <div
               className='bg-white py-3 px-5'
               style={{
                 borderTop: '0.5px solid #DADADA',
               }}
             >
-              {!isAlredyVoted ? (
+              {!isAlredyVoted && (
                 <Button
                   className='w-200'
                   type='primary'
@@ -468,7 +467,20 @@ const VotePage: React.FC = () => {
                 >
                   Перейти к голосованию
                 </Button>
-              ) : (
+              )}
+              {!isAlredyVoted && (
+                <Tooltip title='Проголосуйте, чтобы посмотреть'>
+                  <Button
+                    disabled
+                    gap-3
+                    style={{ marginLeft: 20 }}
+                    onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
+                  >
+                    Посмотреть общую статистику
+                  </Button>
+                </Tooltip>
+              )}
+              {isAlredyVoted && (
                 <Button
                   gap-3
                   onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
