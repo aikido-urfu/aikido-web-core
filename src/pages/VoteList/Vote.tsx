@@ -38,20 +38,12 @@ const VotePage: React.FC = () => {
     }
   })
 
-  // console.log(selectedVoteId)
-
   const isAlredyVoted =
     selectedVote?.usersVoted?.filter((x) => x.id === env.rootStore.selfUser.id)
       .length !== 0
-  const handleSelectedVote = (value: number, index: number) => {
-    setselectedVoteId(index)
-    // setselectedVoteId(+url_id)
-    // console.log('selectedVoteId')
-    // console.log(selectedVoteId)
+  const handleSelectedVote = (value: number) => {
     env.API.getVote(value)
       .then((res) => {
-        console.log('value')
-        console.log(value)
         navigate(`/vote/${value}`)
         setselectedVote(res.data)
       })
@@ -64,11 +56,12 @@ const VotePage: React.FC = () => {
     env.API.getVotes()
       .then((res) => {
         setvotes(res.data.votes)
-        if (url_id) {
-          navigate(`/vote/${url_id}`)
-          handleSelectedVote(+url_id, 0)
-        }
-        // handleSelectedVote(+url_id, 0)
+        res.data.votes.map((value) => {
+          if (url_id === String(value.id)) {
+            navigate(`/vote/${url_id}`)
+            handleSelectedVote(+url_id)
+          }
+        })
       })
       .catch((err) => {
         env.logger.error(err)
@@ -160,13 +153,12 @@ const VotePage: React.FC = () => {
                   return (
                     <div
                       onClick={() => {
-                        handleSelectedVote(x.id, index)
-                        console.log(x.id, index)
+                        handleSelectedVote(x.id)
                       }}
                     >
                       <ListVote
                         key={x.id}
-                        isSelected={index === selectedVoteId}
+                        isSelected={x.id === +url_id}
                         name={x.title}
                         id={x.id}
                         date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
@@ -179,13 +171,12 @@ const VotePage: React.FC = () => {
                   return (
                     <div
                       onClick={() => {
-                        handleSelectedVote(x.id, index)
-                        console.log(x.id, index)
+                        handleSelectedVote(x.id)
                       }}
                     >
                       <ListVote
                         key={x.id}
-                        isSelected={index === selectedVoteId}
+                        isSelected={x.id === +url_id}
                         name={x.title}
                         id={x.id}
                         date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
