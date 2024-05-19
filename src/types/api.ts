@@ -18,6 +18,7 @@ export type PostVote = {
   endDate: string
   isAnonymous: boolean
   isActive: boolean
+  isVoted: boolean
   isHidenCounter: boolean
   files: string[]
   photos: string[]
@@ -27,6 +28,11 @@ export type PostVote = {
 
 export type GetVote = PostVote & {
   id: number
+  usersVoted: {
+    id: number
+    fullName: string
+    photo: string
+  }[]
 }
 
 export type GetVoteById = {

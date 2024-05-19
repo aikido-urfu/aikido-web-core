@@ -23,6 +23,10 @@ body {
   color: rgba(0, 0, 0, 0.6)
 }
 
+.dark {
+  color: rgba(0, 0, 0, 1)
+}
+
 /* Header */
 .header {
   background-color: #f2f2f2;
@@ -63,4 +67,51 @@ a:hover {
   .main-content {
     padding: 10px;
   }
+}
+
+.btn-text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.title {
+  font-weight: 700;
+  /* font-size: 16px; */
+  font-size: 18px;
+  line-height: 50px;
+}
+
+.h3 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.h4 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.span-file {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 28px;
+}
+
+.small-title {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.steps-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.light-gray {
+  color: #808080;
 }

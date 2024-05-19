@@ -66,6 +66,9 @@ const VoteCreateModel = t
       setUsers(users: number[]) {
         self.users = cast(users)
       },
+      deleteUsers(id: number) {
+        self.users?.splice(id, 1)
+      },
     }
   })
 

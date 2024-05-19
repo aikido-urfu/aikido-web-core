@@ -1,4 +1,4 @@
-import { Button, Steps, message } from 'antd'
+import { Button, Steps, message, ConfigProvider } from 'antd'
 import React, { useState } from 'react'
 import { FirstStep, SecondStep } from '../../pages'
 import { useNavigate } from 'react-router-dom'
@@ -29,19 +29,29 @@ const VoteCreate: React.FC = () => {
   }
 
   return (
-    <>
+    <ConfigProvider
+      theme={{
+        components: {
+          Steps: {
+            iconSizeSM: 32,
+            titleLineHeight: 24,
+          },
+        },
+      }}
+    >
       <div
         //header
         style={{
           height: 60,
           backgroundColor: '#FFF',
-          padding: '15px 20px',
+          padding: '6px 30px',
           display: 'flex',
           flexDirection: 'row',
-          gap: 15,
+          alignItems: 'center',
+          columnGap: 20,
         }}
       >
-        <h3>Создание голосования</h3>
+        <h3 className='title'>Создание голосования</h3>
         <Button onClick={() => navigate('/vote')}>Отмена</Button>
       </div>
 
@@ -61,11 +71,11 @@ const VoteCreate: React.FC = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            padding: '0 20px',
+            padding: '6px 20px',
             justifyContent: 'space-between',
           }}
         >
-          <h3>Вопросы к голосованию</h3>
+          <h3 className='title'>Основная информация и участники</h3>
           <div
             style={{
               flexBasis: '40%',
@@ -78,6 +88,7 @@ const VoteCreate: React.FC = () => {
             <Steps
               size='small'
               current={step}
+              className='steps-title'
               items={[
                 {
                   title: 'Основная информация и участники',
@@ -102,7 +113,7 @@ const VoteCreate: React.FC = () => {
           />
         ) : null}
       </div>
-    </>
+    </ConfigProvider>
   )
 }
 

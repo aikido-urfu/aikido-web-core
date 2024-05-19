@@ -1,10 +1,13 @@
 import React from 'react'
+import { useEnv } from '../../App'
 import './index.css'
 import { DeleteOutlined } from '@ant-design/icons'
 
 type ListUserType = {
   name: string
   mail: string
+  role: string
+  // data: any
   isCanBeDeleted?: boolean
   onDeleteClick?: () => void
 }
@@ -12,6 +15,8 @@ type ListUserType = {
 const ListUser: React.FC<ListUserType> = ({
   name,
   mail,
+  // data,
+  role,
   isCanBeDeleted,
   onDeleteClick,
 }) => {
@@ -26,6 +31,7 @@ const ListUser: React.FC<ListUserType> = ({
           borderBottom: '1px solid #DADADA',
           width: 'auto',
           justifyContent: 'space-between',
+          borderLeft: '1px solid #DADADA',
         }}
       >
         <div
@@ -36,16 +42,23 @@ const ListUser: React.FC<ListUserType> = ({
           <img
             src='/avatar2.jpg'
             style={{
-              width: '50px',
-              height: '50px',
+              width: '30px',
+              height: '30px',
               backgroundColor: 'gray',
               borderRadius: '50%',
-              margin: '0 15px 0 0',
+              margin: '0 10px 0 0',
             }}
           ></img>
-          <div>
-            <h4>{name}</h4>
-            <p style={{ color: 'gray' }}>{mail}</p>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <h4 style={{ marginBottom: '2px' }}>{name}</h4>
+            <span style={{ color: 'gray' }}>{role}</span>
+            {/* <span style={{ color: 'gray' }}>{mail}</span> */}
           </div>
         </div>
         {isCanBeDeleted && (
