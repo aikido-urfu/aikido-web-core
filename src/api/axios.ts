@@ -15,7 +15,7 @@ import { getCookie } from '../pages/helpers/cookie.helper'
 export const COOKIE = getCookie('user')
 
 const a = axios.create({
-  baseURL: '158.160.40.114:3005',
+  baseURL: 'http://158.160.40.114:3005',
   headers: {
     Authorization: 'Bearer ' + COOKIE,
   },
