@@ -4,7 +4,7 @@
   "description": "Build UI that scales",
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js --open --port 3004",
-    "build": "NODE_ENV=production webpack --config ./webpack.config.prod.js",
+    "build": "webpack --config ./webpack.config.prod.js",
     "deploy": "npm run build && node ./src/scripts/deploy.js"
   },
   "keywords": [

@@ -15,7 +15,7 @@ import { getCookie } from '../pages/helpers/cookie.helper'
 export const COOKIE = getCookie('user')
 
 const a = axios.create({
-  baseURL: 'http://aikido.sytes.net:3005',
+  baseURL: 'bd.ru-central1.internal:3005',
   headers: {
     Authorization: 'Bearer ' + COOKIE,
   },
