@@ -15,7 +15,7 @@ import { getCookie } from '../pages/helpers/cookie.helper'
 export const COOKIE = getCookie('user')
 
 const a = axios.create({
-  baseURL: '$API:3005',
+  baseURL: 'process.env.API:3005',
   headers: {
     Authorization: 'Bearer ' + COOKIE,
   },
