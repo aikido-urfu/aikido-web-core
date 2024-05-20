@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   const handleSubmit = async () => {
     setLoading(true)
     await axios
-      .post('http://192.168.80.134:5000/auth/login', {
+      .post('http://192.168.80.134:3005/auth/login', {
         email: email.value,
         password: password.value,
       })
