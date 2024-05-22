@@ -96,6 +96,14 @@ const VotePage: React.FC = () => {
     return selectedVote?.respondents.length
   }
 
+  const deleteVote = () => {
+    env.API.deleteVote(selectedVote?.id)
+      .then((res) => {})
+      .catch((err) => {
+        env.logger.error(err)
+      })
+  }
+
   return (
     <>
       <div
@@ -645,6 +653,9 @@ const VotePage: React.FC = () => {
                 onClick={() => navigate(`/vote/${selectedVote.id}/discussion`)}
               >
                 Перейти к обсуждению
+              </Button>
+              <Button style={{ marginLeft: 20 }} onClick={() => deleteVote()}>
+                Удалить голосование
               </Button>
             </div>
           </div>

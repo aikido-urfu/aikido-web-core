@@ -57,6 +57,9 @@ export const API = {
   getTgToken() {
     return a.get<GetTgToken>('/telegram/token')
   },
+  deleteVote(id?: number) {
+    return a.delete(`/votes/${id}`)
+  },
   uploadPhoto(file: File) {
     const formData = new FormData()
     formData.append('photo', file)
