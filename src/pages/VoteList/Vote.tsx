@@ -71,6 +71,7 @@ const VotePage: React.FC = () => {
   }
 
   useEffect(() => {
+    navigate('/')
     env.API.getVotes()
       .then((res) => {
         setvotes(res.data.votes)
