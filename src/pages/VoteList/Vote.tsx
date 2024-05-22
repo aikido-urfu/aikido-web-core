@@ -58,6 +58,18 @@ const VotePage: React.FC = () => {
       })
   }
 
+  let testf = false
+
+  const deleteVote = () => {
+    env.API.deleteVote(selectedVote?.id)
+      .then((res) => {
+        testf = true
+      })
+      .catch((err) => {
+        env.logger.error(err)
+      })
+  }
+
   useEffect(() => {
     env.API.getVotes()
       .then((res) => {
@@ -72,7 +84,7 @@ const VotePage: React.FC = () => {
       .catch((err) => {
         env.logger.error(err)
       })
-  }, [])
+  }, [testf])
 
   // const showDrawer = () => {
   //   setOpen(true)
@@ -94,14 +106,6 @@ const VotePage: React.FC = () => {
 
   const showMembers = () => {
     return selectedVote?.respondents.length
-  }
-
-  const deleteVote = () => {
-    env.API.deleteVote(selectedVote?.id)
-      .then((res) => {})
-      .catch((err) => {
-        env.logger.error(err)
-      })
   }
 
   return (
