@@ -1,15 +1,40 @@
 import { Button, Steps, message, ConfigProvider } from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FirstStep, SecondStep } from '../../pages'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
 import { PostVote } from '../../types/api'
+import { GetVoteById } from '../../types/api'
 
-const VoteCreate: React.FC = () => {
+const VoteEdit: React.FC = () => {
+  const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
   const [step, setstep] = useState(0)
   const navigate = useNavigate()
   const { API, logger } = useEnv()
+  const env = useEnv()
+  const { id } = useParams()
+  const url_id = id || ''
+
+  useEffect(() => {
+    env.API.getVotes()
+      .then((res) => {
+        let flag = false
+        res.data.votes.map((value: any) => {
+          if (url_id === String(value.id)) {
+            setselectedVote(value)
+            flag = true
+            return
+          }
+        })
+        if (!flag) {
+          navigate('/vote')
+        }
+      })
+      .catch((err) => {
+        env.logger.error(err)
+      })
+  }, [url_id])
 
   const onFInallizeVote = (data: PostVote) => {
     API.sendCreateVote(data)
@@ -51,7 +76,7 @@ const VoteCreate: React.FC = () => {
           columnGap: 20,
         }}
       >
-        <h3 className='title'>Создание голосования</h3>
+        <h3 className='title'>Редактирование голосования</h3>
         <Button onClick={() => navigate('/vote')}>Отмена</Button>
       </div>
 
@@ -102,16 +127,16 @@ const VoteCreate: React.FC = () => {
         </div>
         {step === 0 ? (
           <FirstStep
-            selectedVote={undefined}
             onStepChange={(x) => {
               setstep(x)
             }}
+            selectedVote={selectedVote}
           />
         ) : step === 1 ? (
           <SecondStep
             onFInallizeVote={onFInallizeVote}
             onStepChange={(x) => setstep(x)}
-            selectedVote={undefined}
+            selectedVote={selectedVote}
           />
         ) : null}
       </div>
@@ -119,4 +144,4 @@ const VoteCreate: React.FC = () => {
   )
 }
 
-export default observer(VoteCreate)
+export default observer(VoteEdit)

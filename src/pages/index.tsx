@@ -14,6 +14,9 @@ import SelectUsers from './VoteCreate/SelectUsers'
 import VoteCreate from './VoteCreate/VoteCreate'
 import Discussion from './Discussion/Discussion'
 
+//VoteEdit
+import VoteEdit from './VoteEdit/VoteEdit'
+
 //VoteList
 import ListUser from './VoteList/ListUser'
 import ListVote from './VoteList/ListVote'
@@ -37,6 +40,7 @@ export {
   SecondStep,
   SelectUsers,
   VoteCreate,
+  VoteEdit,
   ListUser,
   ListVote,
   VotePage,
