@@ -9,14 +9,21 @@ import { PostVote, Question } from '../../types/api'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { ModalAddQuestion } from '../../pages'
+import { GetVoteById } from '../../types/api'
 
 type QuestionType = {
   data: Question
   id: number
   onDeleteClick: (id: number) => void
+  selectedVote: GetVoteById | undefined
 }
 
-const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
+const QuestionBlock: React.FC<QuestionType> = ({
+  data,
+  id,
+  onDeleteClick,
+  selectedVote,
+}) => {
   return (
     <div
       style={{
@@ -44,6 +51,7 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
         <div>
           <h4>{data.title}</h4>
           <p className='gray'>{data.description}</p>
+          <div>HI</div>
         </div>
       </div>
       <DeleteOutlined
@@ -58,10 +66,12 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
 type SecondStepType = {
   onStepChange?: (step: number) => void
   onFInallizeVote: (data: PostVote) => void
+  selectedVote: GetVoteById | undefined
 }
 const SecondStep: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
+  selectedVote,
 }) => {
   const [isShowModal, setshowModal] = useState(false)
   const { rootStore } = useEnv()
@@ -164,6 +174,7 @@ const SecondStep: React.FC<SecondStepType> = ({
             onDeleteClick={handleDeleteQuestionClick}
             id={index}
             data={x}
+            selectedVote={selectedVote}
           />
         )
       })}
