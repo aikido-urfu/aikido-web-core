@@ -294,6 +294,7 @@ const VoteProgress: React.FC = () => {
                         width: 600,
                         height: 300,
                         backgroundRepeat: 'no-repeat',
+                        objectFit: 'contain',
                       }}
                     ></img>
                   )
