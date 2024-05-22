@@ -301,7 +301,7 @@ const VoteProgress: React.FC = () => {
                 })}
                 {!selectedQuestion.isMultiply ? (
                   <>
-                    <Space direction='vertical'>
+                    <Space direction='vertical' style={{ display: 'block' }}>
                       {selectedQuestion.answers.map((x) => (
                         <Radio
                           checked={isSelected(x.id)}
