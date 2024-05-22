@@ -37,7 +37,11 @@ const VoteEdit: React.FC = () => {
   }, [url_id])
 
   const onFInallizeVote = (data: PostVote) => {
-    API.sendCreateVote(data)
+    const editedVote = {
+      title: data.title,
+    }
+
+    API.sendEditVote(selectedVote?.id, editedVote)
       .then((res) => {
         logger.info(res)
         navigate('/completed', {

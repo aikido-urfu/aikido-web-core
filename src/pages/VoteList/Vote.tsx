@@ -667,7 +667,6 @@ const VotePage: React.FC = () => {
                 style={{ marginLeft: 20 }}
                 onClick={() => {
                   deleteVote()
-                  navigate(0)
                 }}
               >
                 Удалить голосование

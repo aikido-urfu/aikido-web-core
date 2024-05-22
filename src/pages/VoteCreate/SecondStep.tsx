@@ -101,46 +101,7 @@ const SecondStep: React.FC<SecondStepType> = ({
       questions: voteCreateModel.questions || [],
       respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
     }
-    const checkField = (obj: PostVote, field: keyof PostVote) => {
-      if (Array.isArray(obj[field])) {
-        console.log(field)
-        //@ts-expect-error AAA
-        if (obj[field].length === 0) {
-          if (field === 'questions') {
-            env.messageApi.error('Не задан вопрос голосования')
-          } else if (field === 'respondents') {
-            env.messageApi.error('Не заданы участники')
-          }
-          return false
-        }
-        return true
-      }
-      // eslint-disable-next-line no-prototype-builtins
-      if (obj.hasOwnProperty(field) && obj[field] !== '') {
-        return true
-      } else {
-        switch (field) {
-          case 'title':
-            env.messageApi.error('Не задано название голосования')
-            break
-          case 'description':
-            env.messageApi.error('Не задано описание')
-            break
-          case 'endDate':
-            env.messageApi.error('Не задан конец голосования')
-            break
-          case 'questions':
-            env.messageApi.error('Не задан вопрос голосования')
-            break
-        }
-      }
-    }
-    checkField(res, 'title') &&
-      checkField(res, 'description') &&
-      checkField(res, 'endDate') &&
-      checkField(res, 'questions') &&
-      checkField(res, 'respondents') &&
-      onFInallizeVote(res)
+    onFInallizeVote(res)
   }
 
   const handleDeleteQuestionClick = (id: number) => {

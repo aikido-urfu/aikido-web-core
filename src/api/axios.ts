@@ -1,3 +1,4 @@
+import { string } from 'mobx-state-tree/dist/internal';
 // import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
@@ -14,6 +15,10 @@ import { getCookie } from '../pages/helpers/cookie.helper'
 
 export const COOKIE = getCookie('user')
 
+type temp = {
+  title: string
+}
+
 const a = axios.create({
   baseURL: 'http://158.160.112.30:3005',
   headers: {
@@ -24,6 +29,13 @@ const a = axios.create({
 export const API = {
   sendCreateVote(data: PostVote) {
     return a.post('/votes', data, {
+      headers: {
+        ContentType: 'application/json',
+      },
+    })
+  },
+  sendEditVote(id?: number, data?: temp) {
+    return a.patch(`/votes/${id}`, data, {
       headers: {
         ContentType: 'application/json',
       },
