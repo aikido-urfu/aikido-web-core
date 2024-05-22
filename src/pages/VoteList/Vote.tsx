@@ -341,7 +341,7 @@ const VotePage: React.FC = () => {
                       </h4>
                       <div className='flex items-center'>
                         <img
-                          src='/avatar2.jpg'
+                          src='https://storage.yandexcloud.net/projectdhdygfuyfguyfvw/avatar2.jpg'
                           style={{
                             width: '24px',
                             height: '24px',

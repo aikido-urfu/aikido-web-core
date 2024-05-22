@@ -52,7 +52,7 @@ const ListComments: React.FC<ListVoteType> = ({
   return (
     <div style={{ display: 'flex', width: '1118px', margin: '16px 0' }}>
       <img
-        src='/avatar2.jpg'
+        src='https://storage.yandexcloud.net/projectdhdygfuyfguyfvw/avatar2.jpg'
         style={{
           width: '32px',
           height: '32px',

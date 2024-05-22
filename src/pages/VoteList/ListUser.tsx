@@ -40,7 +40,7 @@ const ListUser: React.FC<ListUserType> = ({
           }}
         >
           <img
-            src='/avatar2.jpg'
+            src='https://storage.yandexcloud.net/projectdhdygfuyfguyfvw/avatar2.jpg'
             style={{
               width: '30px',
               height: '30px',
