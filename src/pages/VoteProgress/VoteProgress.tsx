@@ -288,15 +288,14 @@ const VoteProgress: React.FC = () => {
                 </p>
                 {selectedQuestion.photos.map((x) => {
                   return (
-                    <div
+                    <img
+                      src={x}
                       style={{
                         width: 600,
                         height: 300,
-                        marginBottom: 20,
-                        backgroundImage: `url(${x})`,
                         backgroundRepeat: 'no-repeat',
                       }}
-                    ></div>
+                    ></img>
                   )
                 })}
                 {!selectedQuestion.isMultiply ? (

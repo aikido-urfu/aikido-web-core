@@ -654,7 +654,14 @@ const VotePage: React.FC = () => {
               >
                 Перейти к обсуждению
               </Button>
-              <Button style={{ marginLeft: 20 }} onClick={() => deleteVote()}>
+              <Button
+                style={{ marginLeft: 20 }}
+                onClick={() => {
+                  deleteVote()
+                  navigate('/vote')
+                  
+                }}
+              >
                 Удалить голосование
               </Button>
             </div>
