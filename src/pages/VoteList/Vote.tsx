@@ -658,8 +658,7 @@ const VotePage: React.FC = () => {
                 style={{ marginLeft: 20 }}
                 onClick={() => {
                   deleteVote()
-                  navigate('/vote')
-                  
+                  navigate(-1)
                 }}
               >
                 Удалить голосование
