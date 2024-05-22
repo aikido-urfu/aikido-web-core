@@ -64,6 +64,7 @@ const VotePage: React.FC = () => {
     env.API.deleteVote(selectedVote?.id)
       .then((res) => {
         testf = true
+        navigate('/')
       })
       .catch((err) => {
         env.logger.error(err)
@@ -71,7 +72,6 @@ const VotePage: React.FC = () => {
   }
 
   useEffect(() => {
-    navigate('/')
     env.API.getVotes()
       .then((res) => {
         setvotes(res.data.votes)
