@@ -20,7 +20,7 @@ type temp = {
 }
 
 const a = axios.create({
-  baseURL: 'http://158.160.112.30:3005',
+  baseURL: 'http://51.250.78.241:3005',
   headers: {
     Authorization: 'Bearer ' + COOKIE,
   },
