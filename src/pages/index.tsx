@@ -15,9 +15,9 @@ import VoteCreate from './VoteCreate/VoteCreate'
 import Discussion from './Discussion/Discussion'
 
 //VoteEdit
-import VoteEdit from './VoteEdit/VoteEdit'
-import FirstStepEdit from './VoteEdit/FirstStepEdit'
-import SecondStepEdit from './VoteEdit/SecondStepEdit'
+// import VoteEdit from './VoteEdit/VoteEdit'
+// import FirstStepEdit from './VoteEdit/FirstStepEdit'
+// import SecondStepEdit from './VoteEdit/SecondStepEdit'
 
 //VoteList
 import ListUser from './VoteList/ListUser'
@@ -48,8 +48,8 @@ export {
   VotesPage,
   VoteProgress,
   Discussion,
-  VoteEdit,
-  FirstStepEdit,
-  SecondStepEdit,
+  // VoteEdit,
+  // FirstStepEdit,
+  // SecondStepEdit,
   Page404,
 }
