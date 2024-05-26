@@ -127,7 +127,6 @@ const VoteCreate: React.FC = () => {
           <SecondStep
             onFInallizeVote={onFInallizeVote}
             onStepChange={(x) => setstep(x)}
-            selectedVote={undefined}
           />
         ) : null}
       </div>

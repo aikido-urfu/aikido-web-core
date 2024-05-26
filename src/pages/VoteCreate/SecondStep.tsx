@@ -15,15 +15,9 @@ type QuestionType = {
   data: Question
   id: number
   onDeleteClick: (id: number) => void
-  selectedVote: GetVoteById | undefined
 }
 
-const QuestionBlock: React.FC<QuestionType> = ({
-  data,
-  id,
-  onDeleteClick,
-  selectedVote,
-}) => {
+const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
   return (
     <div
       style={{
@@ -65,12 +59,10 @@ const QuestionBlock: React.FC<QuestionType> = ({
 type SecondStepType = {
   onStepChange?: (step: number) => void
   onFInallizeVote: (data: PostVote) => void
-  selectedVote: GetVoteById | undefined
 }
 const SecondStep: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
-  selectedVote,
 }) => {
   const [isShowModal, setshowModal] = useState(false)
   const { rootStore } = useEnv()
@@ -173,7 +165,6 @@ const SecondStep: React.FC<SecondStepType> = ({
             onDeleteClick={handleDeleteQuestionClick}
             id={index}
             data={x}
-            selectedVote={selectedVote}
           />
         )
       })}
