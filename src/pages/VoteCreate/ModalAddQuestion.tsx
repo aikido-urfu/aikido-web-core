@@ -169,6 +169,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 padding: '0 20px 0 0',
+                marginBottom: 20,
               }}
             >
               <h3>Документы</h3>
@@ -178,6 +179,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
               seturlList={seturlList}
               fileList={fileList}
               setFileList={setFileList}
+              title={'Загрузить файлы'}
             />
           </div>
         </div>

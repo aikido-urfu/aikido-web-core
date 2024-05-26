@@ -9,6 +9,7 @@ export type AddFilesType = {
   setFileList: React.Dispatch<React.SetStateAction<UploadFile<any>[]>>
   urlList: string[]
   seturlList: (val: string[]) => void
+  title: string
 }
 
 export const AddFiles: React.FC<AddFilesType> = ({
@@ -16,6 +17,7 @@ export const AddFiles: React.FC<AddFilesType> = ({
   setFileList,
   urlList,
   seturlList,
+  title,
 }) => {
   const env = useEnv()
   const props: UploadProps = {
@@ -44,14 +46,8 @@ export const AddFiles: React.FC<AddFilesType> = ({
   }
 
   return (
-    <div
-      style={{
-        marginTop: 20,
-      }}
-    >
-      <Upload listType='picture' {...props}>
-        <Button icon={<UploadOutlined />}>Загрузить Файлы</Button>
-      </Upload>
-    </div>
+    <Upload listType='picture' {...props}>
+      <Button icon={<UploadOutlined />}>{title}</Button>
+    </Upload>
   )
 }

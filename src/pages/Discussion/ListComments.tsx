@@ -1,11 +1,8 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { maxString, valueTime } from '../../api/tools'
-import { GetVoteById } from '../../types/api'
 import { SendOutlined } from '@ant-design/icons'
-import { useParams } from 'react-router-dom'
 import { Button, Form, Input } from 'antd'
 import { PostMessage } from '../../types/api'
-import { GetMessages } from '../../types/api'
 import './index.css'
 import { useEnv } from '../../App'
 
@@ -44,11 +41,8 @@ const ListComments: React.FC<ListVoteType> = ({
   const [toggleReplyValue, setToggleReply] = useState('hide')
   const [toggleAnswersValue, setToggleAnswers] = useState('show')
   const [value, setValue] = useState('Скрыть ответы ˄')
-  const [messages, setmessages] = useState<any>([])
   const [newReplyText, setNewReplyText] = useState('Ответить')
-  const { id } = useParams()
   const env = useEnv()
-  const { API, logger } = useEnv()
   const [form] = Form.useForm()
   const selfUser = env.rootStore.selfUser
 
@@ -83,6 +77,7 @@ const ListComments: React.FC<ListVoteType> = ({
     }
     form.resetFields()
     postComment(res)
+    toggleShowReply()
   }
 
   return (
@@ -163,7 +158,8 @@ const ListComments: React.FC<ListVoteType> = ({
                     refUserName={x.refUserName}
                     references={x.references}
                     postComment={postComment}
-                    onFinish={onFinish}
+                    selectedVote={selectedVote}
+                    // onFinish={onFinish}
                   />
                 )
               })
@@ -173,6 +169,9 @@ const ListComments: React.FC<ListVoteType> = ({
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               form.submit()
+            }
+            if (e.key === 'Escape') {
+              toggleShowReply()
             }
           }}
           form={form}
@@ -197,12 +196,7 @@ const ListComments: React.FC<ListVoteType> = ({
               }}
             />
           </Form.Item>
-          <Button
-            htmlType='submit'
-            type='text'
-            className='flex items-center'
-            onClick={toggleShowReply}
-          >
+          <Button htmlType='submit' type='text' className='flex items-center'>
             <SendOutlined
               style={{
                 padding: '6px 0',

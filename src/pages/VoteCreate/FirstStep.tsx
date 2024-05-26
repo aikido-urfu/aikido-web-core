@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, Switch } from 'antd'
+import { Button, DatePicker, Input, Switch, UploadFile, Upload } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import React, { useCallback, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
@@ -12,7 +12,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import { AddFiles } from '../../components/AddFiles/AddFiles'
-import { UploadFile } from 'antd'
+import { AddFilesType } from '../../components/AddFiles/AddFiles'
 import { GetVoteById } from '../../types/api'
 import { useParams } from 'react-router-dom'
 
@@ -232,25 +232,28 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 padding: '12px 16px',
               }}
             >
-              <Button
-                icon={<UploadOutlined />}
-                style={{
-                  color: 'rgba(0, 0, 0, 0.88)',
-                  width: 189,
-                  height: 32,
-                }}
-                onClick={() => {}}
-              >
-                Загрузить документ
-              </Button>
-              {/* <AddFiles
+              {/* <Upload listType='picture' {...props}>
+                <Button
+                  icon={<UploadOutlined />}
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.88)',
+                    width: 189,
+                    height: 32,
+                  }}
+                  onClick={() => {}}
+                >
+                  Загрузить документ
+                </Button>
+              </Upload> */}
+              <AddFiles
                 urlList={urlList}
                 seturlList={seturlList}
                 fileList={fileList}
                 setFileList={setFileList}
-              /> */}
+                title={'Загрузить документ'}
+              />
             </div>
-            <div className='flex flex-col'>
+            {/* <div className='flex flex-col'>
               <div
                 style={{
                   display: 'flex',
@@ -277,7 +280,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                   />
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', height: 60 }}>

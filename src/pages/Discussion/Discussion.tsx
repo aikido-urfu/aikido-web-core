@@ -1,4 +1,3 @@
-// import { Button, Form, Input } from 'antd'
 import React, { useEffect, useId } from 'react'
 import { GetVoteById } from '../../types/api'
 import { useState } from 'react'
@@ -6,21 +5,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { PostMessage } from '../../types/api'
-import { GetMessages } from '../../types/api'
 import { Button, Form, Input } from 'antd'
 
 import ListComments from './ListComments'
 
 const Discussion: React.FC = () => {
-  // const [selectedUsers, setData] = useState<GetUsers>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
   const [messages, setmessages] = useState<any[]>([])
   const [newComment, setNewComment] = useState(false)
   const { id } = useParams()
   const navigate = useNavigate()
   const env = useEnv()
-  // const { rootStore } = useEnv()
-  // const sendCommentModel = rootStore.SendComment
   const { API, logger } = useEnv()
   const postTextAreaId = useId()
   const [form] = Form.useForm()
@@ -53,11 +48,8 @@ const Discussion: React.FC = () => {
       .then((res) => {
         setNewComment(true)
         logger.info(res)
-        console.log(res)
       })
       .catch((err) => {
-        console.log(err)
-        // message.error(err.response.data.message)
         logger.error(err)
       })
   }
@@ -105,7 +97,7 @@ const Discussion: React.FC = () => {
           style={{ marginLeft: 'auto', marginRight: 'auto', width: '1200px' }}
         >
           <main style={{ marginTop: '20px' }}>
-            {sortMessagesByTime().map((x: any, index) => {
+            {sortMessagesByTime().map((x: any) => {
               return (
                 <ListComments
                   commentId={x.id}
