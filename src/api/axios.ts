@@ -1,4 +1,4 @@
-// import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   GetUsers,
@@ -24,6 +24,13 @@ const a = axios.create({
 export const API = {
   sendCreateVote(data: PostVote) {
     return a.post('/votes', data, {
+      headers: {
+        ContentType: 'application/json',
+      },
+    })
+  },
+  sendEditVote(id: number, data: PostVote) {
+    return a.patch(`/votes/${id}`, data, {
       headers: {
         ContentType: 'application/json',
       },

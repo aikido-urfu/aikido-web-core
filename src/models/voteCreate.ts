@@ -60,14 +60,33 @@ const VoteCreateModel = t
         self.startDate = d1
         self.endDate = d2
       },
-      deleteQuestion(id: number) {
-        self.questions?.splice(id, 1)
-      },
       setUsers(users: number[]) {
         self.users = cast(users)
       },
+      deleteName() {
+        self.title = null
+      },
+      deleteDescription() {
+        self.description = null
+      },
+      deleteAnonim() {
+        self.isAnonim = null
+      },
+      deleteDate() {
+        self.startDate = null
+        self.endDate = null
+      },
+      deleteQuestion(id: number) {
+        self.questions?.splice(id, 1)
+      },
+      deleteAllQuestions() {
+        self.questions = null
+      },
       deleteUsers(id: number) {
         self.users?.splice(id, 1)
+      },
+      deleteAllUsers() {
+        self.users = null
       },
     }
   })

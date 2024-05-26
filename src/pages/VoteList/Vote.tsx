@@ -281,7 +281,6 @@ const VotePage: React.FC = () => {
               {selectedVote.user.id === env.rootStore.selfUser.id && (
                 <Button
                   onClick={() => {
-                    // console.log(selectedVote)
                     navigate(`/vote/${url_id}/edit`)
                   }}
                 >

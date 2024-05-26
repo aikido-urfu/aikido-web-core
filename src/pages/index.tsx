@@ -16,6 +16,8 @@ import Discussion from './Discussion/Discussion'
 
 //VoteEdit
 import VoteEdit from './VoteEdit/VoteEdit'
+import FirstStepEdit from './VoteEdit/FirstStepEdit'
+import SecondStepEdit from './VoteEdit/SecondStepEdit'
 
 //VoteList
 import ListUser from './VoteList/ListUser'
@@ -40,12 +42,14 @@ export {
   SecondStep,
   SelectUsers,
   VoteCreate,
-  VoteEdit,
   ListUser,
   ListVote,
   VotePage,
   VotesPage,
   VoteProgress,
   Discussion,
+  VoteEdit,
+  FirstStepEdit,
+  SecondStepEdit,
   Page404,
 }

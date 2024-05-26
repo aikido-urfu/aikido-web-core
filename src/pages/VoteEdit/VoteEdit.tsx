@@ -1,6 +1,6 @@
 import { Button, Steps, message, ConfigProvider } from 'antd'
 import React, { useState, useEffect } from 'react'
-import { FirstStep, SecondStep } from '../../pages'
+import { FirstStepEdit, SecondStepEdit } from '../../pages'
 import { useNavigate, useParams } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
@@ -15,6 +15,23 @@ const VoteEdit: React.FC = () => {
   const env = useEnv()
   const { id } = useParams()
   const url_id = id || ''
+
+  const { rootStore } = useEnv()
+  const voteCreate = rootStore.VoteCreate
+
+  const clearPlaceholders = () => {
+    voteCreate.deleteName()
+    voteCreate.deleteDescription()
+    voteCreate.deleteDate()
+    voteCreate.deleteAnonim()
+    voteCreate.deleteAllUsers()
+    voteCreate.deleteAllQuestions()
+  }
+
+  const navToVoteHandler = () => {
+    clearPlaceholders()
+    navigate('/vote')
+  }
 
   useEffect(() => {
     env.API.getVotes()
@@ -37,7 +54,7 @@ const VoteEdit: React.FC = () => {
   }, [url_id])
 
   const onFInallizeVote = (data: PostVote) => {
-    API.sendCreateVote(data)
+    API.sendEditVote(+url_id, data)
       .then((res) => {
         logger.info(res)
         navigate('/completed', {
@@ -77,7 +94,7 @@ const VoteEdit: React.FC = () => {
         }}
       >
         <h3 className='title'>Редактирование голосования</h3>
-        <Button onClick={() => navigate('/vote')}>Отмена</Button>
+        <Button onClick={() => navToVoteHandler()}>Отмена</Button>
       </div>
 
       <div
@@ -126,14 +143,14 @@ const VoteEdit: React.FC = () => {
           </div>
         </div>
         {step === 0 ? (
-          <FirstStep
+          <FirstStepEdit
             onStepChange={(x) => {
               setstep(x)
             }}
             selectedVote={selectedVote}
           />
         ) : step === 1 ? (
-          <SecondStep
+          <SecondStepEdit
             onFInallizeVote={onFInallizeVote}
             onStepChange={(x) => setstep(x)}
             selectedVote={selectedVote}

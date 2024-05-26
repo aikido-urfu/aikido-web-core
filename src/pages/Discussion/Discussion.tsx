@@ -14,7 +14,7 @@ import ListComments from './ListComments'
 const Discussion: React.FC = () => {
   // const [selectedUsers, setData] = useState<GetUsers>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
-  const [messages, setmessages] = useState<GetMessages[]>([])
+  const [messages, setmessages] = useState<any[]>([])
   const [newComment, setNewComment] = useState(false)
   const { id } = useParams()
   const navigate = useNavigate()
@@ -42,11 +42,6 @@ const Discussion: React.FC = () => {
       .then((res) => {
         setmessages(res.data.messages)
         setNewComment(false)
-        // if (url_id) {
-        //   navigate(`/vote/${url_id}`)
-        //   handleSelectedVote(+url_id, 0)
-        // }
-        // // handleSelectedVote(+url_id, 0)
       })
       .catch((err) => {
         env.logger.error(err)
@@ -80,6 +75,14 @@ const Discussion: React.FC = () => {
     postComment(res)
   }
 
+  const sortMessagesByTime = () => {
+    return messages.sort((a, b) => {
+      return (
+        new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime()
+      )
+    })
+  }
+
   return (
     <div>
       <div
@@ -102,29 +105,35 @@ const Discussion: React.FC = () => {
           style={{ marginLeft: 'auto', marginRight: 'auto', width: '1200px' }}
         >
           <main style={{ marginTop: '20px' }}>
-            {messages.map((x: any, index) => {
+            {sortMessagesByTime().map((x: any, index) => {
               return (
-                // <div
-                // onClick={() => {
-                //   handleSelectedVote(x.id, index)
-                //   console.log(x.id, index)
-                // }}
-                // >
                 <ListComments
-                  id={x.id}
-                  name={x.userName}
+                  commentId={x.id}
                   text={x.text}
                   creationDate={x.creationDate}
-                  // postComment={postComment}
+                  userId={x.userId}
+                  userName={x.userName}
+                  isRef={x.isRef}
+                  refComId={x.refComId}
+                  refUserId={x.refUserId}
+                  refUserName={x.refUserName}
+                  references={x.references}
+                  postComment={postComment}
+                  selectedVote={selectedVote}
                 />
                 // </div>
               )
             })}
           </main>
           <Form
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                form.submit()
+              }
+            }}
             form={form}
-            layout='vertical'
             onFinish={onFinish}
+            layout='vertical'
             style={{ marginTop: '20px', marginBottom: '60px' }}
             className='flex flex-col'
           >
@@ -156,7 +165,6 @@ const Discussion: React.FC = () => {
             <Button
               htmlType='submit'
               style={{ maxWidth: 200, fontWeight: 400 }}
-              onClick={onFinish}
             >
               Отправить комментарий
             </Button>

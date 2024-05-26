@@ -9,9 +9,7 @@ import { GetMessages } from '../../types/api'
 import './index.css'
 import { useEnv } from '../../App'
 
-import ReplyComments from './ReplyComments'
-
-type ListVoteType = {
+type ReplyCommentsType = {
   commentId: number
   userName: string | undefined
   creationDate: string
@@ -23,11 +21,10 @@ type ListVoteType = {
   refUserName?: string
   references: any[]
   postComment: any
-  selectedVote: any
-  // postComment: (data: PostMessage) => void
+  onFinish: any
 }
 
-const ListComments: React.FC<ListVoteType> = ({
+const ReplyComments: React.FC<ReplyCommentsType> = ({
   commentId,
   userName,
   creationDate,
@@ -39,16 +36,12 @@ const ListComments: React.FC<ListVoteType> = ({
   refUserName,
   references,
   postComment,
-  selectedVote,
+  onFinish,
+  // postComment,
 }) => {
   const [toggleReplyValue, setToggleReply] = useState('hide')
-  const [toggleAnswersValue, setToggleAnswers] = useState('show')
-  const [value, setValue] = useState('Скрыть ответы ˄')
-  const [messages, setmessages] = useState<any>([])
   const [newReplyText, setNewReplyText] = useState('Ответить')
-  const { id } = useParams()
   const env = useEnv()
-  const { API, logger } = useEnv()
   const [form] = Form.useForm()
   const selfUser = env.rootStore.selfUser
 
@@ -61,29 +54,6 @@ const ListComments: React.FC<ListVoteType> = ({
       setNewReplyText('Отменить')
     }
   }, [toggleReplyValue])
-
-  const toggleShowAnswers = useCallback(() => {
-    if (toggleAnswersValue === 'show') {
-      setToggleAnswers('hide')
-      setValue('Раскрыть ответы ˅')
-    } else {
-      setToggleAnswers('show')
-      setValue('Скрыть ответы ˄')
-    }
-  }, [toggleAnswersValue])
-
-  const onFinish = (values: any) => {
-    const name = selfUser.fullName || ''
-    const res: PostMessage = {
-      userId: selfUser.id,
-      voteId: selectedVote?.id || -1,
-      text: values[name].reply,
-      isRef: true,
-      refComId: commentId,
-    }
-    form.resetFields()
-    postComment(res)
-  }
 
   return (
     <div style={{ display: 'flex', width: '1118px', margin: '16px 0' }}>
@@ -134,52 +104,19 @@ const ListComments: React.FC<ListVoteType> = ({
           >
             {newReplyText}
           </a>
-          <a
-            className='flex'
-            style={{
-              lineHeight: '22px',
-              fontSize: '14px',
-              fontWeight: '400',
-              color: '#1890FF',
-            }}
-            onClick={toggleShowAnswers}
-          >
-            {value}
-          </a>
         </div>
-        {toggleAnswersValue === 'show'
-          ? references.length > 0
-            ? references.map((x: any) => {
-                return (
-                  <ReplyComments
-                    commentId={x.id}
-                    text={x.text}
-                    creationDate={x.creationDate}
-                    userId={x.userId}
-                    userName={x.userName}
-                    isRef={x.isRef}
-                    refComId={x.refComId}
-                    refUserId={x.refUserId}
-                    refUserName={x.refUserName}
-                    references={x.references}
-                    postComment={postComment}
-                    onFinish={onFinish}
-                  />
-                )
-              })
-            : null
-          : null}
         <Form
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               form.submit()
+              toggleShowReply()
             }
           }}
           form={form}
           onFinish={onFinish}
           className={toggleReplyValue}
           style={{
-            padding: '20px 0px 10px 48px',
+            marginTop: 10,
           }}
         >
           <Form.Item
@@ -219,4 +156,4 @@ const ListComments: React.FC<ListVoteType> = ({
   )
 }
 
-export default ListComments
+export default ReplyComments

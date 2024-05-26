@@ -114,6 +114,18 @@ export type GetMessages = {
   refComId?: number
   refUserId?: number
   refUserName?: string
+  references: {
+    creationDate: string
+    id: number
+    isRef: true
+    refComId: number
+    refUserId: number
+    refUserName: string
+    references: any[]
+    text: string
+    userId: number
+    userName: string
+  }[]
 }[]
 
 export type GetTgToken = {

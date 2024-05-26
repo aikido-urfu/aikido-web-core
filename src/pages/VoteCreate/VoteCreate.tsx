@@ -10,11 +10,28 @@ const VoteCreate: React.FC = () => {
   const [step, setstep] = useState(0)
   const navigate = useNavigate()
   const { API, logger } = useEnv()
+  const { rootStore } = useEnv()
+  const voteCreate = rootStore.VoteCreate
+
+  const clearPlaceholders = () => {
+    voteCreate.deleteName()
+    voteCreate.deleteDescription()
+    voteCreate.deleteDate()
+    voteCreate.deleteAnonim()
+    voteCreate.deleteAllUsers()
+    voteCreate.deleteAllQuestions()
+  }
+
+  const navToVoteHandler = () => {
+    clearPlaceholders()
+    navigate('/vote')
+  }
 
   const onFInallizeVote = (data: PostVote) => {
     API.sendCreateVote(data)
       .then((res) => {
         logger.info(res)
+        clearPlaceholders()
         navigate('/completed', {
           state: {
             text: 'Поздравляем! Голосование создано',
@@ -52,7 +69,7 @@ const VoteCreate: React.FC = () => {
         }}
       >
         <h3 className='title'>Создание голосования</h3>
-        <Button onClick={() => navigate('/vote')}>Отмена</Button>
+        <Button onClick={() => navToVoteHandler()}>Отмена</Button>
       </div>
 
       <div
@@ -102,7 +119,6 @@ const VoteCreate: React.FC = () => {
         </div>
         {step === 0 ? (
           <FirstStep
-            selectedVote={undefined}
             onStepChange={(x) => {
               setstep(x)
             }}

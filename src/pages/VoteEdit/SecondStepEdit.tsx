@@ -8,7 +8,7 @@ import {
 import { PostVote, Question } from '../../types/api'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
-import { ModalAddQuestion } from '../../pages'
+import { ModalAddQuestion } from '..'
 import { GetVoteById } from '../../types/api'
 
 type QuestionType = {
@@ -67,7 +67,7 @@ type SecondStepType = {
   onFInallizeVote: (data: PostVote) => void
   selectedVote: GetVoteById | undefined
 }
-const SecondStep: React.FC<SecondStepType> = ({
+const SecondStepEdit: React.FC<SecondStepType> = ({
   onStepChange,
   onFInallizeVote,
   selectedVote,
@@ -212,4 +212,4 @@ const SecondStep: React.FC<SecondStepType> = ({
   )
 }
 
-export default observer(SecondStep)
+export default observer(SecondStepEdit)
