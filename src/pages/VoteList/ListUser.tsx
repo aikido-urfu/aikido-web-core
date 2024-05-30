@@ -33,39 +33,69 @@ const ListUser: React.FC<ListUserType> = ({
           justifyContent: 'space-between',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-          }}
-        >
-          <img
-            src='/avatar2.jpg'
-            style={{
-              width: '30px',
-              height: '30px',
-              backgroundColor: 'gray',
-              borderRadius: '50%',
-              margin: '0 10px 0 0',
-            }}
-          ></img>
+        {name === 'Клуб Дружба' ? (
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
             }}
           >
-            <h4 style={{ marginBottom: '2px' }}>{name}</h4>
-            <span style={{ color: 'gray' }}>{role}</span>
-            {/* <span style={{ color: 'gray' }}>{mail}</span> */}
+            <img
+              src='/club.jpg'
+              style={{
+                width: '30px',
+                height: '30px',
+                backgroundColor: 'gray',
+                borderRadius: '50%',
+                margin: '0 10px 0 0',
+              }}
+            ></img>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+              }}
+            >
+              <h4 style={{ marginBottom: '2px' }}>{name}</h4>
+              {/* <span style={{ color: 'gray' }}>{role}</span> */}
+              {/* <span style={{ color: 'gray' }}>{mail}</span> */}
+            </div>
           </div>
-        </div>
-        {isCanBeDeleted && (
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            <img
+              src='/avatar2.jpg'
+              style={{
+                width: '30px',
+                height: '30px',
+                backgroundColor: 'gray',
+                borderRadius: '50%',
+                margin: '0 10px 0 0',
+              }}
+            ></img>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+              }}
+            >
+              <h4 style={{ marginBottom: '2px' }}>{name}</h4>
+              <span style={{ color: 'gray' }}>{role}</span>
+              {/* <span style={{ color: 'gray' }}>{mail}</span> */}
+            </div>
+          </div>
+        )}
+        {/* {isCanBeDeleted && (
           <DeleteOutlined
             onClick={onDeleteClick}
             style={{ fontSize: '150%' }}
           />
-        )}
+        )} */}
       </div>
     </>
   )
