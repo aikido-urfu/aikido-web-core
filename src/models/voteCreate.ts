@@ -1,5 +1,5 @@
 import { Instance, types as t, cast } from 'mobx-state-tree'
-import { Question } from '../types/api'
+import { Question, PostFiles } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
 // import { string } from 'mobx-state-tree/dist/internal'
@@ -20,6 +20,13 @@ const QuestionModel = t.model({
   isHidenCounter: t.boolean,
 })
 
+const DocumentModel = t.model({
+  name: t.string,
+  url: t.string,
+  type: t.string,
+  id: t.number,
+})
+
 const VoteCreateModel = t
   .model({
     title: t.maybeNull(t.string),
@@ -29,6 +36,7 @@ const VoteCreateModel = t
     questions: t.maybeNull(t.array(QuestionModel)),
     startDate: t.maybeNull(t.string),
     endDate: t.maybeNull(t.string),
+    documents: t.maybeNull(t.array(DocumentModel)),
   })
   .actions((self) => {
     return {
@@ -42,6 +50,16 @@ const VoteCreateModel = t
         self.isAnonim = value
       },
       sendCreateVote() {},
+      addDocument(file: PostFiles) {
+        self.documents?.push(
+          DocumentModel.create({
+            name: file.name,
+            url: file.url,
+            type: file.type,
+            id: file.id,
+          }),
+        )
+      },
       addQuestion(question: Question) {
         self.questions?.push(
           QuestionModel.create({
@@ -55,6 +73,7 @@ const VoteCreateModel = t
             isHidenCounter: false,
           }),
         )
+        console.log(self.questions)
       },
       setDate(d1: string, d2: string) {
         self.startDate = d1
@@ -79,8 +98,11 @@ const VoteCreateModel = t
       deleteQuestion(id: number) {
         self.questions?.splice(id, 1)
       },
+      deleteFiles(id: number) {
+        self.questions?.splice(id, 1)
+      },
       deleteAllQuestions() {
-        self.questions = null
+        self.questions?.splice(0, self.questions?.length)
       },
       deleteUsers(id: number) {
         self.users?.splice(id, 1)
@@ -92,10 +114,11 @@ const VoteCreateModel = t
   })
 
 const VoteCreate = VoteCreateModel.create({
-  questions: [],
-  isAnonim: false,
   title: '',
   description: '',
+  isAnonim: false,
+  questions: [],
+  documents: [],
 })
 
 const SendCommentModel = t

@@ -24,6 +24,7 @@ import ListUser from './VoteList/ListUser'
 import ListVote from './VoteList/ListVote'
 import VotePage from './VoteList/Vote'
 import VotesPage from './VotesList/VotesList'
+import VoteFiles from './VoteList/VoteFiles'
 
 //VoteProgress
 import VoteProgress from './VoteProgress/VoteProgress'
@@ -43,6 +44,7 @@ export {
   SelectUsers,
   VoteCreate,
   ListUser,
+  VoteFiles,
   ListVote,
   VotePage,
   VotesPage,

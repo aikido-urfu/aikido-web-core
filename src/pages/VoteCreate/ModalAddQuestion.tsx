@@ -180,7 +180,6 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
               seturlList={seturlList}
               fileList={fileList}
               setFileList={setFileList}
-              // title={'Загрузить файлы'}
             />
           </div>
         </div>

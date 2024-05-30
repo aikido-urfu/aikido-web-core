@@ -4,17 +4,18 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
 import { SelectUsers, ListUser, VoteCreate } from '../../pages'
-import { GetUsers } from '../../types/api'
+import { GetUsers, PostFiles } from '../../types/api'
 import dayjs, { Dayjs } from 'dayjs'
 import {
   FileJpgOutlined,
   UploadOutlined,
   DeleteOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
 } from '@ant-design/icons'
-import { AddFiles } from '../../components/AddFiles/AddFiles'
-import { AddFilesType } from '../../components/AddFiles/AddFiles'
-import { GetVoteById } from '../../types/api'
+import { GetVoteById, PostVote, Question } from '../../types/api'
 import { useParams } from 'react-router-dom'
+import type { UploadProps } from 'antd/es/upload/interface'
 
 type FirstStepType = {
   onStepChange: (step: number) => void
@@ -33,15 +34,43 @@ export type FormatType =
     }
 
 const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
+  const env = useEnv()
   const { rootStore } = useEnv()
   const voteCreate = rootStore.VoteCreate
   const [users, setusers] = useState<GetUsers>([])
   const [fileList, setFileList] = useState<UploadFile[]>([])
-  const [urlList, seturlList] = useState<string[]>([])
+  const [idList, setIdList] = useState<number[]>([])
+  const [propsFile, setProps] = useState<any>('')
   const [selVoteTitle, setSelVoteTitle] = useState('')
   const [selVoteDesc, setSelVoteDesc] = useState('')
   const { id } = useParams()
   const url_id = id || ''
+
+  const props: UploadProps = {
+    onRemove: (file) => {
+      const index = fileList.indexOf(file)
+      const newIdList = idList.slice()
+      const newFileList = fileList.slice()
+      newFileList.splice(index, 1)
+      newIdList.splice(index, 1)
+      setFileList(newFileList)
+      setIdList(newIdList)
+    },
+    beforeUpload: (file) => {
+      env.API.uploadFiles(file)
+        .then((res: { data: PostFiles }) => {
+          voteCreate.addDocument(res.data)
+          setFileList([...fileList, file])
+          setIdList([...idList, res.data.id])
+        })
+        .catch((err) => {
+          env.messageApi.error(err)
+        })
+
+      return false
+    },
+    fileList,
+  }
 
   const getStartDate = () => {
     if (voteCreate.startDate !== undefined && voteCreate.startDate !== null) {
@@ -63,6 +92,16 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
     if (val?.length != 2) return
     const [d1, d2] = val
     voteCreate.setDate(d1!.toISOString(), d2!.toISOString())
+  }
+
+  type DocumentsType = {
+    data: any
+    id: number
+    onDeleteClick: (id: number) => void
+  }
+
+  const handleDeleteQuestionClick = (id: number) => {
+    voteCreate.deleteFiles(id)
   }
 
   return (
@@ -232,55 +271,11 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 padding: '12px 16px',
               }}
             >
-              {/* <Upload listType='picture' {...props}>
-                <Button
-                  icon={<UploadOutlined />}
-                  style={{
-                    color: 'rgba(0, 0, 0, 0.88)',
-                    width: 189,
-                    height: 32,
-                  }}
-                  onClick={() => {}}
-                >
-                  Загрузить документ
-                </Button>
-              </Upload> */}
-              <AddFiles
-                urlList={urlList}
-                seturlList={seturlList}
-                fileList={fileList}
-                setFileList={setFileList}
-                title={'Загрузить документ'}
-              />
+              <Upload listType='picture' {...props}>
+                <Button icon={<UploadOutlined />}>Загрузить документ</Button>
+              </Upload>
             </div>
-            {/* <div className='flex flex-col'>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  height: 68,
-                  padding: '20px',
-                  // outline: 'rgba(0, 0, 0, 0.1) solid 1px',
-                  borderBottom: '1px solid rgba(218, 218, 218, 1)',
-                  alignItems: 'center',
-                }}
-              >
-                <div className='flex items-center'>
-                  <FileJpgOutlined
-                    style={{ marginRight: '10px', fontSize: '24px' }}
-                  />
-                  <span className='span-file'>TitleOfFile.jpg</span>
-                </div>
-                <a style={{ color: 'rgba(0, 0, 0, 0.85)' }}>
-                  <DeleteOutlined
-                    style={{ fontSize: '24px' }}
-                    onClick={() => {}}
-                  />
-                </a>
-              </div>
-            </div> */}
+            {/* {voteCreate.documents?.length !== 0 ? return } */}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', height: 60 }}>

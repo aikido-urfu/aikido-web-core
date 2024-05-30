@@ -31,7 +31,6 @@ const ListUser: React.FC<ListUserType> = ({
           borderBottom: '1px solid #DADADA',
           width: 'auto',
           justifyContent: 'space-between',
-          borderLeft: '1px solid #DADADA',
         }}
       >
         <div

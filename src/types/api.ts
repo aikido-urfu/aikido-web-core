@@ -20,7 +20,7 @@ export type PostVote = {
   isActive: boolean
   isVoted: boolean
   isHidenCounter: boolean
-  files: string[]
+  files: number[]
   photos: string[]
   questions: Question[]
   respondents: number[]
@@ -63,7 +63,7 @@ export type GetVoteById = {
   isActive: boolean
   isHidenCounter: boolean
   privateUsers: number[]
-  files: string[]
+  files: number[]
   photos: string[]
   questions: {
     id: number
@@ -81,7 +81,7 @@ export type GetVoteById = {
     }[]
     isAnonimic: boolean
     isHidenCounter: boolean
-    files: string[]
+    files: number[]
     photos: string[]
     isMultiply: boolean
   }[]
@@ -130,6 +130,13 @@ export type GetMessages = {
 
 export type GetTgToken = {
   token: string
+}
+
+export type PostFiles = {
+  id: number
+  url: string
+  name: string
+  type: string
 }
 
 // export type GetMessage = GetMessages &

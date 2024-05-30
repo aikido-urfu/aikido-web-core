@@ -8,11 +8,9 @@ import {
   UserOutlined,
   PlusOutlined,
   FilterOutlined,
-  FileJpgOutlined,
-  DownloadOutlined,
 } from '@ant-design/icons'
 
-import { ListUser, ListVote } from '../../pages'
+import { ListUser, ListVote, VoteFiles } from '../../pages'
 
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
@@ -50,6 +48,7 @@ const VotePage: React.FC = () => {
   const handleSelectedVote = (value: number) => {
     env.API.getVote(value)
       .then((res) => {
+        console.log(res)
         navigate(`/vote/${value}`)
         setselectedVote(res.data)
       })
@@ -435,31 +434,11 @@ const VotePage: React.FC = () => {
                   }}
                 >
                   <p style={{ marginBottom: 20 }}>{selectedVote.description}</p>
-                  <div className='flex flex-col'>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: 330,
-                        height: 52,
-                        padding: '12px 19px',
-                        outline: 'rgba(0, 0, 0, 0.1) solid 1px',
-                        borderRadius: '4px',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <div className='flex items-center'>
-                        <FileJpgOutlined
-                          style={{ marginRight: '10px', fontSize: '24px' }}
-                        />
-                        <span className='span-file'>TitleOfFile.jpg</span>
-                      </div>
-                      <a style={{ color: 'rgba(0, 0, 0, 0.85)' }}>
-                        <DownloadOutlined style={{ fontSize: '16px' }} />
-                      </a>
-                    </div>
-                  </div>
+                  {selectedVote.files.length !== 0
+                    ? selectedVote.files.map((x: any) => {
+                        return <VoteFiles title={x.name} link={x.url} />
+                      })
+                    : null}
                 </div>
               </div>
             ) : (
@@ -511,30 +490,12 @@ const VotePage: React.FC = () => {
                       <p style={{ marginBottom: 20 }}>
                         {selectedVote.description}
                       </p>
-                      <div className='flex flex-col'>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: 330,
-                            height: 52,
-                            padding: '12px 19px',
-                            outline: 'rgba(0, 0, 0, 0.1) solid 1px',
-                            borderRadius: '4px',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <div className='flex items-center'>
-                            <FileJpgOutlined
-                              style={{ marginRight: '10px', fontSize: '24px' }}
-                            />
-                            <span className='span-file'>TitleOfFile.jpg</span>
-                          </div>
-                          <a style={{ color: 'rgba(0, 0, 0, 0.85)' }}>
-                            <DownloadOutlined style={{ fontSize: '16px' }} />
-                          </a>
-                        </div>
+                      <div className='flex flex-col' style={{ rowGap: '10px' }}>
+                        {selectedVote.files.length !== 0
+                          ? selectedVote.files.map((x: any) => {
+                              return <VoteFiles title={x.name} link={x.url} />
+                            })
+                          : null}
                       </div>
                     </div>
                   </div>
@@ -590,6 +551,7 @@ const VotePage: React.FC = () => {
                       style={{
                         overflowY: 'auto',
                         height: 470,
+                        borderLeft: '1px solid #DADADA',
                       }}
                     >
                       {selectedVote.respondents.map((x: any, index) => {

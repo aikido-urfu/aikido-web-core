@@ -78,6 +78,12 @@ const SecondStep: React.FC<SecondStepType> = ({
   }
 
   const handleSendClick = () => {
+    const listId: number[] = []
+    if (voteCreateModel.documents?.length !== 0) {
+      JSON.parse(JSON.stringify(voteCreateModel.documents)).filter((x: any) => {
+        listId.push(x.id)
+      })
+    }
     const res: PostVote = {
       title: voteCreateModel.title || '',
       description: voteCreateModel.description || '',
@@ -87,14 +93,14 @@ const SecondStep: React.FC<SecondStepType> = ({
       isActive: false,
       isVoted: false,
       isHidenCounter: false,
-      files: [],
+      files: listId,
       photos: [],
       questions: voteCreateModel.questions || [],
       respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
     }
+    console.log(res)
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
-        console.log(field)
         //@ts-expect-error AAA
         if (obj[field].length === 0) {
           if (field === 'questions') {
