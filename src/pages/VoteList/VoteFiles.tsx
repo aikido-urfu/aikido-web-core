@@ -33,7 +33,7 @@ export const VoteFiles: React.FC<VoteFilesType> = ({ title, link }) => {
         <a
           style={{ color: 'rgba(0, 0, 0, 0.85)' }}
           href={link}
-          download='text'
+          download={title}
           // target='_blank'
           // rel='noreferrer'
         >
