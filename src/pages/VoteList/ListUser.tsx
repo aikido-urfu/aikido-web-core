@@ -33,7 +33,7 @@ const ListUser: React.FC<ListUserType> = ({
           justifyContent: 'space-between',
         }}
       >
-        {name === 'Клуб Дружба' ? (
+        {role === '' ? (
           <div
             style={{
               display: 'flex',

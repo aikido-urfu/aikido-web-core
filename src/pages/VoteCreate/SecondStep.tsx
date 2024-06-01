@@ -90,13 +90,14 @@ const SecondStep: React.FC<SecondStepType> = ({
       startDate: voteCreateModel.startDate || '',
       endDate: voteCreateModel.endDate || '',
       isAnonymous: !!voteCreateModel.isAnonim,
-      isActive: false,
+      isEnding: false,
       isVoted: false,
       isHidenCounter: false,
       files: listId,
       photos: [],
       questions: voteCreateModel.questions || [],
       respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
+      groups: JSON.parse(JSON.stringify(voteCreateModel.groups)) || [],
     }
     console.log(res)
     const checkField = (obj: PostVote, field: keyof PostVote) => {

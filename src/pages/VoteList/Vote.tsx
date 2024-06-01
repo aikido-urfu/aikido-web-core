@@ -48,7 +48,6 @@ const VotePage: React.FC = () => {
   const handleSelectedVote = (value: number) => {
     env.API.getVote(value)
       .then((res) => {
-        console.log(res)
         navigate(`/vote/${value}`)
         setselectedVote(res.data)
       })
@@ -198,7 +197,7 @@ const VotePage: React.FC = () => {
                     >
                       <ListVote
                         key={x.id}
-                        isActive={x.isActive}
+                        isEnding={x.isEnding}
                         isVoted={x.isVoted}
                         isSelected={x.id === +url_id}
                         name={x.title}
@@ -218,7 +217,7 @@ const VotePage: React.FC = () => {
                     >
                       <ListVote
                         key={x.id}
-                        isActive={x.isActive}
+                        isEnding={x.isEnding}
                         isVoted={x.isVoted}
                         isSelected={x.id === +url_id}
                         name={x.title}

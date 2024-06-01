@@ -92,7 +92,7 @@
 //       startDate: voteCreateModel.startDate || '',
 //       endDate: voteCreateModel.endDate || '',
 //       isAnonymous: !!voteCreateModel.isAnonim,
-//       isActive: false,
+//       isEnding: false,
 //       isVoted: false,
 //       isHidenCounter: false,
 //       files: [],

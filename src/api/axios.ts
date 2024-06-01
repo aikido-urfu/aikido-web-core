@@ -8,6 +8,8 @@ import {
   PostVote,
   GetMessages,
   GetTgToken,
+  GetGroups,
+  GetUserById,
 } from '../types/api'
 import { UserTypeGet } from '../models/userModel'
 import { getCookie } from '../pages/helpers/cookie.helper'
@@ -60,6 +62,12 @@ export const API = {
   },
   getUsersAll() {
     return a.get<GetUsers>('/users')
+  },
+  getUserById(id: number) {
+    return a.get<GetUserById>(`/users/${id}`)
+  },
+  getGroupsAll() {
+    return a.get<GetGroups>('/groups')
   },
   getTgToken() {
     return a.get<GetTgToken>('/telegram/token')

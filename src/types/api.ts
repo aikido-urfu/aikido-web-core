@@ -17,13 +17,14 @@ export type PostVote = {
   startDate: string
   endDate: string
   isAnonymous: boolean
-  isActive: boolean
+  isEnding: boolean
   isVoted: boolean
   isHidenCounter: boolean
   files: number[]
   photos: string[]
   questions: Question[]
   respondents: number[]
+  groups: number[]
 }
 
 export type GetVote = PostVote & {
@@ -60,7 +61,7 @@ export type GetVoteById = {
   endDate: string
   creationDate: string
   isAnonymous: boolean
-  isActive: boolean
+  isEnding: boolean
   isHidenCounter: boolean
   privateUsers: number[]
   files: number[]
@@ -137,6 +138,31 @@ export type PostFiles = {
   url: string
   name: string
   type: string
+}
+
+export type GetGroups = {
+  id: number
+  name: string
+  users: {
+    id: number
+    email: string
+    password: string
+    fullName: string
+    role: string
+    phone: null
+    photo: null
+    telegramUserID: null
+  }[]
+}
+
+export type GetUserById = {
+  id: number
+  fullName: string
+  role: string
+  photo?: null
+  phone?: null
+  emaiL: string
+  telegramUserID?: null
 }
 
 // export type GetMessage = GetMessages &

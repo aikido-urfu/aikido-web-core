@@ -2,6 +2,8 @@ import { Instance, types as t, cast } from 'mobx-state-tree'
 import { Question, PostFiles } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
+// import { FileModelType } from '../pages/VoteCreate/FirstStep'
+import { UploadFile } from 'antd'
 // import { string } from 'mobx-state-tree/dist/internal'
 
 const files = t.model({
@@ -33,10 +35,12 @@ const VoteCreateModel = t
     description: t.maybeNull(t.string),
     isAnonim: t.maybeNull(t.boolean),
     users: t.maybeNull(t.array(t.integer)),
+    groups: t.maybeNull(t.array(t.integer)),
     questions: t.maybeNull(t.array(QuestionModel)),
     startDate: t.maybeNull(t.string),
     endDate: t.maybeNull(t.string),
     documents: t.maybeNull(t.array(DocumentModel)),
+    // documentsFiles: t.maybeNull(t.array(DocumentFileModel)),
   })
   .actions((self) => {
     return {
@@ -60,6 +64,22 @@ const VoteCreateModel = t
           }),
         )
       },
+      // addDocumentFile(file: any) {
+      //   file.forEach((x: any, index: number) => {
+      //     self.documentsFiles?.push(
+      //       DocumentFileModel.create({
+      //         id: file[index],
+      //         uid: file[index].uid,
+      //         lastModified: file[index].lastModified,
+      //         lastModifiedDate: file[index].lastModifiedDate,
+      //         name: file[index].name,
+      //         size: file[index].size,
+      //         type: file[index].type,
+      //         webkitRelativePath: file[index].webkitRelativePath,
+      //       }),
+      //     )
+      //   })
+      // },
       addQuestion(question: Question) {
         self.questions?.push(
           QuestionModel.create({
@@ -73,7 +93,6 @@ const VoteCreateModel = t
             isHidenCounter: false,
           }),
         )
-        console.log(self.questions)
       },
       setDate(d1: string, d2: string) {
         self.startDate = d1
@@ -81,6 +100,9 @@ const VoteCreateModel = t
       },
       setUsers(users: number[]) {
         self.users = cast(users)
+      },
+      setGroups(groups: number[]) {
+        self.groups = cast(groups)
       },
       deleteName() {
         self.title = null
@@ -98,17 +120,29 @@ const VoteCreateModel = t
       deleteQuestion(id: number) {
         self.questions?.splice(id, 1)
       },
+      deleteDocument(id: number) {
+        self.documents?.splice(id, 1)
+      },
       deleteFiles(id: number) {
         self.questions?.splice(id, 1)
       },
       deleteAllQuestions() {
         self.questions?.splice(0, self.questions?.length)
       },
+      deleteAllDocuments() {
+        self.documents?.splice(0, self.documents?.length)
+      },
       deleteUsers(id: number) {
         self.users?.splice(id, 1)
       },
+      deleteGroups(id: number) {
+        self.groups?.splice(id, 1)
+      },
+      deleteAllGroups() {
+        self.groups?.splice(0, self.groups?.length)
+      },
       deleteAllUsers() {
-        self.users = null
+        self.users?.splice(0, self.users?.length)
       },
     }
   })
@@ -119,6 +153,7 @@ const VoteCreate = VoteCreateModel.create({
   isAnonim: false,
   questions: [],
   documents: [],
+  // documentsFiles: [],
 })
 
 const SendCommentModel = t

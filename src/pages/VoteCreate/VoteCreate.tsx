@@ -20,6 +20,8 @@ const VoteCreate: React.FC = () => {
     voteCreate.deleteAnonim()
     voteCreate.deleteAllUsers()
     voteCreate.deleteAllQuestions()
+    voteCreate.deleteAllDocuments()
+    voteCreate.deleteAllGroups()
   }
 
   const navToVoteHandler = () => {

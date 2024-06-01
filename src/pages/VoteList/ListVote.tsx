@@ -7,7 +7,7 @@ import { boolean } from 'mobx-state-tree/dist/internal'
 
 type ListVoteType = {
   id: number
-  isActive: boolean
+  isEnding: boolean
   isVoted: boolean
   name: string
   date: string
@@ -17,7 +17,7 @@ type ListVoteType = {
 
 const ListVote: React.FC<ListVoteType> = ({
   id,
-  isActive,
+  isEnding,
   isVoted,
   name,
   description,
@@ -63,7 +63,7 @@ const ListVote: React.FC<ListVoteType> = ({
               }}
             />
           )}
-          {isActive && (
+          {isEnding && (
             <FieldTimeOutlined
               className='items-start'
               style={{

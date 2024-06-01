@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
 import { SelectUsers, ListUser, VoteCreate } from '../../pages'
-import { GetUsers, PostFiles } from '../../types/api'
+import { GetGroups, GetUsers, PostFiles, GetUserById } from '../../types/api'
 import dayjs, { Dayjs } from 'dayjs'
 import {
   FileJpgOutlined,
@@ -37,10 +37,39 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
   const env = useEnv()
   const { rootStore } = useEnv()
   const voteCreate = rootStore.VoteCreate
-  const [users, setusers] = useState<GetUsers>([])
-  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [defaultUsers, setusers] = useState<GetUsers>([])
+  const [groups, setgroups] = useState<GetGroups[]>([])
   const [idList, setIdList] = useState<number[]>([])
   const [propsFile, setProps] = useState<any>('')
+  const [fileDoc, setFileDoc] = useState<any>([])
+  const [userList, setUserList] = useState<any>([])
+
+  useEffect(() => {
+    if (voteCreate?.documents?.length !== 0) {
+      voteCreate?.documents?.forEach((x: PostFiles, index) => {
+        fileDoc.push({
+          uid: '-1',
+          name: x.name,
+          url: x.url,
+        })
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (voteCreate.users?.length !== 0) {
+      voteCreate.users?.forEach((x, index) => {
+        env.API.getUserById(x).then((res: { data: GetUserById }) => {
+          userList.push(res.data)
+        })
+      })
+    }
+  }, [])
+
+  const defaultDocs = fileDoc.length === undefined ? [] : fileDoc
+
+  const [fileList, setFileList] = useState<UploadFile[]>(defaultDocs)
+
   const [selVoteTitle, setSelVoteTitle] = useState('')
   const [selVoteDesc, setSelVoteDesc] = useState('')
   const { id } = useParams()
@@ -55,6 +84,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
       newIdList.splice(index, 1)
       setFileList(newFileList)
       setIdList(newIdList)
+      voteCreate.deleteDocument(index)
     },
     beforeUpload: (file) => {
       env.API.uploadFiles(file)
@@ -70,6 +100,14 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
       return false
     },
     fileList,
+  }
+
+  const countUsers = () => {
+    let usersLength = 0
+    groups.forEach((x, index) => {
+      usersLength += x.users.length
+    })
+    return defaultUsers.length + usersLength
   }
 
   const getStartDate = () => {
@@ -221,7 +259,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     color: 'gray',
                   }}
                 >
-                  {users.length}
+                  {groups.length === 0 ? defaultUsers.length : countUsers()}
                 </p>
               </div>
               <div>
@@ -236,15 +274,44 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     padding: '0 20px',
                   }}
                 >
-                  <SelectUsers setSelectedUsers={setusers} />
+                  <SelectUsers
+                    setSelectedUsers={setusers}
+                    setSelectedGroups={setgroups}
+                  />
                 </div>
               </div>
               <div style={{ height: '425px', overflowY: 'scroll' }}>
-                {...users.map((x: any) => {
+                {/* {userList.map((x: any) => {
                   return (
                     <ListUser
                       name={x.fullName}
                       role={x.role}
+                      mail={''}
+                      isCanBeDeleted={true}
+                      onDeleteClick={() => {
+                        // onDeleteClick(x.id)
+                      }}
+                    />
+                  )
+                })} */}
+                {...defaultUsers.map((x: any) => {
+                  return (
+                    <ListUser
+                      name={x.fullName}
+                      role={x.role}
+                      mail={''}
+                      isCanBeDeleted={true}
+                      onDeleteClick={() => {
+                        // onDeleteClick(x.id)
+                      }}
+                    />
+                  )
+                })}
+                {...groups.map((x: GetGroups) => {
+                  return (
+                    <ListUser
+                      name={x.name}
+                      role={''}
                       mail={''}
                       isCanBeDeleted={true}
                       onDeleteClick={() => {
@@ -271,11 +338,13 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 padding: '12px 16px',
               }}
             >
-              <Upload listType='picture' {...props}>
+              <Upload listType='picture' {...props} defaultFileList={fileList}>
                 <Button icon={<UploadOutlined />}>Загрузить документ</Button>
               </Upload>
             </div>
-            {/* {voteCreate.documents?.length !== 0 ? return } */}
+            {/* {voteCreate.documents?.length !== 0 ? (
+              <Upload listType='picture' {...props} defaultFileList={}></Upload>
+            ) : null} */}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', height: 60 }}>
