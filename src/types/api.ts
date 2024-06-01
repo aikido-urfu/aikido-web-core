@@ -11,6 +11,16 @@ export type Question = {
   isMultiply: boolean
 }
 
+export type File = {
+  id: number
+  name: string
+  type: string
+}
+
+export type PostFiles = File & {
+  url: string
+}
+
 export type PostVote = {
   title: string
   description: string
@@ -64,7 +74,7 @@ export type GetVoteById = {
   isEnding: boolean
   isHidenCounter: boolean
   privateUsers: number[]
-  files: number[]
+  files: PostFiles[]
   photos: string[]
   questions: {
     id: number
@@ -131,13 +141,6 @@ export type GetMessages = {
 
 export type GetTgToken = {
   token: string
-}
-
-export type PostFiles = {
-  id: number
-  url: string
-  name: string
-  type: string
 }
 
 export type GetGroups = {

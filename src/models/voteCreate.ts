@@ -1,5 +1,5 @@
 import { Instance, types as t, cast } from 'mobx-state-tree'
-import { Question, PostFiles } from '../types/api'
+import { Question, PostFiles, GetVoteById } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { IEnv } from '../App'
 // import { FileModelType } from '../pages/VoteCreate/FirstStep'
@@ -143,6 +143,25 @@ const VoteCreateModel = t
       },
       deleteAllUsers() {
         self.users?.splice(0, self.users?.length)
+      },
+      create(vote: GetVoteById) {
+        this.setName(vote.title)
+        this.setDescription(vote.description)
+        this.setAnonim(vote.isAnonymous)
+        this.setUsers(vote.respondents)
+        // this.setGroups(vote.groups) TODO: Add groups to get /votes/id api
+        this.setDate(vote.startDate, vote.endDate)
+        vote.questions.map((value) =>
+          this.addQuestion({
+            title: value.title,
+            description: value.description,
+            answers: [],
+            files: [],
+            photos: value.photos,
+            isMultiply: value.isMultiply,
+          }),
+        )
+        vote.files.map((value) => this.addDocument(value))
       },
     }
   })

@@ -20,7 +20,7 @@ import {
   VoteCreate,
   Page404,
   Discussion,
-  // VoteEdit,
+  VoteEdit,
 } from './pages'
 import { messageApiType, useMessageApi } from './api/useMessageApi'
 
@@ -122,14 +122,14 @@ const App: React.FC = () => {
                   </MainContainer>
                 }
               />
-              {/* <Route
+              <Route
                 path='/vote/:id/edit'
                 element={
                   <MainContainer>
                     <VoteEdit />
                   </MainContainer>
                 }
-              /> */}
+              />
               <Route
                 path='/vote/:id/discussion'
                 element={
