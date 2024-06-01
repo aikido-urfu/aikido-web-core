@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "chrome",
+            "webRoot": "${workspaceFolder}",
+            "url": "http://localhost:3004",
+            "urlFilter": "http://localhost:3004/*",
+        },
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3004",
+            "webRoot": "${workspaceFolder}/src",
+            "runtimeExecutable": "A:/Programs/Chrome64/App/chrome.exe",
+            "port": 9222
+        },
+    ]
+}
