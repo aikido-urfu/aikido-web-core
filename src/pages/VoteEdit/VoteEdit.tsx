@@ -8,7 +8,7 @@ import { GetVoteById, PostVote } from '../../types/api'
 
 const VoteEdit: React.FC = () => {
   const [step, setstep] = useState(0)
-  const [selectedVote, setSelectedVote] = useState<GetVoteById | undefined>()
+  const [edit, setEdit] = useState(true)
   const navigate = useNavigate()
   const { API, logger } = useEnv()
   const { rootStore } = useEnv()
@@ -31,21 +31,6 @@ const VoteEdit: React.FC = () => {
     clearPlaceholders()
     navigate('/vote')
   }
-
-  useEffect(() => {
-    API.getVote(+url_id)
-      .then((res) => {
-        setSelectedVote(res.data)
-        if (selectedVote) {
-          clearPlaceholders()
-          voteEdit.create(selectedVote)
-        }
-      })
-      .catch((err) => {
-        logger.error(err)
-        navToVoteHandler()
-      })
-  }, [url_id])
 
   const onFInallizeVote = (data: PostVote) => {
     API.sendEditVote(+url_id, data)
@@ -139,6 +124,8 @@ const VoteEdit: React.FC = () => {
         </div>
         {step === 0 ? (
           <FirstStepEdit
+            edit={edit}
+            setEdit={setEdit}
             onStepChange={(x) => {
               setstep(x)
             }}

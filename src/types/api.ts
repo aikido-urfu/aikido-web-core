@@ -17,6 +17,17 @@ export type File = {
   type: string
 }
 
+export type User = {
+  id: number
+  email: string
+  password: string
+  fullName: string
+  role: string
+  phone: string
+  photo: string
+  telegramUserID: string
+}
+
 export type PostFiles = File & {
   url: string
 }
@@ -96,7 +107,7 @@ export type GetVoteById = {
     photos: string[]
     isMultiply: boolean
   }[]
-  respondents: number[]
+  respondents: User[]
 }
 
 export type GetUsers = {

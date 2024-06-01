@@ -148,7 +148,7 @@ const VoteCreateModel = t
         this.setName(vote.title)
         this.setDescription(vote.description)
         this.setAnonim(vote.isAnonymous)
-        this.setUsers(vote.respondents)
+        this.setUsers(vote.respondents.map((val) => val.id))
         // this.setGroups(vote.groups) TODO: Add groups to get /votes/id api
         this.setDate(vote.startDate, vote.endDate)
         vote.questions.map((value) =>
