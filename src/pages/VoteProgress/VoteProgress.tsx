@@ -73,6 +73,7 @@ const VoteProgress: React.FC = () => {
   const selectedQuestion = selectedVote?.questions[selectedPage]
   const QUESTIONS_MOCK = selectedVote?.questions.map((x, index) => index)
   const [answers, setanswers] = useState<{ [K: number]: Array<number> }>({})
+  const url_id = id || ''
 
   const handleSetSelectedPage = (selectedPage: number) => {
     setselectedQuest(selectedPage)
@@ -87,7 +88,9 @@ const VoteProgress: React.FC = () => {
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
-        console.log(res)
+        if (res.data.isVoted) {
+          navigate(`/vote/${url_id}`)
+        }
         setselectedVote(res.data)
       })
       .catch((err) => {

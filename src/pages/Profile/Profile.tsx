@@ -19,9 +19,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
-      console.log('ok')
       navigate(0)
-      console.log('done')
     }
   })
 

@@ -91,7 +91,6 @@ const VotePage: React.FC = () => {
   }
 
   const showMembers = () => {
-    console.log(selectedVote)
     let sum = selectedVote?.respondents.length || 0
     selectedVote?.attachedGroups.forEach((value, index, array) => {
       sum += value.users.length

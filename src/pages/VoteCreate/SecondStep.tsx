@@ -99,7 +99,6 @@ const SecondStep: React.FC<SecondStepType> = ({
       respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
       groups: JSON.parse(JSON.stringify(voteCreateModel.groups)) || [],
     }
-    console.log(res)
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
         //@ts-expect-error AAA
