@@ -304,6 +304,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                       onDeleteClick={() => {
                         // onDeleteClick(x.id)
                       }}
+                      members={[]}
                     />
                   )
                 })}
@@ -317,6 +318,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                       onDeleteClick={() => {
                         // onDeleteClick(x.id)
                       }}
+                      members={[]}
                     />
                   )
                 })}

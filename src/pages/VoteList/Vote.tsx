@@ -91,7 +91,12 @@ const VotePage: React.FC = () => {
   }
 
   const showMembers = () => {
-    return selectedVote?.respondents.length
+    console.log(selectedVote)
+    let sum = selectedVote?.respondents.length || 0
+    selectedVote?.attachedGroups.forEach((value, index, array) => {
+      sum += value.users.length
+    })
+    return sum
   }
 
   return (
@@ -553,15 +558,27 @@ const VotePage: React.FC = () => {
                         borderLeft: '1px solid #DADADA',
                       }}
                     >
+                      {selectedVote.attachedGroups.map((x: any, index) => {
+                        return (
+                          <ListUser
+                            key={index}
+                            mail={''}
+                            name={x.name}
+                            onDeleteClick={() => {}}
+                            role={''}
+                            members={x.users}
+                          />
+                        )
+                      })}
                       {selectedVote.respondents.map((x: any, index) => {
                         return (
                           <ListUser
                             key={index}
-                            // data={''}
                             mail={''}
                             name={x.fullName}
                             onDeleteClick={() => {}}
                             role={x.role}
+                            members={[]}
                           />
                         )
                       })}

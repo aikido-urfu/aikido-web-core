@@ -108,6 +108,16 @@ export type GetVoteById = {
     isMultiply: boolean
   }[]
   respondents: User[]
+  attachedGroups: {
+    id: number
+    name: string
+    users: {
+      fullName: string
+      id: number
+      photo: null
+      role: string
+    }[]
+  }[]
 }
 
 export type GetUsers = {

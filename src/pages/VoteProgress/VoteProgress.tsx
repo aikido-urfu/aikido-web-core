@@ -87,6 +87,7 @@ const VoteProgress: React.FC = () => {
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
+        console.log(res)
         setselectedVote(res.data)
       })
       .catch((err) => {

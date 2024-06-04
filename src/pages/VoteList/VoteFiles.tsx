@@ -10,7 +10,6 @@ export type VoteFilesType = {
 }
 
 export const VoteFiles: React.FC<VoteFilesType> = ({ title, link }) => {
-  console.log(link)
   return (
     <div className='flex flex-col' style={{ rowGap: '10' }}>
       <div

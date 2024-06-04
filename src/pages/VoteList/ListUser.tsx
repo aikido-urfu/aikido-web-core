@@ -7,19 +7,32 @@ type ListUserType = {
   name: string
   mail: string
   role: string
-  // data: any
   isCanBeDeleted?: boolean
   onDeleteClick?: () => void
+  members: any
 }
 
 const ListUser: React.FC<ListUserType> = ({
   name,
   mail,
-  // data,
   role,
   isCanBeDeleted,
   onDeleteClick,
+  members,
 }) => {
+  const getMembersOfGroup = () => {
+    if (members.length <= 0) return null
+    const listOfMembers: string[] = []
+    members.forEach((x: any, index: number) => {
+      if (members.length === index + 1) {
+        listOfMembers.push(x.fullName)
+      } else {
+        listOfMembers.push(`${x.fullName}, `)
+      }
+    })
+    return <span style={{ color: 'gray' }}>{listOfMembers}</span>
+  }
+
   return (
     <>
       <div
@@ -33,8 +46,10 @@ const ListUser: React.FC<ListUserType> = ({
           justifyContent: 'space-between',
         }}
       >
+        {/* {Проверка на группу} */}
         {role === '' ? (
           <div
+            className='show-members'
             style={{
               display: 'flex',
             }}
@@ -57,7 +72,7 @@ const ListUser: React.FC<ListUserType> = ({
               }}
             >
               <h4 style={{ marginBottom: '2px' }}>{name}</h4>
-              {/* <span style={{ color: 'gray' }}>{role}</span> */}
+              {getMembersOfGroup()}
               {/* <span style={{ color: 'gray' }}>{mail}</span> */}
             </div>
           </div>

@@ -92,7 +92,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
           })
         })
       }
-    }, [])
+    }, [getVote])
 
     useEffect(() => {
       if (voteEdit.users?.length !== 0) {
@@ -344,6 +344,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                         onDeleteClick={() => {
                           // onDeleteClick(x.id)
                         }}
+                        members={[]}
                       />
                     )
                   })}
@@ -357,6 +358,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                         onDeleteClick={() => {
                           // onDeleteClick(x.id)
                         }}
+                        members={[]}
                       />
                     )
                   })}
