@@ -241,6 +241,7 @@ const VotePage: React.FC = () => {
               padding: '20px 30px 20px 30px',
               width: '100%',
               filter: 'drop-shadow(0px 3px 25px rgba(0, 0, 0, 0.10))',
+              height: '785px',
             }}
           >
             <div
@@ -429,7 +430,7 @@ const VotePage: React.FC = () => {
                 </div>
                 <div
                   style={{
-                    height: '470px',
+                    height: '450px',
                     overflowY: 'auto',
                     padding: 20,
                     display: 'flex',
@@ -483,7 +484,7 @@ const VotePage: React.FC = () => {
                     </div>
                     <div
                       style={{
-                        height: '470px',
+                        height: '450px',
                         overflowY: 'auto',
                         padding: 20,
                         display: 'flex',
@@ -553,7 +554,7 @@ const VotePage: React.FC = () => {
                     <div
                       style={{
                         overflowY: 'auto',
-                        height: 470,
+                        height: 450,
                         borderLeft: '1px solid #DADADA',
                       }}
                     >
