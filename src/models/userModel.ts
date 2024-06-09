@@ -36,7 +36,7 @@ export const UserProfileModel = t
         fullName: data.fullName,
         id: data.id,
         email: data.email,
-        telegram: data.telegram,
+        telegram: data.telegramUserID,
         role: data.role,
         group: data.group,
       })

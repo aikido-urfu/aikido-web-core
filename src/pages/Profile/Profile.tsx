@@ -155,22 +155,30 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             <li style={{ lineHeight: '4' }}>{user.group?.name || ''}</li>
             <li style={{ lineHeight: '4' }}>{user.role}</li>
             <li style={{ lineHeight: '3' }}>
-              <CheckCircleFilled
-                className='check-circle'
-                style={{
-                  color: '#52C41A',
-                  fontSize: '16px',
-                  paddingRight: '8px',
-                }}
-              />
-              Аккаунт успешно привязан<br></br>
+              {user.telegram && (
+                <CheckCircleFilled
+                  className='check-circle'
+                  style={{
+                    color: '#52C41A',
+                    fontSize: '16px',
+                    paddingRight: '8px',
+                  }}
+                />
+              )}
+              {user.telegram
+                ? 'Аккаунт успешно привязан'
+                : 'Аккаунт не привязан'}
+              <br></br>
               <a
                 href={
                   'https://t.me/aikido_notify_test_bot?start=' +
                     tgToken?.token || ''
                 }
               >
-                Привязать к другому аккаунту
+                {' '}
+                {user.telegram
+                  ? 'Привязать к другому аккаунту'
+                  : 'Привязать аккаунт'}
               </a>
             </li>
           </ul>
