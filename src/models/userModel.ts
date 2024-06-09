@@ -1,16 +1,24 @@
 import { applySnapshot, getEnv, types as t } from 'mobx-state-tree'
 import { IEnv } from '../App'
 
+type Group = { id: number; name: string }
+
 export type UserTypeGet = {
   id: number
   email: string
-  password: string
   fullName: string
   phone: string | null
   photo: string | null
   telegram: string | null
   telegramUserID: string | null
+  role: string
+  group: Group | null
 }
+
+const GroupModel = t.model({
+  id: t.number,
+  name: t.string,
+})
 
 export const UserProfileModel = t
   .model()
@@ -19,6 +27,8 @@ export const UserProfileModel = t
     email: t.maybe(t.string),
     fullName: t.maybe(t.string),
     telegram: t.maybeNull(t.string),
+    role: t.string,
+    group: t.maybeNull(GroupModel),
   })
   .actions((self) => ({
     setUserData(data: UserTypeGet) {
@@ -27,6 +37,8 @@ export const UserProfileModel = t
         id: data.id,
         email: data.email,
         telegram: data.telegram,
+        role: data.role,
+        group: data.group,
       })
     },
     async getMySelf() {
@@ -47,4 +59,5 @@ export const selfUser = UserProfileModel.create({
   email: '',
   fullName: '',
   telegram: '',
+  role: '',
 })

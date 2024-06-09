@@ -141,10 +141,10 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             }}
           >
             <li style={{ lineHeight: '4' }}>{user.fullName}</li>
-            <li style={{ lineHeight: '4' }}>Группа</li>
-            <li style={{ lineHeight: '4' }}>Роль</li>
+            <li style={{ lineHeight: '4' }}>{user.group?.name || ''}</li>
+            <li style={{ lineHeight: '4' }}>{user.role}</li>
             <li style={{ lineHeight: '3' }}>
-              Аккаунт успешно привязан к {tgToken?.token} <br></br>
+              Аккаунт успешно привязан<br></br>
               <a
                 href={
                   'https://t.me/aikido_notify_test_bot?start=' +
