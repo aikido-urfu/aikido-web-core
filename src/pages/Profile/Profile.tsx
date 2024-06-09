@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Result, Button, Avatar } from 'antd'
-import { UserOutlined, TeamOutlined } from '@ant-design/icons'
+import {
+  UserOutlined,
+  TeamOutlined,
+  CheckCircleOutlined,
+  CheckCircleFilled,
+} from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
@@ -150,6 +155,14 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             <li style={{ lineHeight: '4' }}>{user.group?.name || ''}</li>
             <li style={{ lineHeight: '4' }}>{user.role}</li>
             <li style={{ lineHeight: '3' }}>
+              <CheckCircleFilled
+                className='check-circle'
+                style={{
+                  color: '#52C41A',
+                  fontSize: '16px',
+                  paddingRight: '8px',
+                }}
+              />
               Аккаунт успешно привязан<br></br>
               <a
                 href={
