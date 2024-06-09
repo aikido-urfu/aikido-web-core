@@ -86,10 +86,24 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
       >
         <div style={{ display: 'flex' }}>
           <div style={{ marginLeft: '30px', marginTop: '10px' }}>
-            <p style={{ fontSize: '20px', fontWeight: '500' }}>
+            <p
+              style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                marginTop: '16px',
+                marginBottom: '16px',
+              }}
+            >
               Основная Информация
             </p>
-            <p style={{ fontSize: '16px', fontWeight: '500', color: 'gray' }}>
+            <p
+              style={{
+                fontSize: '16px',
+                color: 'gray',
+                marginTop: '16px',
+                marginBottom: '16px',
+              }}
+            >
               Общая информация о пользователе
             </p>
           </div>
