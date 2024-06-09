@@ -62,7 +62,9 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
           MozBoxShadow: '0px 1px 5px 2px rgba(186,186,186,0.76)',
         }}
       >
-        <Avatar size={172} icon={<UserOutlined />} />
+        <div style={{ margin: 'auto' }}>
+          <Avatar size={172} icon={<UserOutlined />} />
+        </div>
       </div>
       <div
         style={{
@@ -86,13 +88,15 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
               Общая информация о пользователе
             </p>
           </div>
-          {isOwner && (
-            <Link to='/login'>
-              <Button type='primary' block onClick={deleteCookieHandler}>
-                Сменить пользователя
-              </Button>
-            </Link>
-          )}
+          <div style={{ position: 'absolute', right: '30px', top: '40px' }}>
+            {isOwner && (
+              <Link to='/login'>
+                <Button type='primary' block onClick={deleteCookieHandler}>
+                  Сменить пользователя
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
         <div
           style={{
@@ -126,7 +130,9 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
             {' '}
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          style={{ display: 'flex', flexDirection: 'row', marginLeft: '40px' }}
+        >
           <ul style={{ marginTop: '20px', listStyleType: 'none' }}>
             <li style={{ lineHeight: '4' }}>Имя пользователя:</li>
             <li style={{ lineHeight: '4' }}>Группа:</li>
