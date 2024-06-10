@@ -16,6 +16,7 @@ import {
 import { GetVoteById, PostVote, Question } from '../../types/api'
 import { useParams } from 'react-router-dom'
 import type { UploadProps } from 'antd/es/upload/interface'
+import { UserType } from './SelectUsers'
 
 type FirstStepType = {
   onStepChange: (step: number) => void
@@ -46,9 +47,9 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
 
   useEffect(() => {
     if (voteCreate?.documents?.length !== 0) {
-      voteCreate?.documents?.forEach((x: PostFiles, index) => {
+      voteCreate?.documents?.forEach((x: PostFiles, index: number) => {
         fileDoc.push({
-          uid: '-1',
+          uid: `${index}`,
           name: x.name,
           url: x.url,
         })
@@ -56,15 +57,15 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (voteCreate.users?.length !== 0) {
-      voteCreate.users?.forEach((x, index) => {
-        env.API.getUserById(x).then((res: { data: GetUserById }) => {
-          userList.push(res.data)
-        })
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (voteCreate.users?.length !== 0) {
+  //     voteCreate.users?.forEach((x, index) => {
+  //       env.API.getUserById(x).then((res: { data: GetUserById }) => {
+  //         userList.push(res.data)
+  //       })
+  //     })
+  //   }
+  // }, [])
 
   const defaultDocs = fileDoc.length === undefined ? [] : fileDoc
 
@@ -103,11 +104,11 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
   }
 
   const countUsers = () => {
-    let usersLength = 0
-    groups.forEach((x, index) => {
-      usersLength += x.users.length
+    let usersFromGroups = 0
+    voteCreate.groups.forEach((x) => {
+      usersFromGroups += x.users.length
     })
-    return defaultUsers.length + usersLength
+    return voteCreate.users.length + usersFromGroups
   }
 
   const getStartDate = () => {
@@ -153,7 +154,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
         <div
           style={{
             borderBottom: '1px solid #DADADA',
-            height: 802,
+            height: 602,
             display: 'flex',
           }}
         >
@@ -259,7 +260,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     color: 'gray',
                   }}
                 >
-                  {groups.length === 0 ? defaultUsers.length : countUsers()}
+                  {countUsers()}
                 </p>
               </div>
               <div>
@@ -280,7 +281,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                   />
                 </div>
               </div>
-              <div style={{ height: '425px', overflowY: 'scroll' }}>
+              <div style={{ height: '224px', overflowY: 'scroll' }}>
                 {/* {userList.map((x: any) => {
                   return (
                     <ListUser
@@ -294,7 +295,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     />
                   )
                 })} */}
-                {...defaultUsers.map((x: any) => {
+                {...voteCreate.users.map((x: any) => {
                   return (
                     <ListUser
                       name={x.fullName}
@@ -308,7 +309,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                     />
                   )
                 })}
-                {...groups.map((x: GetGroups) => {
+                {...voteCreate.groups.map((x: any) => {
                   return (
                     <ListUser
                       name={x.name}
@@ -318,7 +319,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                       onDeleteClick={() => {
                         // onDeleteClick(x.id)
                       }}
-                      members={[]}
+                      members={x.users}
                     />
                   )
                 })}
@@ -332,6 +333,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
               width: '100%',
               flexDirection: 'column',
               borderLeft: '1px solid #DADADA',
+              overflowY: 'scroll',
             }}
           >
             <div

@@ -1,9 +1,11 @@
 import { Instance, types as t, cast } from 'mobx-state-tree'
 import { Question, PostFiles, GetVoteById } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
+import { UserType } from '../pages/VoteCreate/SelectUsers'
 import { IEnv } from '../App'
 // import { FileModelType } from '../pages/VoteCreate/FirstStep'
 import { UploadFile } from 'antd'
+import { group } from 'console'
 // import { string } from 'mobx-state-tree/dist/internal'
 
 const files = t.model({
@@ -11,6 +13,33 @@ const files = t.model({
   name: t.string,
   type: t.string,
 })
+
+const UserModel = t.model({
+  email: t.string,
+  fullName: t.string,
+  group: t.maybeNull(t.string),
+  id: t.number,
+  role: t.string,
+  phone: t.null,
+  photo: t.null,
+})
+
+const UserGroupModel = t.model({
+  email: t.maybeNull(t.string),
+  fullName: t.string,
+  id: t.number,
+  phone: t.maybeNull(t.null),
+  photo: t.null,
+  role: t.string,
+  telegramUserID: t.maybeNull(t.null),
+})
+
+const GroupModel = t.model({
+  id: t.number,
+  name: t.string,
+  users: t.array(UserGroupModel),
+})
+
 const QuestionModel = t.model({
   title: t.string,
   description: t.string,
@@ -34,8 +63,8 @@ const VoteCreateModel = t
     title: t.maybeNull(t.string),
     description: t.maybeNull(t.string),
     isAnonim: t.maybeNull(t.boolean),
-    users: t.maybeNull(t.array(t.integer)),
-    groups: t.maybeNull(t.array(t.integer)),
+    users: t.array(UserModel),
+    groups: t.array(GroupModel),
     questions: t.maybeNull(t.array(QuestionModel)),
     startDate: t.maybeNull(t.string),
     endDate: t.maybeNull(t.string),
@@ -98,11 +127,43 @@ const VoteCreateModel = t
         self.startDate = d1
         self.endDate = d2
       },
-      setUsers(users: number[]) {
-        self.users = cast(users)
+      setUsers(user: any) {
+        user.forEach((value: UserType) => {
+          self.users?.push(
+            UserModel.create({
+              email: value.email,
+              fullName: value.fullName,
+              group: value.group ? value.group : undefined,
+              id: value.id,
+              role: value.role,
+              phone: value.phone,
+              photo: value.photo,
+            }),
+          )
+        })
       },
-      setGroups(groups: number[]) {
-        self.groups = cast(groups)
+      setGroups(group: any) {
+        group.forEach((value: any) => {
+          self.groups?.push(
+            GroupModel.create({
+              id: value.id,
+              name: value.name,
+              users: value.users.map((value: any) => {
+                return UserGroupModel.create({
+                  email: value.email ? value.email : undefined,
+                  fullName: value.fullName,
+                  id: value.id,
+                  phone: value.phone ? value.phone : undefined,
+                  photo: value.photo,
+                  role: value.role,
+                  telegramUserID: value.telegramUserID
+                    ? value.telegramUserID
+                    : undefined,
+                })
+              }),
+            }),
+          )
+        })
       },
       deleteName() {
         self.title = null
@@ -132,8 +193,22 @@ const VoteCreateModel = t
       deleteAllDocuments() {
         self.documents?.splice(0, self.documents?.length)
       },
-      deleteUsers(id: number) {
+      deleteUsersById(id: number) {
         self.users?.splice(id, 1)
+      },
+      deleteUsersByName(name: string) {
+        self.users?.map((value: any, index: number) => {
+          if (value.fullName === name) {
+            return self.users.splice(index, 1)
+          }
+        })
+      },
+      deleteGroupsByName(name: string) {
+        self.groups?.map((value: any, index: number) => {
+          if (value.name === name) {
+            return self.groups.splice(index, 1)
+          }
+        })
       },
       deleteGroups(id: number) {
         self.groups?.splice(id, 1)
@@ -144,12 +219,27 @@ const VoteCreateModel = t
       deleteAllUsers() {
         self.users?.splice(0, self.users?.length)
       },
+      // setUsers(user: any) {
+      //   user.forEach((value: UserType) => {
+      //     self.users?.push(
+      //       UserModel.create({
+      //         email: value.email,
+      //         fullName: value.fullName,
+      //         group: value.group ? value.group : undefined,
+      //         id: value.id,
+      //         role: value.role,
+      //         phone: value.phone,
+      //         photo: value.photo,
+      //       }),
+      //     )
+      //   })
+      // },
       create(vote: GetVoteById) {
         this.setName(vote.title)
         this.setDescription(vote.description)
         this.setAnonim(vote.isAnonymous)
-        this.setUsers(vote.respondents.map((val) => val.id))
-        // this.setGroups(vote.groups) TODO: Add groups to get /votes/id api
+        this.setUsers(vote.respondents)
+        this.setGroups(vote.attachedGroups)
         this.setDate(vote.startDate, vote.endDate)
         vote.questions.map((value) =>
           this.addQuestion({

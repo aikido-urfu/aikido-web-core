@@ -24,6 +24,7 @@ import { COOKIE } from '../../api/axios'
 const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
+  // const isMobile
   const [votes, setvotes] = useState<GetVote[]>([])
   const [dataSource, setDataSource] = useState<GetVote[]>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()

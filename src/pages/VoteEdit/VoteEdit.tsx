@@ -33,6 +33,7 @@ const VoteEdit: React.FC = () => {
   }
 
   const onFInallizeVote = (data: PostVote) => {
+    console.log(data)
     API.sendEditVote(+url_id, data)
       .then((res) => {
         logger.info(res)
@@ -44,9 +45,9 @@ const VoteEdit: React.FC = () => {
         })
       })
       .catch((err) => {
-        // console.log(err)
+        console.log(err)
         message.error(err.response.data.message)
-        // logger.error(err)
+        logger.error(err)
       })
   }
 
