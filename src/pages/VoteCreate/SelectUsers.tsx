@@ -17,6 +17,7 @@ export type UserType = {
   role: string
   photo: null
   phone: null
+  telegramUserID: string | null
 }
 
 const SelectUsers: React.FC<SelectedUsersType> = ({

@@ -193,26 +193,28 @@ const VotePage: React.FC = () => {
             }}
           >
             {value.trim() === ''
-              ? votes.map((x, index) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        handleSelectedVote(x.id)
-                      }}
-                    >
-                      <ListVote
-                        key={x.id}
-                        isEnding={x.isEnding}
-                        isVoted={x.isVoted}
-                        isSelected={x.id === +url_id}
-                        name={x.title}
-                        id={x.id}
-                        date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
-                        description={x.description}
-                      />
-                    </div>
-                  )
-                })
+              ? votes
+                  .sort((a, b) => b.id - a.id)
+                  .map((x, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          handleSelectedVote(x.id)
+                        }}
+                      >
+                        <ListVote
+                          key={x.id}
+                          isEnding={x.isEnding}
+                          isVoted={x.isVoted}
+                          isSelected={x.id === +url_id}
+                          name={x.title}
+                          id={x.id}
+                          date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
+                          description={x.description}
+                        />
+                      </div>
+                    )
+                  })
               : dataSource.map((x, index) => {
                   return (
                     <div

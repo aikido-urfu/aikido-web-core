@@ -22,6 +22,7 @@ const UserModel = t.model({
   role: t.string,
   phone: t.null,
   photo: t.null,
+  telegramUserID: t.maybeNull(t.string),
 })
 
 const UserGroupModel = t.model({
@@ -31,7 +32,7 @@ const UserGroupModel = t.model({
   phone: t.maybeNull(t.null),
   photo: t.null,
   role: t.string,
-  telegramUserID: t.maybeNull(t.null),
+  telegramUserID: t.maybeNull(t.string),
 })
 
 const GroupModel = t.model({
@@ -138,6 +139,9 @@ const VoteCreateModel = t
               role: value.role,
               phone: value.phone,
               photo: value.photo,
+              telegramUserID: value.telegramUserID
+                ? value.telegramUserID
+                : null,
             }),
           )
         })
@@ -158,7 +162,7 @@ const VoteCreateModel = t
                   role: value.role,
                   telegramUserID: value.telegramUserID
                     ? value.telegramUserID
-                    : undefined,
+                    : null,
                 })
               }),
             }),

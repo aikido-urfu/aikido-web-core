@@ -125,7 +125,7 @@ export type GetUsers = {
   fullName: string
   phone: string
   photo: string
-  telegram: string
+  telegramUserID: string
 }[]
 
 export type PostMessage = {
@@ -175,7 +175,7 @@ export type GetGroups = {
     role: string
     phone: null
     photo: null
-    telegramUserID: null
+    telegramUserID?: null | string
   }[]
 }
 
@@ -186,7 +186,7 @@ export type GetUserById = {
   photo?: null
   phone?: null
   emaiL: string
-  telegramUserID?: null
+  telegramUserID?: null | string
 }
 
 // export type GetMessage = GetMessages &
