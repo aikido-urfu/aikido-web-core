@@ -3,7 +3,7 @@ import TextArea from 'antd/es/input/TextArea'
 import React, { useCallback, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useEnv } from '../../App'
-import { SelectUsers, ListUser, VoteEdit } from '..'
+import { SelectUsersEdit, ListUser, VoteEdit } from '..'
 import { GetGroups, GetUsers, PostFiles, GetUserById } from '../../types/api'
 import dayjs, { Dayjs } from 'dayjs'
 import {
@@ -47,6 +47,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
     const [propsFile, setProps] = useState<any>('')
     const [fileDoc, setFileDoc] = useState<any>([])
     const [userList, setUserList] = useState<any>([])
+    const [selectEdit, setSelectEdit] = useState<boolean>(false)
 
     const clearPlaceholders = () => {
       voteEdit.deleteName()
@@ -60,18 +61,15 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
     }
 
     const navToVoteHandler = () => {
-      clearPlaceholders()
+      // clearPlaceholders()
       navigate('/vote')
     }
 
-    function getVote() {
-      if (!edit) {
-        return
-      }
-      setEdit(false)
+    const getVoteEdit = () => {
+      if (!edit) return
       env.API.getVote(+url_id)
         .then((res) => {
-          clearPlaceholders()
+          // clearPlaceholders()
           voteEdit.create(res.data)
         })
         .catch((err) => {
@@ -80,29 +78,36 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
         })
     }
 
-    useEffect(getVote, [])
+    useEffect(() => {
+      getVoteEdit()
+      setEdit(true)
+    }, [])
 
     useEffect(() => {
+      if (!edit) return
       if (voteEdit?.documents?.length !== 0) {
-        voteEdit?.documents?.forEach((x: PostFiles, index) => {
+        setEdit(false)
+        setSelectEdit(true)
+        voteEdit?.documents?.forEach((x: PostFiles, index: number) => {
           fileDoc.push({
-            uid: '-1',
+            uid: `${index}`,
             name: x.name,
             url: x.url,
           })
+          // voteEdit.deleteAllDocuments()
         })
       }
-    }, [getVote])
+    }, [getVoteEdit])
 
-    useEffect(() => {
-      if (voteEdit.users?.length !== 0) {
-        voteEdit.users?.forEach((x, index) => {
-          env.API.getUserById(x).then((res: { data: GetUserById }) => {
-            userList.push(res.data)
-          })
-        })
-      }
-    }, [])
+    // useEffect(() => {
+    //   if (voteEdit.users?.length !== 0) {
+    //     voteEdit.users?.forEach((x, index) => {
+    //       env.API.getUserById(x).then((res: { data: GetUserById }) => {
+    //         userList.push(res.data)
+    //       })
+    //     })
+    //   }
+    // }, [])
 
     const defaultDocs = fileDoc.length === undefined ? [] : fileDoc
 
@@ -141,11 +146,11 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
     }
 
     const countUsers = () => {
-      let usersLength = 0
-      groups.forEach((x, index) => {
-        usersLength += x.users.length
+      let usersFromGroups = 0
+      voteEdit.groups.forEach((x) => {
+        usersFromGroups += x.users.length
       })
-      return defaultUsers.length + usersLength
+      return voteEdit.users.length + usersFromGroups
     }
 
     const getStartDate = () => {
@@ -191,7 +196,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
           <div
             style={{
               borderBottom: '1px solid #DADADA',
-              height: 802,
+              height: 602,
               display: 'flex',
             }}
           >
@@ -299,7 +304,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                       color: 'gray',
                     }}
                   >
-                    {groups.length === 0 ? defaultUsers.length : countUsers()}
+                    {countUsers()}
                   </p>
                 </div>
                 <div>
@@ -314,27 +319,15 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                       padding: '0 20px',
                     }}
                   >
-                    <SelectUsers
+                    <SelectUsersEdit
+                      selectEdit={selectEdit}
                       setSelectedUsers={setusers}
                       setSelectedGroups={setgroups}
                     />
                   </div>
                 </div>
-                <div style={{ height: '425px', overflowY: 'scroll' }}>
-                  {/* {userList.map((x: any) => {
-                  return (
-                    <ListUser
-                      name={x.fullName}
-                      role={x.role}
-                      mail={''}
-                      isCanBeDeleted={true}
-                      onDeleteClick={() => {
-                        // onDeleteClick(x.id)
-                      }}
-                    />
-                  )
-                })} */}
-                  {...defaultUsers.map((x: any) => {
+                <div style={{ height: '224px', overflowY: 'scroll' }}>
+                  {...voteEdit.users.map((x: any) => {
                     return (
                       <ListUser
                         name={x.fullName}
@@ -348,7 +341,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                       />
                     )
                   })}
-                  {...groups.map((x: GetGroups) => {
+                  {...voteEdit.groups.map((x: any) => {
                     return (
                       <ListUser
                         name={x.name}
@@ -358,7 +351,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                         onDeleteClick={() => {
                           // onDeleteClick(x.id)
                         }}
-                        members={[]}
+                        members={x.users}
                       />
                     )
                   })}
@@ -372,6 +365,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                 width: '100%',
                 flexDirection: 'column',
                 borderLeft: '1px solid #DADADA',
+                overflowY: 'scroll',
               }}
             >
               <div

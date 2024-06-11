@@ -9,6 +9,17 @@ type SelectedUsersType = {
   setSelectedGroups: (val: GetGroups[]) => void
 }
 
+export type UserType = {
+  email: string
+  fullName: string
+  group?: string | undefined
+  id: number
+  role: string
+  photo: null
+  phone: null
+  telegramUserID: string | null
+}
+
 const SelectUsers: React.FC<SelectedUsersType> = ({
   setSelectedUsers,
   setSelectedGroups,
@@ -21,16 +32,15 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const { rootStore } = useEnv()
   const voteCreate = rootStore.VoteCreate
   const [userList, setUserList] = useState<any>([])
-
-  useEffect(() => {
-    if (voteCreate.users?.length !== 0) {
-      voteCreate.users?.forEach((x) => {
-        env.API.getUserById(x).then((res: { data: GetUserById }) => {
-          userList.push(res.data.fullName)
-        })
-      })
-    }
-  }, [userList])
+  // useEffect(() => {
+  //   if (voteCreate.users?.length !== 0) {
+  //     voteCreate.users?.forEach((x) => {
+  //       env.API.getUserById(x).then((res: { data: GetUserById }) => {
+  //         userList.push(res.data.fullName)
+  //       })
+  //     })
+  //   }
+  // }, [userList])
 
   const loadUsers = () => {
     env.API.getUsersAll()
@@ -61,36 +71,45 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const handleChange = (value: string[]) => {
     const newVal = selectedUsers?.filter((x) => value.includes(x.fullName))
     setSelectedUsers(newVal)
-    const users: number[] = []
-    newVal.forEach((value) => {
-      users.push(value.id)
-    })
-    voteCreate.setUsers(users)
+    if (newVal.length !== 0) {
+      voteCreate.deleteAllUsers()
+      voteCreate.setUsers(newVal)
+    }
   }
 
   const handleChangeGroup = (value: string[]) => {
     const newVal = selectedGroups?.filter((x) => value.includes(x.name))
     setSelectedGroups(newVal)
-    const groups: number[] = []
-    newVal.forEach((value) => {
-      groups.push(value.id)
-    })
-    voteCreate.setGroups(groups)
+    if (newVal.length !== 0) {
+      voteCreate.deleteAllGroups()
+      voteCreate.setGroups(newVal)
+    }
   }
 
-  // const getDefaultValue = () => {
-  //   if (userList.length === 0 || userList === undefined) return []
-  //   const defValue: any = []
-  //   userList.forEach((value: any) => {
-  //     defValue.push(value.id)
-  //   })
-  //   return defValue
-  // }
+  const onDeselectUsers = (value: any) => {
+    voteCreate.deleteUsersByName(value)
+  }
 
-  const defValue = userList
+  const onDeselectGroups = (value: any) => {
+    voteCreate.deleteGroupsByName(value)
+  }
 
-  const onDeselect = (value: any) => {
-    console.log(value)
+  const getDefUsers = () => {
+    if (voteCreate.users.length <= 0) return []
+    const defValue: string[] = []
+    voteCreate.users.forEach((value: any) => {
+      defValue.push(value.fullName)
+    })
+    return defValue
+  }
+
+  const getDefGroups = () => {
+    if (voteCreate.groups.length <= 0) return []
+    const defValue: string[] = []
+    voteCreate.groups.forEach((value: any) => {
+      defValue.push(value.name)
+    })
+    return defValue
   }
 
   return (
@@ -102,21 +121,23 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
           allowClear
           style={{ width: '100%' }}
           placeholder='Добавить группу'
-          // defaultValue={[]}
+          defaultValue={getDefGroups()}
           onChange={handleChangeGroup}
           options={optionsGroup}
+          onDeselect={onDeselectGroups}
         />
       </Space>
       <Space style={{ width: '100%' }} direction='vertical'>
         <Select
           onClick={loadUsers}
           mode='multiple'
+          allowClear
           style={{ width: '100%' }}
           placeholder='Добавить нового участника +'
-          defaultValue={defValue}
+          defaultValue={getDefUsers()}
           onChange={handleChange}
           options={options}
-          onDeselect={onDeselect}
+          onDeselect={onDeselectUsers}
         />
       </Space>
     </>

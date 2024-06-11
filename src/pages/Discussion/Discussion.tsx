@@ -8,11 +8,13 @@ import { PostMessage } from '../../types/api'
 import { Button, Form, Input } from 'antd'
 
 import ListComments from './ListComments'
+import UserDiscussionSkeleton from '../../skeletons/UserDiscussionSkeleton'
 
 const Discussion: React.FC = () => {
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
   const [messages, setmessages] = useState<any[]>([])
   const [newComment, setNewComment] = useState(false)
+  const [isSkeleton, setSkeletonValue] = useState<boolean>(false)
   const { id } = useParams()
   const navigate = useNavigate()
   const env = useEnv()
@@ -20,11 +22,14 @@ const Discussion: React.FC = () => {
   const postTextAreaId = useId()
   const [form] = Form.useForm()
 
+  let changed = true
+
   const selfUser = env.rootStore.selfUser
 
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
+        console.log(res.data)
         setselectedVote(res.data)
       })
       .catch((err) => {
@@ -43,8 +48,8 @@ const Discussion: React.FC = () => {
       })
   }, [id, newComment])
 
-  const postComment = (data: PostMessage) => {
-    API.sendComment(data)
+  const postComment = async (data: PostMessage) => {
+    await API.sendComment(data)
       .then((res) => {
         setNewComment(true)
         logger.info(res)
@@ -52,9 +57,11 @@ const Discussion: React.FC = () => {
       .catch((err) => {
         logger.error(err)
       })
+    setSkeletonValue(false)
   }
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
+    setSkeletonValue(true)
     const name = selfUser.fullName || ''
     const res: PostMessage = {
       userId: selfUser.id,
@@ -64,7 +71,7 @@ const Discussion: React.FC = () => {
       refComId: undefined,
     }
     form.resetFields()
-    postComment(res)
+    await postComment(res)
   }
 
   const sortMessagesByTime = () => {
@@ -76,7 +83,7 @@ const Discussion: React.FC = () => {
   }
 
   return (
-    <div>
+    <>
       <div
         style={{
           borderBottom: '1px solid #DADADA',
@@ -91,13 +98,13 @@ const Discussion: React.FC = () => {
         />
         <h3 style={{ fontSize: 20, lineHeight: '20px' }}>Обсуждение</h3>
       </div>
-      <div className='flex flex-col items min-h-[800px]'>
+      <div className='flex flex-col items min-h-[780px]'>
         <div
           className='flex flex-col items justify-center items-center'
           style={{ marginLeft: 'auto', marginRight: 'auto', width: '1200px' }}
         >
           <main style={{ marginTop: '20px' }}>
-            {sortMessagesByTime().map((x: any) => {
+            {sortMessagesByTime().map((x: any, index: number) => {
               return (
                 <ListComments
                   commentId={x.id}
@@ -113,9 +120,9 @@ const Discussion: React.FC = () => {
                   postComment={postComment}
                   selectedVote={selectedVote}
                 />
-                // </div>
               )
             })}
+            {isSkeleton ? <UserDiscussionSkeleton /> : null}
           </main>
           <Form
             onKeyDown={(e) => {
@@ -163,7 +170,7 @@ const Discussion: React.FC = () => {
           </Form>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -3,15 +3,19 @@ import { Select, Space } from 'antd'
 import type { SelectProps } from 'antd'
 import { useEnv } from '../../App'
 import { GetUsers, GetGroups, GetUserById } from '../../types/api'
+import { UserType } from '../VoteCreate/SelectUsers'
+import BulletList from '../../skeletons/BulletListSkeleton'
 
 type SelectedUsersType = {
   setSelectedUsers: (val: GetUsers) => void
   setSelectedGroups: (val: GetGroups[]) => void
+  selectEdit: boolean
 }
 
 const SelectUsers: React.FC<SelectedUsersType> = ({
   setSelectedUsers,
   setSelectedGroups,
+  selectEdit,
 }) => {
   const [options, setoptions] = useState<SelectProps['options']>([])
   const [optionsGroup, setoptionsGroup] = useState<SelectProps['options']>([])
@@ -19,18 +23,18 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const [selectedGroups, setDataGroups] = useState<GetGroups[]>([])
   const env = useEnv()
   const { rootStore } = useEnv()
-  const voteCreate = rootStore.VoteCreate
+  const voteEdit = rootStore.VoteCreate
   const [userList, setUserList] = useState<any>([])
 
-  useEffect(() => {
-    if (voteCreate.users?.length !== 0) {
-      voteCreate.users?.forEach((x) => {
-        env.API.getUserById(x).then((res: { data: GetUserById }) => {
-          userList.push(res.data.fullName)
-        })
-      })
-    }
-  }, [userList])
+  // useEffect(() => {
+  //   if (voteCreate.users?.length !== 0) {
+  //     voteCreate.users?.forEach((x) => {
+  //       env.API.getUserById(x).then((res: { data: GetUserById }) => {
+  //         userList.push(res.data.fullName)
+  //       })
+  //     })
+  //   }
+  // }, [userList])
 
   const loadUsers = () => {
     env.API.getUsersAll()
@@ -61,64 +65,95 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const handleChange = (value: string[]) => {
     const newVal = selectedUsers?.filter((x) => value.includes(x.fullName))
     setSelectedUsers(newVal)
-    const users: number[] = []
-    newVal.forEach((value) => {
-      users.push(value.id)
-    })
-    voteCreate.setUsers(users)
+    if (newVal.length !== 0) {
+      voteEdit.deleteAllUsers()
+      voteEdit.setUsers(newVal)
+    }
   }
 
   const handleChangeGroup = (value: string[]) => {
     const newVal = selectedGroups?.filter((x) => value.includes(x.name))
     setSelectedGroups(newVal)
-    const groups: number[] = []
-    newVal.forEach((value) => {
-      groups.push(value.id)
-    })
-    voteCreate.setGroups(groups)
+    if (newVal.length !== 0) {
+      voteEdit.deleteAllGroups()
+      voteEdit.setGroups(newVal)
+    }
   }
 
-  // const getDefaultValue = () => {
-  //   if (userList.length === 0 || userList === undefined) return []
-  //   const defValue: any = []
-  //   userList.forEach((value: any) => {
-  //     defValue.push(value.id)
-  //   })
-  //   return defValue
-  // }
+  const onDeselectUsers = (value: any) => {
+    voteEdit.deleteUsersByName(value)
+  }
 
-  const defValue = userList
+  const onDeselectGroups = (value: any) => {
+    voteEdit.deleteGroupsByName(value)
+  }
 
-  const onDeselect = (value: any) => {
-    console.log(value)
+  const getDefUsers = () => {
+    if (voteEdit.users.length <= 0) return []
+    const defValue: string[] = []
+    voteEdit.users.forEach((value: any) => {
+      defValue.push(value.fullName)
+    })
+    return defValue
+  }
+
+  const getDefGroups = () => {
+    if (voteEdit.groups.length <= 0) return []
+    const defValue: string[] = []
+    voteEdit.groups.forEach((value: any) => {
+      defValue.push(value.name)
+    })
+    return defValue
+  }
+
+  let bool = false
+
+  if (!bool) {
+    if (!selectEdit) {
+      if (voteEdit.users.length > 0) {
+        bool = true
+      }
+    }
   }
 
   return (
     <>
-      <Space style={{ width: '100%' }} direction='vertical'>
-        <Select
-          onClick={loadGroups}
-          mode='multiple'
-          allowClear
-          style={{ width: '100%' }}
-          placeholder='Добавить группу'
-          // defaultValue={[]}
-          onChange={handleChangeGroup}
-          options={optionsGroup}
-        />
-      </Space>
-      <Space style={{ width: '100%' }} direction='vertical'>
-        <Select
-          onClick={loadUsers}
-          mode='multiple'
-          style={{ width: '100%' }}
-          placeholder='Добавить нового участника +'
-          defaultValue={defValue}
-          onChange={handleChange}
-          options={options}
-          onDeselect={onDeselect}
-        />
-      </Space>
+      {/* <BulletList /> */}
+      {/* <BulletList /> */}
+      {selectEdit ? (
+        <Space style={{ width: '100%' }} direction='vertical'>
+          <Select
+            onClick={loadGroups}
+            mode='multiple'
+            allowClear
+            style={{ width: '100%' }}
+            placeholder='Добавить группу'
+            defaultValue={getDefGroups()}
+            onChange={handleChangeGroup}
+            options={optionsGroup}
+            onDeselect={onDeselectGroups}
+          />
+        </Space>
+      ) : (
+        <BulletList />
+      )}
+      {selectEdit ? (
+        <Space style={{ width: '100%' }} direction='vertical'>
+          <Select
+            onClick={loadUsers}
+            mode='multiple'
+            allowClear
+            style={{ width: '100%' }}
+            placeholder='Добавить нового участника +'
+            defaultValue={getDefUsers()}
+            onChange={handleChange}
+            options={options}
+            onDeselect={onDeselectUsers}
+          />
+        </Space>
+      ) : (
+        <BulletList />
+      )}
     </>
   )
 }

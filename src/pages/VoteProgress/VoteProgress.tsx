@@ -192,7 +192,7 @@ const VoteProgress: React.FC = () => {
             <div
               style={{
                 width: 1380,
-                minHeight: 840,
+                minHeight: 640,
                 backgroundColor: '#FFF',
               }}
             >
@@ -273,7 +273,7 @@ const VoteProgress: React.FC = () => {
             >
               <div
                 style={{
-                  minHeight: 840,
+                  minHeight: 640,
                   backgroundColor: '#FFF',
                   padding: '10px 20px',
                 }}
@@ -353,7 +353,7 @@ const VoteProgress: React.FC = () => {
             <div
               style={{
                 width: 320,
-                minHeight: 900,
+                minHeight: 700,
                 backgroundColor: '#FFF',
                 padding: '0 20px',
               }}

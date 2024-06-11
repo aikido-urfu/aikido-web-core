@@ -54,6 +54,7 @@ export const valueTime = (creationDate: string) => {
     days === 0 &&
     years === 0
   ) {
+    if (seconds <= 0) return 'только что'
     return `${seconds} с. назад`
   }
   if (minutes <= 59 && hours === 0 && days === 0 && years === 0) {

@@ -30,6 +30,7 @@ const VoteCreate: React.FC = () => {
   }
 
   const onFInallizeVote = (data: PostVote) => {
+    console.log(data)
     API.sendCreateVote(data)
       .then((res) => {
         logger.info(res)

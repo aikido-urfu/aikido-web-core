@@ -78,10 +78,22 @@ const SecondStep: React.FC<SecondStepType> = ({
   }
 
   const handleSendClick = () => {
-    const listId: number[] = []
+    const filesId: number[] = []
     if (voteCreateModel.documents?.length !== 0) {
-      JSON.parse(JSON.stringify(voteCreateModel.documents)).filter((x: any) => {
-        listId.push(x.id)
+      voteCreateModel.documents?.filter((x: any) => {
+        filesId.push(x.id)
+      })
+    }
+    const usersId: number[] = []
+    if (voteCreateModel.users?.length !== 0) {
+      voteCreateModel.users?.filter((x: any) => {
+        usersId.push(x.id)
+      })
+    }
+    const groupsId: number[] = []
+    if (voteCreateModel.groups?.length !== 0) {
+      voteCreateModel.groups?.filter((x: any) => {
+        groupsId.push(x.id)
       })
     }
     const res: PostVote = {
@@ -93,11 +105,11 @@ const SecondStep: React.FC<SecondStepType> = ({
       isEnding: false,
       isVoted: false,
       isHidenCounter: false,
-      files: listId,
+      files: filesId,
       photos: [],
       questions: voteCreateModel.questions || [],
-      respondents: JSON.parse(JSON.stringify(voteCreateModel.users)) || [],
-      groups: JSON.parse(JSON.stringify(voteCreateModel.groups)) || [],
+      respondents: usersId,
+      groups: groupsId,
     }
     const checkField = (obj: PostVote, field: keyof PostVote) => {
       if (Array.isArray(obj[field])) {
@@ -105,8 +117,6 @@ const SecondStep: React.FC<SecondStepType> = ({
         if (obj[field].length === 0) {
           if (field === 'questions') {
             env.messageApi.error('Не задан вопрос голосования')
-          } else if (field === 'respondents') {
-            env.messageApi.error('Не заданы участники')
           }
           return false
         }
@@ -132,11 +142,18 @@ const SecondStep: React.FC<SecondStepType> = ({
         }
       }
     }
+    const checkValueRespondents = (obj: PostVote) => {
+      if (obj['groups'].length === 0 && obj['respondents'].length === 0) {
+        env.messageApi.error('Не заданы участники')
+        return false
+      }
+      return true
+    }
     checkField(res, 'title') &&
       checkField(res, 'description') &&
       checkField(res, 'endDate') &&
       checkField(res, 'questions') &&
-      checkField(res, 'respondents') &&
+      checkValueRespondents(res) &&
       onFInallizeVote(res)
   }
 

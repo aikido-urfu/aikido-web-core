@@ -24,6 +24,7 @@ import { COOKIE } from '../../api/axios'
 const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
+  // const isMobile
   const [votes, setvotes] = useState<GetVote[]>([])
   const [dataSource, setDataSource] = useState<GetVote[]>([])
   const [selectedVote, setselectedVote] = useState<GetVoteById | undefined>()
@@ -192,26 +193,28 @@ const VotePage: React.FC = () => {
             }}
           >
             {value.trim() === ''
-              ? votes.map((x, index) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        handleSelectedVote(x.id)
-                      }}
-                    >
-                      <ListVote
-                        key={x.id}
-                        isEnding={x.isEnding}
-                        isVoted={x.isVoted}
-                        isSelected={x.id === +url_id}
-                        name={x.title}
-                        id={x.id}
-                        date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
-                        description={x.description}
-                      />
-                    </div>
-                  )
-                })
+              ? votes
+                  .sort((a, b) => b.id - a.id)
+                  .map((x, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          handleSelectedVote(x.id)
+                        }}
+                      >
+                        <ListVote
+                          key={x.id}
+                          isEnding={x.isEnding}
+                          isVoted={x.isVoted}
+                          isSelected={x.id === +url_id}
+                          name={x.title}
+                          id={x.id}
+                          date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
+                          description={x.description}
+                        />
+                      </div>
+                    )
+                  })
               : dataSource.map((x, index) => {
                   return (
                     <div
