@@ -21,6 +21,8 @@ import { observer } from 'mobx-react-lite'
 import { getCookie } from '../helpers/cookie.helper'
 import { COOKIE } from '../../api/axios'
 
+import { maxString } from '../../api/tools'
+
 const HEADER_HEIGHT = 60
 
 const VotePage: React.FC = () => {
@@ -245,6 +247,7 @@ const VotePage: React.FC = () => {
               width: '100%',
               filter: 'drop-shadow(0px 3px 25px rgba(0, 0, 0, 0.10))',
               height: '785px',
+              maxWidth: '1635px',
             }}
           >
             <div
@@ -269,7 +272,12 @@ const VotePage: React.FC = () => {
                     fontWeight: '700',
                   }}
                 >
-                  {selectedVote.title}
+                  <abbr
+                    title={selectedVote.title}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {maxString(selectedVote.title, 80)}
+                  </abbr>
                 </h3>
                 {selectedVote.isAnonymous && (
                   <Tag
@@ -433,14 +441,16 @@ const VotePage: React.FC = () => {
                 </div>
                 <div
                   style={{
-                    height: '450px',
+                    minHeight: '450px',
                     overflowY: 'auto',
                     padding: 20,
                     display: 'flex',
                     flexDirection: 'column',
                   }}
                 >
-                  <p style={{ marginBottom: 20 }}>{selectedVote.description}</p>
+                  <p style={{ marginBottom: 20, overflowWrap: 'break-word' }}>
+                    {selectedVote.description}
+                  </p>
                   {selectedVote.files.length !== 0
                     ? selectedVote.files.map((x: any) => {
                         return <VoteFiles title={x.name} link={x.url} />
@@ -457,11 +467,12 @@ const VotePage: React.FC = () => {
                   backgroundColor: '#FFF',
                 }}
               >
-                <div //2column
+                <div //1column
                   style={{
                     flexBasis: '66%',
                     minHeight: 400,
                     maxHeight: 700,
+                    maxWidth: 1200,
                     backgroundColor: '#FFF',
                     borderLeft: '1px solid #DADADA',
                     overflowY: 'hidden',
@@ -494,7 +505,9 @@ const VotePage: React.FC = () => {
                         flexDirection: 'column',
                       }}
                     >
-                      <p style={{ marginBottom: 20 }}>
+                      <p
+                        style={{ marginBottom: 20, overflowWrap: 'break-word' }}
+                      >
                         {selectedVote.description}
                       </p>
                       <div className='flex flex-col' style={{ rowGap: '10px' }}>
@@ -507,7 +520,7 @@ const VotePage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div //1column
+                <div //2column
                   style={{
                     minHeight: 480,
                     maxHeight: 700,
