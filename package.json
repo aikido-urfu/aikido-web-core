@@ -4,8 +4,10 @@
   "description": "Build UI that scales",
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js --open --port 3004",
-    "build": "NODE_ENV=production webpack --config ./webpack.config.prod.js",
-    "deploy": "npm run build && node ./src/scripts/deploy.js"
+    "build": "set NODE_ENV=production && webpack --config ./webpack.config.prod.js",
+    "deploy": "npm run build && node ./src/scripts/deploy.js",
+    "prod": "webpack serve --config webpack.config.prod.js --port 3004",
+    "start": "node server.js"
   },
   "keywords": [
     "react",
@@ -29,6 +31,7 @@
     "dotenv": "^16.4.5",
     "dotenv-webpack": "^8.1.0",
     "eslint": "^8.57.0",
+    "express": "^4.19.2",
     "html-webpack-plugin": "^5.6.0",
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
