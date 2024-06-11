@@ -25,6 +25,17 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [urlList, seturlList] = useState<string[]>([])
 
+  const env = useEnv()
+
+  const isEmpty = () => {
+    return (
+      name.length <= 0 ||
+      description.length <= 0 ||
+      questions[0].length <= 0 ||
+      questions[1].length <= 0
+    )
+  }
+
   const clear = () => {
     setname('')
     setdescription('')
@@ -35,16 +46,20 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
   }
 
   const handleAddClick = () => {
-    onAddClick({
-      title: name,
-      description,
-      files: [],
-      photos: urlList,
-      isMultiply,
-      answers: questions,
-    })
-    clear()
-    setshowModal(false)
+    if (!isEmpty()) {
+      onAddClick({
+        title: name,
+        description,
+        files: [],
+        photos: urlList,
+        isMultiply,
+        answers: questions,
+      })
+      clear()
+      setshowModal(false)
+    } else {
+      env.messageApi.error('Не заполнены поля')
+    }
   }
 
   const handleDeleteAnswer = (index: number) => {
@@ -231,8 +246,13 @@ const AddFiles: React.FC<AddFiesType> = ({
     beforeUpload: (file) => {
       env.API.uploadPhoto(file)
         .then((res) => {
-          setFileList([...fileList, file])
-          seturlList([...urlList, res.data.url])
+          if (isValid(res.data.url.split('.').pop())) {
+            setFileList([...fileList, file])
+            seturlList([...urlList, res.data.url])
+          } else {
+            env.messageApi.error('Загружать можно только фотографии .jpg, .png')
+            return
+          }
         })
         .catch((err) => {
           env.messageApi.error(err)
@@ -243,6 +263,10 @@ const AddFiles: React.FC<AddFiesType> = ({
     fileList,
   }
 
+  const isValid = (fileExtension: string | undefined) => {
+    return fileExtension === 'jpg' || fileExtension === 'png'
+  }
+
   return (
     <div
       style={{
@@ -250,7 +274,7 @@ const AddFiles: React.FC<AddFiesType> = ({
       }}
     >
       <Upload listType='picture' {...props}>
-        <Button icon={<UploadOutlined />}>Загрузить Файлы</Button>
+        <Button icon={<UploadOutlined />}>Загрузить Фото</Button>
       </Upload>
     </div>
   )
