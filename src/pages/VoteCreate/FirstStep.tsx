@@ -282,33 +282,6 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 </div>
               </div>
               <div style={{ height: '224px', overflowY: 'scroll' }}>
-                {/* {userList.map((x: any) => {
-                  return (
-                    <ListUser
-                      name={x.fullName}
-                      role={x.role}
-                      mail={''}
-                      isCanBeDeleted={true}
-                      onDeleteClick={() => {
-                        // onDeleteClick(x.id)
-                      }}
-                    />
-                  )
-                })} */}
-                {...voteCreate.users.map((x: any) => {
-                  return (
-                    <ListUser
-                      name={x.fullName}
-                      role={x.role}
-                      mail={''}
-                      isCanBeDeleted={true}
-                      onDeleteClick={() => {
-                        // onDeleteClick(x.id)
-                      }}
-                      members={[]}
-                    />
-                  )
-                })}
                 {...voteCreate.groups.map((x: any) => {
                   return (
                     <ListUser
@@ -320,6 +293,20 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                         // onDeleteClick(x.id)
                       }}
                       members={x.users}
+                    />
+                  )
+                })}
+                {...voteCreate.users.map((x: any) => {
+                  return (
+                    <ListUser
+                      name={x.fullName}
+                      role={x.role}
+                      mail={''}
+                      isCanBeDeleted={true}
+                      onDeleteClick={() => {
+                        // onDeleteClick(x.id)
+                      }}
+                      members={[]}
                     />
                   )
                 })}

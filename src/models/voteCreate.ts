@@ -110,7 +110,7 @@ const VoteCreateModel = t
       //     )
       //   })
       // },
-      addQuestion(question: Question) {
+      addQuestion(question: any) {
         self.questions?.push(
           QuestionModel.create({
             title: question.title,
@@ -249,7 +249,7 @@ const VoteCreateModel = t
           this.addQuestion({
             title: value.title,
             description: value.description,
-            answers: [],
+            answers: value.answers.map((x) => x.text),
             files: [],
             photos: value.photos,
             isMultiply: value.isMultiply,

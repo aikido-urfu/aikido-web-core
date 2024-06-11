@@ -10,12 +10,14 @@ type SelectedUsersType = {
   setSelectedUsers: (val: GetUsers) => void
   setSelectedGroups: (val: GetGroups[]) => void
   selectEdit: boolean
+  setSelectEdit: any
 }
 
 const SelectUsers: React.FC<SelectedUsersType> = ({
   setSelectedUsers,
   setSelectedGroups,
   selectEdit,
+  setSelectEdit,
 }) => {
   const [options, setoptions] = useState<SelectProps['options']>([])
   const [optionsGroup, setoptionsGroup] = useState<SelectProps['options']>([])
@@ -26,15 +28,9 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const voteEdit = rootStore.VoteCreate
   const [userList, setUserList] = useState<any>([])
 
-  // useEffect(() => {
-  //   if (voteCreate.users?.length !== 0) {
-  //     voteCreate.users?.forEach((x) => {
-  //       env.API.getUserById(x).then((res: { data: GetUserById }) => {
-  //         userList.push(res.data.fullName)
-  //       })
-  //     })
-  //   }
-  // }, [userList])
+  useEffect(() => {
+    console.log(selectEdit)
+  }, [selectEdit])
 
   const loadUsers = () => {
     env.API.getUsersAll()
@@ -107,7 +103,8 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   }
 
   let bool = false
-  console.log(selectEdit)
+  // console.log('selectEdit', selectEdit)
+  // console.log('bool', bool)
 
   if (!bool) {
     if (!selectEdit) {
@@ -117,9 +114,11 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
     }
   }
 
+  console.log(voteEdit.users.length)
+
   return (
     <>
-      {selectEdit ? (
+      {selectEdit && !bool ? (
         <Space style={{ width: '100%' }} direction='vertical'>
           <Select
             onClick={loadGroups}

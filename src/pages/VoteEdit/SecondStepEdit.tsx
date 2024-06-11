@@ -10,6 +10,7 @@ import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { ModalAddQuestion } from '..'
 import { GetVoteById } from '../../types/api'
+import { maxString } from '../../api/tools'
 
 type QuestionType = {
   data: Question
@@ -43,8 +44,8 @@ const QuestionBlock: React.FC<QuestionType> = ({ data, id, onDeleteClick }) => {
         <ArrowDownOutlined style={{ fontSize: '150%' }} />
         {id + 1}
         <div>
-          <h4>{data.title}</h4>
-          <p className='gray'>{data.description}</p>
+          <h4>{maxString(data.title, 80)}</h4>
+          <p className='gray'>{maxString(data.description, 80)}</p>
         </div>
       </div>
       <DeleteOutlined

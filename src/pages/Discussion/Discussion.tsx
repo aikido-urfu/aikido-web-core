@@ -122,7 +122,7 @@ const Discussion: React.FC = () => {
                 />
               )
             })}
-            {isSkeleton ? <UserDiscussionSkeleton /> : null}
+            {/* {isSkeleton ? <UserDiscussionSkeleton /> : null} */}
           </main>
           <Form
             onKeyDown={(e) => {

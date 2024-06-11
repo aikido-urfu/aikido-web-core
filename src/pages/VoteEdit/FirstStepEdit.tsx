@@ -52,16 +52,16 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
     const clearPlaceholders = () => {
       voteEdit.deleteName()
       voteEdit.deleteDescription()
-      voteEdit.deleteDate()
       voteEdit.deleteAnonim()
       voteEdit.deleteAllUsers()
+      voteEdit.deleteAllGroups()
+      voteEdit.deleteDate()
       voteEdit.deleteAllQuestions()
       voteEdit.deleteAllDocuments()
-      voteEdit.deleteAllGroups()
     }
 
     const navToVoteHandler = () => {
-      // clearPlaceholders()
+      clearPlaceholders()
       navigate('/vote')
     }
 
@@ -84,10 +84,13 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
     }, [])
 
     useEffect(() => {
-      if (!edit) return
-      if (voteEdit?.documents?.length !== 0) {
-        setEdit(false)
+      setEdit(false)
+      console.log(voteEdit.users.length)
+      if (voteEdit.users.length !== 0 || voteEdit.groups.length !== 0) {
         setSelectEdit(true)
+      }
+      if (voteEdit?.documents?.length !== 0) {
+        fileDoc.splice(0, fileDoc.length)
         voteEdit?.documents?.forEach((x: PostFiles, index: number) => {
           fileDoc.push({
             uid: `${index}`,
@@ -183,6 +186,16 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
 
     const handleDeleteQuestionClick = (id: number) => {
       voteEdit.deleteFiles(id)
+    }
+
+    const filteredByUniqId = (arr: any) => {
+      const keys = ['id']
+      return arr.filter((value: any, index: number, self: any) => {
+        return (
+          self.findIndex((v: any) => keys.every((k) => v[k] === value[k])) ===
+          index
+        )
+      })
     }
 
     return (
@@ -321,27 +334,14 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                   >
                     <SelectUsersEdit
                       selectEdit={selectEdit}
+                      setSelectEdit={setSelectEdit}
                       setSelectedUsers={setusers}
                       setSelectedGroups={setgroups}
                     />
                   </div>
                 </div>
                 <div style={{ height: '224px', overflowY: 'scroll' }}>
-                  {...voteEdit.users.map((x: any) => {
-                    return (
-                      <ListUser
-                        name={x.fullName}
-                        role={x.role}
-                        mail={''}
-                        isCanBeDeleted={true}
-                        onDeleteClick={() => {
-                          // onDeleteClick(x.id)
-                        }}
-                        members={[]}
-                      />
-                    )
-                  })}
-                  {...voteEdit.groups.map((x: any) => {
+                  {filteredByUniqId(voteEdit['groups']).map((x: any) => {
                     return (
                       <ListUser
                         name={x.name}
@@ -352,6 +352,20 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                           // onDeleteClick(x.id)
                         }}
                         members={x.users}
+                      />
+                    )
+                  })}
+                  {filteredByUniqId(voteEdit['users']).map((x: any) => {
+                    return (
+                      <ListUser
+                        name={x.fullName}
+                        role={x.role}
+                        mail={''}
+                        isCanBeDeleted={true}
+                        onDeleteClick={() => {
+                          // onDeleteClick(x.id)
+                        }}
+                        members={[]}
                       />
                     )
                   })}
