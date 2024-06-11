@@ -107,6 +107,7 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   }
 
   let bool = false
+  console.log(selectEdit)
 
   if (!bool) {
     if (!selectEdit) {
@@ -118,8 +119,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
 
   return (
     <>
-      {/* <BulletList /> */}
-      {/* <BulletList /> */}
       {selectEdit ? (
         <Space style={{ width: '100%' }} direction='vertical'>
           <Select

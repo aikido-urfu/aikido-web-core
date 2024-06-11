@@ -30,6 +30,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
     setdescription('')
     setquestions(['', ''])
     setisMultiply(false)
+    seturlList([])
     setFileList([])
   }
 

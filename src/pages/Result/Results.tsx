@@ -5,12 +5,16 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { Tiny, Pie, Column } from '@ant-design/plots'
+import { url } from 'inspector'
 
 const Results: React.FC = () => {
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
+  const [questionsLength, setquestionsLength] = useState<number>(0)
   const { id } = useParams()
   const navigate = useNavigate()
   const env = useEnv()
+
+  const url_id = id || ''
 
   useEffect(() => {
     env.API.getVote(Number(id))
@@ -22,113 +26,131 @@ const Results: React.FC = () => {
       })
   }, [id])
 
-  // const percent = selectedVote?.questions[0].answers.length
-
-  const data = selectedVote?.questions[0].answers.map((answ) => {
-    const obj = {
-      type: answ.text,
-      value: answ.count,
-    }
-    return obj
-  })
-
-  type TinyType = {
-    width: number
-    height: number
-    showInfo: boolean
-    autoFit: boolean
-    percent: number
-    color: string[]
-    annotations: any
-  }
-
   const getPercentOfVoted = () => {
-    const usersVoted = selectedVote?.usersVoted.length
-    const respondents = selectedVote?.respondents.length
-    if (
-      typeof usersVoted !== 'undefined' &&
-      typeof respondents !== 'undefined'
-    ) {
-      return usersVoted / respondents
+    if (selectedVote) {
+      let allRespondents = selectedVote?.respondents.length
+      selectedVote.attachedGroups.forEach((group: any) => {
+        allRespondents += group.users.length
+      })
+      const usersVoted = selectedVote?.usersVoted.length
+      return usersVoted / allRespondents
     }
   }
 
   const TinyProgress = () => {
-    const config: TinyType = {
-      width: 480,
-      height: 60,
-      showInfo: true,
-      autoFit: false,
-      percent: getPercentOfVoted() || 1,
-      color: ['#EAEAEA', '#BDDBFF'],
-      annotations: [
-        {
-          type: 'text',
+    if (selectedVote) {
+      type TinyType = {
+        width: number
+        height: number
+        showInfo: boolean
+        autoFit: boolean
+        percent: number
+        color: string[]
+        annotations: any
+      }
+
+      const config: TinyType = {
+        width: 480,
+        height: 60,
+        showInfo: true,
+        autoFit: false,
+        percent: getPercentOfVoted() || 1,
+        color: ['#EAEAEA', '#BDDBFF'],
+        annotations: [
+          {
+            type: 'text',
+            style: {
+              text: `${selectedVote?.usersVoted.length}`,
+              x: '50%',
+              y: '50%',
+              textAlign: 'center',
+              fontSize: 16,
+              fontStyle: 'bold',
+            },
+          },
+        ],
+      }
+
+      return <Tiny.Progress {...config} />
+    }
+  }
+
+  const CustomPie = (...props: any) => {
+    if (selectedVote) {
+      const { question } = props[0]
+
+      const data = question.answers.map((answ: any) => {
+        const obj = {
+          type: answ.text,
+          value: answ.count,
+        }
+        return obj
+      })
+
+      type PieType = {
+        data: any
+        angleField: string
+        colorField: string
+        label: any
+        legend: any
+      }
+
+      const config: PieType = {
+        data,
+        angleField: 'value',
+        colorField: 'type',
+        label: {
+          text: 'value',
           style: {
-            text: `${selectedVote?.usersVoted.length}`,
-            x: '50%',
-            y: '50%',
-            textAlign: 'center',
-            fontSize: 16,
-            fontStyle: 'bold',
+            fontWeight: 'bold',
           },
         },
-      ],
-    }
-
-    return <Tiny.Progress {...config} />
-  }
-
-  type PieType = {
-    data: any
-    angleField: string
-    colorField: string
-    label: any
-    legend: any
-  }
-
-  const CustomPie = () => {
-    const config: PieType = {
-      data,
-      angleField: 'value',
-      colorField: 'type',
-      label: {
-        text: 'value',
-        style: {
-          fontWeight: 'bold',
-        },
-      },
-      legend: {
-        color: {
-          title: false,
-          position: 'right',
-          rowPadding: 5,
-          layout: {
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            flexDirection: 'column',
+        legend: {
+          color: {
+            title: false,
+            position: 'right',
+            rowPadding: 5,
+            layout: {
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              flexDirection: 'column',
+            },
           },
         },
-      },
+      }
+      return <Pie {...config} />
     }
-    return <Pie {...config} />
   }
 
-  const CustomColumn = () => {
-    const chartRef = React.useRef(null)
-    const config = {
-      data,
-      xField: 'type',
-      yField: 'value',
-      colorField: 'type',
-      axis: {
-        x: {
-          size: 40,
+  const CustomColumn = (...props: any) => {
+    if (selectedVote) {
+      const { question } = props[0]
+
+      const data = question.answers
+        .sort((a: any, b: any) => a.id - b.id)
+        .map((answ: any) => {
+          const obj = {
+            type: answ.text,
+            value: answ.count,
+          }
+          return obj
+        })
+
+      const chartRef = React.useRef(null)
+      const config = {
+        data,
+        xField: 'type',
+        yField: 'value',
+        colorField: 'type',
+        axis: {
+          x: {
+            size: 40,
+          },
         },
-      },
-      onReady: (plot: any) => (chartRef.current = plot),
+        onReady: (plot: any) => (chartRef.current = plot),
+      }
+      return <Column {...config} />
     }
-    return <Column {...config} />
   }
 
   return (
@@ -142,7 +164,7 @@ const Results: React.FC = () => {
         <h3>Статистика голосования ({selectedVote?.questions.length})</h3>
         <Button
           onClick={() => {
-            navigate(-1)
+            navigate(`/vote/${url_id}`)
           }}
         >
           Назад
@@ -178,7 +200,7 @@ const Results: React.FC = () => {
           <span style={{ lineHeight: '20px' }}>Воздержались</span>
         </div>
         <div className='px-[20px] mb-[10px]'>
-          <TinyProgress />
+          {selectedVote ? <TinyProgress /> : null}
         </div>
         <div
           className='pl-[40px]'
@@ -187,24 +209,31 @@ const Results: React.FC = () => {
           }}
         ></div>
         <div>
-          {selectedVote?.questions.map((x) => (
-            <div
-              style={{
-                borderBottom: '1px solid #DADADA',
-              }}
-            >
-              <h3 className='px-[20px] h-[50px] flex items-center'>
-                {x.title}
-              </h3>
-              <div className='px-[20px] w-[422px] h-[381px]'>
-                {selectedVote?.usersVoted.length > 5 ? (
-                  <CustomPie />
-                ) : (
-                  <CustomColumn />
-                )}
-              </div>
-            </div>
-          ))}
+          {selectedVote?.questions
+            .sort((a, b) => a.id - b.id)
+            .map((question: any) => {
+              return (
+                <div
+                  style={{
+                    borderBottom: '1px solid #DADADA',
+                  }}
+                >
+                  <h3
+                    className='px-[20px] min-h-[50px] items-center'
+                    style={{ wordWrap: 'break-word' }}
+                  >
+                    {question.title}
+                  </h3>
+                  <div className='px-[20px] w-[422px] h-[381px]'>
+                    {selectedVote?.usersVoted.length > 5 ? (
+                      <CustomPie question={question} />
+                    ) : (
+                      <CustomColumn question={question} />
+                    )}
+                  </div>
+                </div>
+              )
+            })}
         </div>
       </span>
     </div>

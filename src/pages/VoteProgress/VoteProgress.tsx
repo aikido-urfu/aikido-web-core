@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { GetVoteById } from '../../types/api'
+import { maxString } from '../../api/tools'
 
 type BottomControlType = {
   onBackClick?: () => void
@@ -174,7 +175,7 @@ const VoteProgress: React.FC = () => {
         <h3>Прохождение голосования</h3>
         <Button
           onClick={() => {
-            navigate(-1)
+            navigate(`/vote/${url_id}`)
           }}
         >
           Назад
@@ -207,13 +208,13 @@ const VoteProgress: React.FC = () => {
                 }}
               >
                 <h3>Результат голосования</h3>
-                <p>
+                <p style={{ overflowWrap: 'break-word' }}>
                   Пройдено{' '}
                   {Object.values(answers).filter((x) => x.length != 0).length}/
                   {selectedVote.questions.length}
                 </p>
               </div>
-              <div style={{}}>
+              <div style={{ overflowWrap: 'break-word' }}>
                 {...selectedVote.questions.map((x, index) => {
                   return (
                     <div
@@ -224,20 +225,25 @@ const VoteProgress: React.FC = () => {
                         height: 90,
                         padding: '0 14px',
                         borderBottom: '1px solid #DADADA',
+                        overflowWrap: 'break-word',
                       }}
                     >
-                      <h4>{index + 1}</h4>
+                      <h4>{maxString(`${index + 1}`, 5)}</h4>
                       <div>
-                        <h4>{x.title}</h4>
+                        <h4>{maxString(x.title, 60)}</h4>
                         <p style={{ color: 'gray' }}>
-                          Ваш ответ:{' '}
-                          <span style={{ color: '#1890FF' }}>
+                          Ваш ответ:&nbsp;
+                          <span
+                            style={{
+                              color: '#1890FF',
+                            }}
+                          >
                             {answers[x.id]?.length ? (
                               x.answers
                                 .filter(
                                   (ans) => answers[x.id].indexOf(ans.id) != -1,
                                 )
-                                .map((x) => x.text)
+                                .map((x) => maxString(x.text, 80))
                                 .join(',')
                             ) : (
                               <span style={{ color: 'red' }}>Отсутствует</span>
@@ -276,9 +282,13 @@ const VoteProgress: React.FC = () => {
                   minHeight: 640,
                   backgroundColor: '#FFF',
                   padding: '10px 20px',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
-                <h3>{selectedQuestion.title}</h3>
+                <h3 style={{ wordWrap: 'break-word' }}>
+                  {selectedQuestion.title}
+                </h3>
                 <p
                   style={{
                     margin: '20px 0',
@@ -286,6 +296,7 @@ const VoteProgress: React.FC = () => {
                     fontStyle: 'normal',
                     fontWeight: 500,
                     lineHeight: '30px',
+                    wordWrap: 'break-word',
                   }}
                 >
                   {selectedQuestion.description}
@@ -295,41 +306,62 @@ const VoteProgress: React.FC = () => {
                     <img
                       src={x}
                       style={{
-                        width: 600,
-                        height: 300,
+                        maxWidth: 600,
+                        maxHeight: 300,
                         backgroundRepeat: 'no-repeat',
                         objectFit: 'contain',
+                        marginBottom: '15px',
                       }}
                     ></img>
                   )
                 })}
                 {!selectedQuestion.isMultiply ? (
                   <>
-                    <Space direction='vertical' style={{ display: 'block' }}>
-                      {selectedQuestion.answers.map((x) => (
-                        <Radio
-                          checked={isSelected(x.id)}
-                          onChange={() => handleAnswerSet(x.id)}
-                          value={x.text}
-                        >
-                          {x.text}
-                        </Radio>
-                      ))}
+                    <Space
+                      className='display-with-align'
+                      direction='vertical'
+                      style={{ display: 'flex', gap: '5px' }}
+                    >
+                      {selectedQuestion.answers
+                        .sort((a, b) => a.id - b.id)
+                        .map((x) => {
+                          return (
+                            <abbr title={x.text} style={{ overflow: 'hidden' }}>
+                              <Radio
+                                className='wrap-box'
+                                checked={isSelected(x.id)}
+                                onChange={() => handleAnswerSet(x.id)}
+                                value={x.text}
+                              >
+                                {x.text}
+                              </Radio>
+                            </abbr>
+                          )
+                        })}
                     </Space>
                   </>
                 ) : (
                   <>
-                    <Space direction='vertical'>
-                      {selectedQuestion.answers.map((x) => (
-                        <Checkbox
-                          checked={isSelected(x.id)}
-                          onChange={() => {
-                            handleAnswerSet(x.id)
-                          }}
-                        >
-                          {x.text}
-                        </Checkbox>
-                      ))}
+                    <Space
+                      className='display-with-align'
+                      direction='vertical'
+                      style={{ display: 'flex', gap: '5px' }}
+                    >
+                      {selectedQuestion.answers
+                        .sort((a, b) => a.id - b.id)
+                        .map((x) => (
+                          <abbr title={x.text} style={{ overflow: 'hidden' }}>
+                            <Checkbox
+                              className='wrap-box'
+                              checked={isSelected(x.id)}
+                              onChange={() => {
+                                handleAnswerSet(x.id)
+                              }}
+                            >
+                              {x.text}
+                            </Checkbox>
+                          </abbr>
+                        ))}
                     </Space>
                   </>
                 )}

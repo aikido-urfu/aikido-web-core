@@ -1,0 +1,9 @@
+.wrap-box > span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.display-with-align > div {
+    display: flex;
+    align-items: center;
+}
