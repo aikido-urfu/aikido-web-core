@@ -67,3 +67,20 @@ export const valueTime = (creationDate: string) => {
     return `${days} д. назад`
   }
 }
+
+export const translateRole = (role: string) => {
+  switch (role) {
+    case 'athlete':
+      return 'Атлет'
+    case 'parent':
+      return 'Родитель'
+    case 'trainer':
+      return 'Тренер'
+    case 'club_head':
+      return 'Руководитель клуба'
+    case 'federation_head':
+      return 'Руководитель федерации'
+    case 'admin':
+      return 'Администратор'
+  }
+}

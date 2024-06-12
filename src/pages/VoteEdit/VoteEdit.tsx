@@ -33,7 +33,6 @@ const VoteEdit: React.FC = () => {
   }
 
   const onFInallizeVote = (data: PostVote) => {
-    console.log(data)
     API.sendEditVote(+url_id, data)
       .then((res) => {
         logger.info(res)
@@ -45,9 +44,7 @@ const VoteEdit: React.FC = () => {
         })
       })
       .catch((err) => {
-        console.log(err)
         message.error(err.response.data.message)
-        logger.error(err)
       })
   }
 
@@ -131,12 +128,14 @@ const VoteEdit: React.FC = () => {
               setstep(x)
             }}
           />
-        ) : step === 1 ? (
-          <SecondStepEdit
-            onFInallizeVote={onFInallizeVote}
-            onStepChange={(x) => setstep(x)}
-          />
-        ) : null}
+        ) : (
+          step === 1 && (
+            <SecondStepEdit
+              onFInallizeVote={onFInallizeVote}
+              onStepChange={(x) => setstep(x)}
+            />
+          )
+        )}
       </div>
     </ConfigProvider>
   )

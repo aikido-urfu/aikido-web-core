@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { Tiny, Pie, Column } from '@ant-design/plots'
 import { url } from 'inspector'
+import { maxString } from '../../api/tools'
 
 const Results: React.FC = () => {
   const [selectedVote, setselectedVote] = useState<GetVoteById>()
@@ -81,7 +82,7 @@ const Results: React.FC = () => {
 
       const data = question.answers.map((answ: any) => {
         const obj = {
-          type: answ.text,
+          type: maxString(answ.text, 60),
           value: answ.count,
         }
         return obj
@@ -108,7 +109,7 @@ const Results: React.FC = () => {
         legend: {
           color: {
             title: false,
-            position: 'right',
+            position: 'top',
             rowPadding: 5,
             layout: {
               justifyContent: 'flex-start',
@@ -130,11 +131,9 @@ const Results: React.FC = () => {
         .sort((a: any, b: any) => a.id - b.id)
         .map((answ: any) => {
           const obj = {
-            type: answ.text,
+            type: maxString(answ.text, 60),
             value: answ.count,
           }
-          console.log(obj)
-          console.log(selectedVote)
           return obj
         })
 
@@ -205,7 +204,7 @@ const Results: React.FC = () => {
           <span style={{ lineHeight: '20px' }}>Воздержались</span>
         </div>
         <div className='px-[20px] mb-[10px]'>
-          {selectedVote ? <TinyProgress /> : null}
+          {selectedVote && <TinyProgress />}
         </div>
         <div
           className='pl-[40px]'
@@ -227,9 +226,11 @@ const Results: React.FC = () => {
                     className='px-[20px] min-h-[50px] items-center'
                     style={{ wordWrap: 'break-word' }}
                   >
-                    {question.title}
+                    <abbr title={question.title} className='no-underline'>
+                      {maxString(question.title, 70)}
+                    </abbr>
                   </h3>
-                  <div className='px-[20px] w-[422px] h-[381px]'>
+                  <div className='px-[20px] w-[600px] h-[400px]'>
                     {selectedVote?.usersVoted.length > 5 ? (
                       <CustomPie question={question} />
                     ) : (

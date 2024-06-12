@@ -242,7 +242,7 @@ const VotePage: React.FC = () => {
           </div>
         </div>
 
-        {selectedVote ? (
+        {selectedVote && (
           <div
             style={{
               padding: '20px 30px 20px 30px',
@@ -453,11 +453,10 @@ const VotePage: React.FC = () => {
                   <p style={{ marginBottom: 20, overflowWrap: 'break-word' }}>
                     {maxString(selectedVote.description, 701)}
                   </p>
-                  {selectedVote.files.length !== 0
-                    ? selectedVote.files.map((x: any) => {
-                        return <VoteFiles title={x.name} link={x.url} />
-                      })
-                    : null}
+                  {selectedVote.files.length !== 0 &&
+                    selectedVote.files.map((x: any) => {
+                      return <VoteFiles title={x.name} link={x.url} />
+                    })}
                 </div>
               </div>
             ) : (
@@ -510,14 +509,13 @@ const VotePage: React.FC = () => {
                       <p
                         style={{ marginBottom: 20, overflowWrap: 'break-word' }}
                       >
-                        {maxString(selectedVote.description, 700)}
+                        {maxString(selectedVote.description, 701)}
                       </p>
                       <div className='flex flex-col' style={{ rowGap: '10px' }}>
-                        {selectedVote.files.length !== 0
-                          ? selectedVote.files.map((x: any) => {
-                              return <VoteFiles title={x.name} link={x.url} />
-                            })
-                          : null}
+                        {selectedVote.files.length !== 0 &&
+                          selectedVote.files.map((x: any) => {
+                            return <VoteFiles title={x.name} link={x.url} />
+                          })}
                       </div>
                     </div>
                   </div>
@@ -624,7 +622,6 @@ const VotePage: React.FC = () => {
                 <Tooltip title='Проголосуйте, чтобы посмотреть'>
                   <Button
                     disabled
-                    gap-3
                     style={{ marginLeft: 20 }}
                     onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
                   >
@@ -634,7 +631,6 @@ const VotePage: React.FC = () => {
               )}
               {isAlredyVoted && (
                 <Button
-                  gap-3
                   onClick={() => navigate(`/vote/${selectedVote.id}/results`)}
                 >
                   Посмотреть общую статистику
@@ -648,7 +644,7 @@ const VotePage: React.FC = () => {
               </Button>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </>
   )

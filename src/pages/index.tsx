@@ -16,7 +16,6 @@ import Discussion from './Discussion/Discussion'
 
 //VoteEdit
 import FirstStepEdit from './VoteEdit/FirstStepEdit'
-// import ModalAddQuestionEdit from './VoteEdit/ModalAddQuestionEdit'
 import SecondStepEdit from './VoteEdit/SecondStepEdit'
 import SelectUsersEdit from './VoteEdit/SelectUsersEdit'
 import VoteEdit from './VoteEdit/VoteEdit'
@@ -53,7 +52,6 @@ export {
   VoteProgress,
   Discussion,
   FirstStepEdit,
-  // ModalAddQuestionEdit,
   SecondStepEdit,
   SelectUsersEdit,
   VoteEdit,

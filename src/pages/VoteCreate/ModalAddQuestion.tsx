@@ -128,7 +128,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             </div>
             <p className='gray'>Описание</p>
             <TextArea
-              rows={5}
+              rows={8}
               maxLength={700}
               onChange={(e) => setdescription(e.target.value)}
               value={description}

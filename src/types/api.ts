@@ -188,8 +188,3 @@ export type GetUserById = {
   emaiL: string
   telegramUserID?: null | string
 }
-
-// export type GetMessage = GetMessages &
-//   {
-//     id: number
-//   }[]

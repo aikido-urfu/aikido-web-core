@@ -163,27 +163,25 @@ const ReplyComments: React.FC<ReplyCommentsType> = ({
           </Form>
         </div>
       </div>
-      {references.length > 0
-        ? references.map((x: any) => {
-            return (
-              <ReplyComments
-                commentId={x.id}
-                text={x.text}
-                creationDate={x.creationDate}
-                userId={x.userId}
-                userName={x.userName}
-                isRef={x.isRef}
-                refComId={x.refComId}
-                refUserId={x.refUserId}
-                refUserName={x.refUserName}
-                references={x.references}
-                postComment={postComment}
-                selectedVote={selectedVote}
-                // onFinish={onFinish}
-              />
-            )
-          })
-        : null}
+      {references.length > 0 &&
+        references.map((x: any) => {
+          return (
+            <ReplyComments
+              commentId={x.id}
+              text={x.text}
+              creationDate={x.creationDate}
+              userId={x.userId}
+              userName={x.userName}
+              isRef={x.isRef}
+              refComId={x.refComId}
+              refUserId={x.refUserId}
+              refUserName={x.refUserName}
+              references={x.references}
+              postComment={postComment}
+              selectedVote={selectedVote}
+            />
+          )
+        })}
     </>
   )
 }

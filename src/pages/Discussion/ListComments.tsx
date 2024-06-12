@@ -143,32 +143,30 @@ const ListComments: React.FC<ListVoteType> = ({
               }}
               onClick={toggleShowAnswers}
             >
-              {references.length > 0 ? value : null}
+              {references.length > 0 && value}
             </a>
           </div>
-          {toggleAnswersValue === 'show'
-            ? references.length > 0
-              ? references.map((x: any) => {
-                  return (
-                    <ReplyComments
-                      commentId={x.id}
-                      text={x.text}
-                      creationDate={x.creationDate}
-                      userId={x.userId}
-                      userName={x.userName}
-                      isRef={x.isRef}
-                      refComId={x.refComId}
-                      refUserId={x.refUserId}
-                      refUserName={x.refUserName}
-                      references={x.references}
-                      postComment={postComment}
-                      selectedVote={selectedVote}
-                      // onFinish={onFinish}
-                    />
-                  )
-                })
-              : null
-            : null}
+          {toggleAnswersValue === 'show' &&
+            references.length > 0 &&
+            references.map((x: any) => {
+              return (
+                <ReplyComments
+                  commentId={x.id}
+                  text={x.text}
+                  creationDate={x.creationDate}
+                  userId={x.userId}
+                  userName={x.userName}
+                  isRef={x.isRef}
+                  refComId={x.refComId}
+                  refUserId={x.refUserId}
+                  refUserName={x.refUserName}
+                  references={x.references}
+                  postComment={postComment}
+                  selectedVote={selectedVote}
+                  // onFinish={onFinish}
+                />
+              )
+            })}
           <Form
             onKeyDown={(e) => {
               if (e.key === 'Enter') {

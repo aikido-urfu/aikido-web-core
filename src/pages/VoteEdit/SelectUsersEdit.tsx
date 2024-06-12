@@ -28,10 +28,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   const voteEdit = rootStore.VoteCreate
   const [userList, setUserList] = useState<any>([])
 
-  useEffect(() => {
-    console.log(selectEdit)
-  }, [selectEdit])
-
   const loadUsers = () => {
     env.API.getUsersAll()
       .then((res) => {
@@ -103,8 +99,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
   }
 
   let bool = false
-  // console.log('selectEdit', selectEdit)
-  // console.log('bool', bool)
 
   if (!bool) {
     if (!selectEdit) {
@@ -113,8 +107,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
       }
     }
   }
-
-  console.log(voteEdit.users.length)
 
   return (
     <>

@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import MainContainer, { SecondContainer } from './components/MainContainer'
 import { API } from './api/axios'
 import { logger } from './api/tools'
-// import { Mail } from './pages/Mail/Mail'
 import { CreateRootStore, StoreType } from './models/voteCreate'
 
 import {
@@ -65,7 +64,6 @@ const App: React.FC = () => {
                   </MainContainer>
                 }
               />
-              {/* <Route path='/register' element={<Register />} /> */}
               <Route
                 path='/profile'
                 element={
@@ -98,14 +96,6 @@ const App: React.FC = () => {
                   </MainContainer>
                 }
               />
-              {/* <Route
-                path='/mail'
-                element={
-                  <MainContainer>
-                    <Mail />
-                  </MainContainer>
-                }
-              /> */}
               <Route
                 path='/voteCreate'
                 element={

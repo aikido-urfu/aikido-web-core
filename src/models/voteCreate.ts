@@ -1,12 +1,8 @@
-import { Instance, types as t, cast } from 'mobx-state-tree'
-import { Question, PostFiles, GetVoteById } from '../types/api'
+import { Instance, types as t } from 'mobx-state-tree'
+import { PostFiles, GetVoteById } from '../types/api'
 import { UserProfileModel, selfUser } from './userModel'
 import { UserType } from '../pages/VoteCreate/SelectUsers'
 import { IEnv } from '../App'
-// import { FileModelType } from '../pages/VoteCreate/FirstStep'
-import { UploadFile } from 'antd'
-import { group } from 'console'
-// import { string } from 'mobx-state-tree/dist/internal'
 
 const files = t.model({
   file: t.string,
@@ -70,7 +66,6 @@ const VoteCreateModel = t
     startDate: t.maybeNull(t.string),
     endDate: t.maybeNull(t.string),
     documents: t.maybeNull(t.array(DocumentModel)),
-    // documentsFiles: t.maybeNull(t.array(DocumentFileModel)),
   })
   .actions((self) => {
     return {
@@ -94,22 +89,6 @@ const VoteCreateModel = t
           }),
         )
       },
-      // addDocumentFile(file: any) {
-      //   file.forEach((x: any, index: number) => {
-      //     self.documentsFiles?.push(
-      //       DocumentFileModel.create({
-      //         id: file[index],
-      //         uid: file[index].uid,
-      //         lastModified: file[index].lastModified,
-      //         lastModifiedDate: file[index].lastModifiedDate,
-      //         name: file[index].name,
-      //         size: file[index].size,
-      //         type: file[index].type,
-      //         webkitRelativePath: file[index].webkitRelativePath,
-      //       }),
-      //     )
-      //   })
-      // },
       addQuestion(question: any) {
         self.questions?.push(
           QuestionModel.create({
@@ -223,21 +202,6 @@ const VoteCreateModel = t
       deleteAllUsers() {
         self.users?.splice(0, self.users?.length)
       },
-      // setUsers(user: any) {
-      //   user.forEach((value: UserType) => {
-      //     self.users?.push(
-      //       UserModel.create({
-      //         email: value.email,
-      //         fullName: value.fullName,
-      //         group: value.group ? value.group : undefined,
-      //         id: value.id,
-      //         role: value.role,
-      //         phone: value.phone,
-      //         photo: value.photo,
-      //       }),
-      //     )
-      //   })
-      // },
       create(vote: GetVoteById) {
         this.setName(vote.title)
         this.setDescription(vote.description)
@@ -266,7 +230,6 @@ const VoteCreate = VoteCreateModel.create({
   isAnonim: false,
   questions: [],
   documents: [],
-  // documentsFiles: [],
 })
 
 const SendCommentModel = t

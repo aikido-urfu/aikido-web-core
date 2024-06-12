@@ -29,7 +29,6 @@ const Discussion: React.FC = () => {
   useEffect(() => {
     env.API.getVote(Number(id))
       .then((res) => {
-        console.log(res.data)
         setselectedVote(res.data)
       })
       .catch((err) => {
@@ -122,7 +121,7 @@ const Discussion: React.FC = () => {
                 />
               )
             })}
-            {/* {isSkeleton ? <UserDiscussionSkeleton /> : null} */}
+            {/* {isSkeleton && <UserDiscussionSkeleton />} */}
           </main>
           <Form
             onKeyDown={(e) => {

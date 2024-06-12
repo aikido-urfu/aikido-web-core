@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Result, Button, Avatar } from 'antd'
-import {
-  UserOutlined,
-  TeamOutlined,
-  CheckCircleOutlined,
-  CheckCircleFilled,
-} from '@ant-design/icons'
+import { Button, Avatar } from 'antd'
+import { UserOutlined, CheckCircleFilled } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEnv } from '../../App'
 import { observer } from 'mobx-react-lite'
 import { getCookie, deleteCookie } from '../helpers/cookie.helper'
 import { COOKIE } from '../../api/axios'
 import { GetTgToken } from '../../types/api'
+import { translateRole } from '../../api/tools'
 
 interface ProfileProps {
   isOwner: boolean
@@ -24,9 +20,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
 
   useEffect(() => {
     if (getCookie('user') !== COOKIE) {
-      console.log('ok')
       navigate(0)
-      console.log('done')
     }
   })
 
@@ -167,7 +161,7 @@ const Profile: React.FC<ProfileProps> = ({ isOwner }) => {
           >
             <li style={{ lineHeight: '4' }}>{user.fullName}</li>
             <li style={{ lineHeight: '4' }}>{user.group?.name || ''}</li>
-            <li style={{ lineHeight: '4' }}>{user.role}</li>
+            <li style={{ lineHeight: '4' }}>{translateRole(user.role)}</li>
             <li style={{ lineHeight: '3' }}>
               {user.telegram && (
                 <CheckCircleFilled

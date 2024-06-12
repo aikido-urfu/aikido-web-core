@@ -86,7 +86,6 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
 
     useEffect(() => {
       setEdit(false)
-      console.log(voteEdit.users.length)
       if (voteEdit.users.length !== 0 || voteEdit.groups.length !== 0) {
         setSelectEdit(true)
       }

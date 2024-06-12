@@ -239,12 +239,16 @@ const VoteProgress: React.FC = () => {
                             }}
                           >
                             {answers[x.id]?.length ? (
-                              x.answers
-                                .filter(
-                                  (ans) => answers[x.id].indexOf(ans.id) != -1,
-                                )
-                                .map((x) => maxString(x.text, 80))
-                                .join(',')
+                              maxString(
+                                x.answers
+                                  .filter(
+                                    (ans) =>
+                                      answers[x.id].indexOf(ans.id) != -1,
+                                  )
+                                  .map((x) => maxString(x.text, 30))
+                                  .join(', '),
+                                100,
+                              )
                             ) : (
                               <span style={{ color: 'red' }}>Отсутствует</span>
                             )}
@@ -262,7 +266,6 @@ const VoteProgress: React.FC = () => {
               nextText='Закончить голосование'
               onNextClick={() => {
                 if (canSendAnswers()) {
-                  //do stuf
                   handleSendAnswers()
                 } else {
                   env.messageApi.error('Нужно ответить на все вопросы')
@@ -287,7 +290,7 @@ const VoteProgress: React.FC = () => {
                 }}
               >
                 <h3 style={{ wordWrap: 'break-word' }}>
-                  {selectedQuestion.title}
+                  {maxString(selectedQuestion.title, 121)}
                 </h3>
                 <p
                   style={{
@@ -299,7 +302,7 @@ const VoteProgress: React.FC = () => {
                     wordWrap: 'break-word',
                   }}
                 >
-                  {selectedQuestion.description}
+                  {maxString(selectedQuestion.description, 701)}
                 </p>
                 {selectedQuestion.photos.map((x) => {
                   return (
@@ -333,7 +336,7 @@ const VoteProgress: React.FC = () => {
                                 onChange={() => handleAnswerSet(x.id)}
                                 value={x.text}
                               >
-                                {x.text}
+                                {maxString(x.text, 121)}
                               </Radio>
                             </abbr>
                           )

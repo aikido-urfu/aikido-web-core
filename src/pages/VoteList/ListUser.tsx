@@ -2,6 +2,7 @@ import React from 'react'
 import { useEnv } from '../../App'
 import './index.css'
 import { DeleteOutlined } from '@ant-design/icons'
+import { translateRole } from '../../api/tools'
 
 type ListUserType = {
   name: string
@@ -20,22 +21,6 @@ const ListUser: React.FC<ListUserType> = ({
   onDeleteClick,
   members,
 }) => {
-  const translateRole = (role: string) => {
-    switch (role) {
-      case 'athlete':
-        return 'Атлет'
-      case 'parent':
-        return 'Родитель'
-      case 'trainer':
-        return 'Тренер'
-      case 'club_head':
-        return 'Руководитель клуба'
-      case 'federation_head':
-        return 'Руководитель федерации'
-      case 'admin':
-        return 'Администратор'
-    }
-  }
   const getMembersOfGroup = () => {
     if (members.length <= 0) return null
     const listOfMembers: string[] = []

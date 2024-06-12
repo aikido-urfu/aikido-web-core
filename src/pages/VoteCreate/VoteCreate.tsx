@@ -30,7 +30,6 @@ const VoteCreate: React.FC = () => {
   }
 
   const onFInallizeVote = (data: PostVote) => {
-    console.log(data)
     API.sendCreateVote(data)
       .then((res) => {
         logger.info(res)
@@ -42,9 +41,7 @@ const VoteCreate: React.FC = () => {
         })
       })
       .catch((err) => {
-        // console.log(err)
         message.error(err.response.data.message)
-        // logger.error(err)
       })
   }
 
@@ -126,12 +123,14 @@ const VoteCreate: React.FC = () => {
               setstep(x)
             }}
           />
-        ) : step === 1 ? (
-          <SecondStep
-            onFInallizeVote={onFInallizeVote}
-            onStepChange={(x) => setstep(x)}
-          />
-        ) : null}
+        ) : (
+          step === 1 && (
+            <SecondStep
+              onFInallizeVote={onFInallizeVote}
+              onStepChange={(x) => setstep(x)}
+            />
+          )
+        )}
       </div>
     </ConfigProvider>
   )
