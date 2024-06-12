@@ -33,7 +33,7 @@ const ListUser: React.FC<ListUserType> = ({
       case 'federation_head':
         return 'Руководитель федерации'
       case 'admin':
-        return 'Админ'
+        return 'Администратор'
     }
   }
   const getMembersOfGroup = () => {

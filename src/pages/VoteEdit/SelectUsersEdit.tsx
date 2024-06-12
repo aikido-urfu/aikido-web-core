@@ -123,7 +123,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
           <Select
             onClick={loadGroups}
             mode='multiple'
-            allowClear
             style={{ width: '100%' }}
             placeholder='Добавить группу'
             defaultValue={getDefGroups()}
@@ -140,7 +139,6 @@ const SelectUsers: React.FC<SelectedUsersType> = ({
           <Select
             onClick={loadUsers}
             mode='multiple'
-            allowClear
             style={{ width: '100%' }}
             placeholder='Добавить нового участника +'
             defaultValue={getDefUsers()}

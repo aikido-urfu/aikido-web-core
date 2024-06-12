@@ -16,7 +16,7 @@ import {
 import { GetVoteById, PostVote, Question } from '../../types/api'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { UploadProps } from 'antd/es/upload/interface'
-import './style.css'
+import '../VoteCreate/style.css'
 
 type FirstStepType = {
   onStepChange: (step: number) => void

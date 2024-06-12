@@ -115,7 +115,11 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                 gap: 15,
               }}
             >
-              <Input value={name} onChange={(e) => setname(e.target.value)} />
+              <Input
+                value={name}
+                maxLength={120}
+                onChange={(e) => setname(e.target.value)}
+              />
               <p>Мультивыбор</p>
               <Switch
                 checked={isMultiply}
@@ -124,7 +128,8 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
             </div>
             <p className='gray'>Описание</p>
             <TextArea
-              rows={12}
+              rows={5}
+              maxLength={700}
               onChange={(e) => setdescription(e.target.value)}
               value={description}
             />
@@ -144,6 +149,7 @@ const ModalAddQuestion: React.FC<ModalAddQuestionType> = ({
                   <Input
                     placeholder='вариант ответа'
                     value={x}
+                    maxLength={120}
                     onChange={(e) => {
                       questions[index] = e.target.value
                       setquestions([...questions])

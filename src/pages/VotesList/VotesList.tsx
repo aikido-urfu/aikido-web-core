@@ -52,7 +52,6 @@ const VotesPage: React.FC = () => {
       <Search
         placeholder='Search votes'
         prefix={<SearchOutlined />}
-        allowClear
         onChange={(e) => handleSearch(e.target.value)}
         style={{ width: 200, margin: '16px 0' }}
       />
