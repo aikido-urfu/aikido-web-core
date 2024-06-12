@@ -83,7 +83,7 @@ const VoteEdit: React.FC = () => {
         style={{
           width: 'auto',
           minHeight: '100%',
-          margin: 30,
+          margin: '30px 30px 10px 30px',
           backgroundColor: '#FFF',
         }}
       >

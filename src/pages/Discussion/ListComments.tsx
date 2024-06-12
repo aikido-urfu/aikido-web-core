@@ -143,7 +143,7 @@ const ListComments: React.FC<ListVoteType> = ({
               }}
               onClick={toggleShowAnswers}
             >
-              {value}
+              {references.length > 0 ? value : null}
             </a>
           </div>
           {toggleAnswersValue === 'show'

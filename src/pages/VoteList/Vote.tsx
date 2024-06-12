@@ -84,11 +84,11 @@ const VotePage: React.FC = () => {
   // }
 
   const handleSearch = (e: any) => {
-    const currValue = e.target.value
+    const currValue = e.target.value.toLowerCase()
     setValue(currValue)
 
     const filteredData = votes.filter((entry: any) =>
-      entry.title.includes(currValue),
+      entry.title.toLowerCase().includes(currValue),
     )
     setDataSource(filteredData)
   }
@@ -217,26 +217,28 @@ const VotePage: React.FC = () => {
                       </div>
                     )
                   })
-              : dataSource.map((x, index) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        handleSelectedVote(x.id)
-                      }}
-                    >
-                      <ListVote
-                        key={x.id}
-                        isEnding={x.isEnding}
-                        isVoted={x.isVoted}
-                        isSelected={x.id === +url_id}
-                        name={x.title}
-                        id={x.id}
-                        date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
-                        description={x.description}
-                      />
-                    </div>
-                  )
-                })}
+              : dataSource
+                  .sort((a, b) => b.id - a.id)
+                  .map((x, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          handleSelectedVote(x.id)
+                        }}
+                      >
+                        <ListVote
+                          key={x.id}
+                          isEnding={x.isEnding}
+                          isVoted={x.isVoted}
+                          isSelected={x.id === +url_id}
+                          name={x.title}
+                          id={x.id}
+                          date={`${prettyDate(x.startDate)} - ${prettyDate(x.endDate)}`}
+                          description={x.description}
+                        />
+                      </div>
+                    )
+                  })}
           </div>
         </div>
 

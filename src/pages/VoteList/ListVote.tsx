@@ -83,7 +83,7 @@ const ListVote: React.FC<ListVoteType> = ({
           </span>
         </div>
       </div>
-      <div>{maxString(description, 41)}</div>
+      <div>{maxString(description, 38)}</div>
     </div>
     // </Tooltip>
   )

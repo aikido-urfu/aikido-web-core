@@ -16,6 +16,7 @@ import {
 import { GetVoteById, PostVote, Question } from '../../types/api'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { UploadProps } from 'antd/es/upload/interface'
+import './style.css'
 
 type FirstStepType = {
   onStepChange: (step: number) => void
@@ -209,9 +210,9 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
           <div
             style={{
               borderBottom: '1px solid #DADADA',
-              height: 602,
               display: 'flex',
             }}
+            className='second-column'
           >
             <div
               style={{
@@ -243,6 +244,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                   </p>
                   <Input
                     style={{ minWidth: 100 }}
+                    maxLength={120}
                     onChange={(e) => voteEdit.setName(e.target.value)}
                     value={voteEdit.title || ''}
                   ></Input>
@@ -286,6 +288,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                 >
                   <TextArea
                     rows={3}
+                    maxLength={700}
                     onChange={(e) => voteEdit.setDescription(e.target.value)}
                     value={voteEdit.description || ''}
                   ></TextArea>
@@ -340,7 +343,7 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                     />
                   </div>
                 </div>
-                <div style={{ height: '224px', overflowY: 'scroll' }}>
+                <div style={{ overflowY: 'scroll' }} className='user-list'>
                   {filteredByUniqId(voteEdit['groups']).map((x: any) => {
                     return (
                       <ListUser

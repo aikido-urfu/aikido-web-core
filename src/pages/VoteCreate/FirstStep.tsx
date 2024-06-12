@@ -17,6 +17,7 @@ import { GetVoteById, PostVote, Question } from '../../types/api'
 import { useParams } from 'react-router-dom'
 import type { UploadProps } from 'antd/es/upload/interface'
 import { UserType } from './SelectUsers'
+import './style.css'
 
 type FirstStepType = {
   onStepChange: (step: number) => void
@@ -154,9 +155,9 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
         <div
           style={{
             borderBottom: '1px solid #DADADA',
-            height: 602,
             display: 'flex',
           }}
+          className='second-column'
         >
           <div
             style={{
@@ -189,6 +190,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                 <Input
                   style={{ minWidth: 100 }}
                   onChange={(e) => voteCreate.setName(e.target.value)}
+                  maxLength={120}
                   value={voteCreate.title || ''}
                 ></Input>
               </div>
@@ -229,6 +231,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
               <div style={{ padding: '0px 16px 0 20px', marginBottom: '20px' }}>
                 <TextArea
                   rows={3}
+                  maxLength={700}
                   onChange={(e) => voteCreate.setDescription(e.target.value)}
                   value={voteCreate.description || ''}
                 ></TextArea>
@@ -281,7 +284,7 @@ const FirstStep: React.FC<FirstStepType> = observer(({ onStepChange }) => {
                   />
                 </div>
               </div>
-              <div style={{ height: '224px', overflowY: 'scroll' }}>
+              <div style={{ overflowY: 'scroll' }} className='user-list'>
                 {...voteCreate.groups.map((x: any) => {
                   return (
                     <ListUser

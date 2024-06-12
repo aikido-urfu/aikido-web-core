@@ -133,6 +133,8 @@ const Results: React.FC = () => {
             type: answ.text,
             value: answ.count,
           }
+          console.log(obj)
+          console.log(selectedVote)
           return obj
         })
 

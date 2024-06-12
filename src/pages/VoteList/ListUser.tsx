@@ -20,6 +20,22 @@ const ListUser: React.FC<ListUserType> = ({
   onDeleteClick,
   members,
 }) => {
+  const translateRole = (role: string) => {
+    switch (role) {
+      case 'athlete':
+        return 'Атлет'
+      case 'parent':
+        return 'Родитель'
+      case 'trainer':
+        return 'Тренер'
+      case 'club_head':
+        return 'Создатель клуба'
+      case 'federation_head':
+        return 'Создатель федерации '
+      case 'admin':
+        return 'Админ'
+    }
+  }
   const getMembersOfGroup = () => {
     if (members.length <= 0) return null
     const listOfMembers: string[] = []
@@ -100,7 +116,7 @@ const ListUser: React.FC<ListUserType> = ({
               }}
             >
               <h4 style={{ marginBottom: '2px' }}>{name}</h4>
-              <span style={{ color: 'gray' }}>{role}</span>
+              <span style={{ color: 'gray' }}>{translateRole(role)}</span>
               {/* <span style={{ color: 'gray' }}>{mail}</span> */}
             </div>
           </div>
