@@ -29,9 +29,9 @@ const ListUser: React.FC<ListUserType> = ({
       case 'trainer':
         return 'Тренер'
       case 'club_head':
-        return 'Создатель клуба'
+        return 'Руководитель клуба'
       case 'federation_head':
-        return 'Создатель федерации '
+        return 'Руководитель федерации'
       case 'admin':
         return 'Админ'
     }

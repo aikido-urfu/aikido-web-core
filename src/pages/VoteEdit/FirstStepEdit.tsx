@@ -244,8 +244,8 @@ const FirstStepEdit: React.FC<FirstStepType> = observer(
                   </p>
                   <Input
                     style={{ minWidth: 100 }}
-                    maxLength={120}
                     onChange={(e) => voteEdit.setName(e.target.value)}
+                    maxLength={120}
                     value={voteEdit.title || ''}
                   ></Input>
                 </div>

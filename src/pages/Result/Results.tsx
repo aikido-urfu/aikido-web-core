@@ -163,7 +163,10 @@ const Results: React.FC = () => {
         }}
         className='h-[60px] bg-white flex gap-3 items-center pl-[30px]'
       >
-        <h3>Статистика голосования ({selectedVote?.questions.length})</h3>
+        <h3>
+          Статистика голосования (количество вопросов:&nbsp;
+          {selectedVote?.questions.length})
+        </h3>
         <Button
           onClick={() => {
             navigate(`/vote/${url_id}`)

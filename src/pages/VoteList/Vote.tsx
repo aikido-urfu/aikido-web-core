@@ -451,7 +451,7 @@ const VotePage: React.FC = () => {
                   }}
                 >
                   <p style={{ marginBottom: 20, overflowWrap: 'break-word' }}>
-                    {selectedVote.description}
+                    {maxString(selectedVote.description, 701)}
                   </p>
                   {selectedVote.files.length !== 0
                     ? selectedVote.files.map((x: any) => {
@@ -510,7 +510,7 @@ const VotePage: React.FC = () => {
                       <p
                         style={{ marginBottom: 20, overflowWrap: 'break-word' }}
                       >
-                        {selectedVote.description}
+                        {maxString(selectedVote.description, 700)}
                       </p>
                       <div className='flex flex-col' style={{ rowGap: '10px' }}>
                         {selectedVote.files.length !== 0

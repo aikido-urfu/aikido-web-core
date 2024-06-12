@@ -51,7 +51,7 @@ const ListVote: React.FC<ListVoteType> = ({
         }}
       >
         <h3 style={{ fontWeight: '700', fontSize: '14px', lineHeight: '22px' }}>
-          {maxString(name, 23)}
+          {maxString(name, 21)}
         </h3>
         <div className='flex w-[178px] whitespace-nowrap justify-end items-center gap-x-[8px]'>
           {isVoted && (
